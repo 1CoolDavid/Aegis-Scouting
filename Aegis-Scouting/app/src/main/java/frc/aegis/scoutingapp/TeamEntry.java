@@ -1,5 +1,9 @@
 package frc.aegis.scoutingapp;
 
+import android.os.Build;
+
+import java.util.stream.Collectors;
+
 public class TeamEntry {
 
     private int teamNum;
@@ -83,4 +87,22 @@ public class TeamEntry {
     public String getDescription() { return description; }
 
     public String getAuthor() { return author; }
+
+    public boolean suspiciousAuthor() {
+        return author.contains("1") || author.contains("2") || author.contains("3") || author.contains("4") || author.contains("5") || author.contains("6") || author.contains("7") || author.contains("8") || author.contains("9") || author.contains("0");
+    }
+
+    public boolean suspiciousScore() { return points >= 35; }
+
+    public boolean suspiciousAbilities() {
+        if(!hatch && !cargo)
+            return true;
+        if(!hatch && maxHatchLvl >= 0)
+            return true;
+        if(!cargo && maxCargoLvl >= 0)
+            return true;
+        return false;
+    }
+
+    public boolean suspiciousRound() { return round >= 80; }
 }

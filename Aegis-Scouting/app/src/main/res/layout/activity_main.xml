@@ -8,12 +8,90 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/Entry_main_panel"
+        android:layout_margin="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/dds_logo"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="20dp"
+            android:background="@mipmap/ic_dds"/>
+        <EditText
+            android:id="@+id/author_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Enter Author"
+            android:textSize="45dp"
+            android:textColor="@color/fontPrimary"/>
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio_pirates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Red"
+                android:textSize="40dp"
+                android:layout_margin="15dp"
+                android:textColor="@color/redPrimary"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton android:id="@+id/radio_ninjas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="Blue"
+                android:textSize="40dp"
+                android:textColor="@color/bluePrimary"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Team Number"
+            android:textSize="45dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Entry_bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@color/greySecondary"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/greenPrimary"
+            android:text="Begin Scouting"
+            android:textAllCaps="true"
+            android:textSize="40dp"
+            android:clickable="false"
+            android:layout_weight="1"
+            android:textColor="@color/fontPrimary"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bluePrimary"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:textColor="@color/fontPrimary"
+            android:textAllCaps="true"
+            android:text="Local Data"
+            android:textSize="40dp"/>
     </LinearLayout>
 
 </RelativeLayout>
