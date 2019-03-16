@@ -23,7 +23,10 @@
             android:id="@+id/author_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:maxLines="1"
             android:layout_margin="10dp"
+            android:drawableTint="@color/blueSecondary"
             android:hint="Enter Author"
             android:textSize="45dp"
             android:textColor="@color/fontPrimary"/>
@@ -32,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/radio_pirates"
+            <RadioButton android:id="@+id/redTeam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,22 +43,26 @@
                 android:textSize="40dp"
                 android:layout_margin="15dp"
                 android:textColor="@color/redPrimary"
+                android:buttonTint="@color/redPrimary"
                 android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/radio_ninjas"
+            <RadioButton android:id="@+id/blueTeam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:text="Blue"
+                android:buttonTint="@color/bluePrimary"
                 android:textSize="40dp"
                 android:textColor="@color/bluePrimary"
                 android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
 
         <EditText
+            android:id="@+id/TeamNumEntry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Team Number"
+            android:inputType="number"
             android:textSize="45dp"
             android:layout_margin="10dp"/>
 
@@ -79,6 +86,8 @@
             android:text="Begin Scouting"
             android:textAllCaps="true"
             android:textSize="40dp"
+            android:maxLines="1"
+            android:maxLength="6"
             android:clickable="false"
             android:layout_weight="1"
             android:textColor="@color/fontPrimary"/>
