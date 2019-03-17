@@ -27,14 +27,14 @@
             android:maxLines="1"
             android:layout_margin="10dp"
             android:drawableTint="@color/blueSecondary"
-            android:hint="Enter Author"
+            android:hint="Your Name"
             android:textSize="45dp"
             android:textColor="@color/fontPrimary"/>
         <EditText
             android:id="@+id/team_num_entry"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Team Number"
+            android:hint="Scouted Team #"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
             android:textSize="45dp"

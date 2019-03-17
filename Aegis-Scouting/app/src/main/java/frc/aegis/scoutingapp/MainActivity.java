@@ -66,7 +66,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 alert.show();
             } else {
                 //Switch activity here
-                startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                if(teamEntry.getTeamNum() == 5243) {
+                    AlertDialog.Builder is5243 = new AlertDialog.Builder(this);
+                    is5243.setTitle("Are You Scouting 5243?");
+                    is5243.setMessage("Please confirm that you are scouting 5243 and are not just saying you are from 5243");
+                    is5243.setPositiveButton("I'm Scouting 5243", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int which) { dialog.dismiss();
+                           startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                       }
+                    });
+                    is5243.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            return;
+                        }
+                    });
+
+                    AlertDialog alert = is5243.create();
+                    alert.show();
+                }
+                else {
+                    startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                }
             }
         }
         if(v.getId() == R.id.local_btn)

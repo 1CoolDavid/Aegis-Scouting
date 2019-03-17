@@ -11,8 +11,6 @@ public class TeamEntry {
     private int points;
     private int habClimb;
     private int habStart;
-    private int maxCargoLvl;
-    private int maxHatchLvl;
     private int hatchCnt;
     private int cargoCnt;
 
@@ -31,8 +29,6 @@ public class TeamEntry {
         description = "This person was too lazy to add a description";
         habClimb = -1;
         habStart = -1;
-        maxHatchLvl = -1;
-        maxCargoLvl = -1;
     }
 
     public void setTeamNum(int n) { teamNum = n; }
@@ -44,10 +40,6 @@ public class TeamEntry {
     public void setHabClimb(int hc) { habClimb = hc; }
 
     public void setHabStart(int hs) { habStart = hs; }
-
-    public void setMaxCargoLvl(int cl) { maxCargoLvl = cl; }
-
-    public void setMaxHatchLvl(int hl) { maxHatchLvl = hl; }
 
     public void setCargoCnt(int cc) { cargoCnt = cc; }
 
@@ -72,10 +64,6 @@ public class TeamEntry {
     public int getHabClimb() { return habClimb; }
 
     public int getHabStart() { return habStart; }
-
-    public int getMaxCargoLvl() { return maxCargoLvl; }
-
-    public int getMaxHatchLvl() { return maxHatchLvl; }
 
     public int getPoints() { return points; }
 
@@ -102,7 +90,7 @@ public class TeamEntry {
     public boolean validAuthor() {
         char[] charray = author.toCharArray();
         for(char c : charray) {
-            if(!Character.isAlphabetic(c))
+            if(!Character.isAlphabetic(c) && c != ' ')
                 return false;
         }
         return true;
@@ -110,10 +98,6 @@ public class TeamEntry {
 
     public boolean suspiciousAbilities() {
         if(!hatch && !cargo)
-            return true;
-        if(!hatch && maxHatchLvl >= 0)
-            return true;
-        if(!cargo && maxCargoLvl >= 0)
             return true;
         return false;
     }
