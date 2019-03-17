@@ -20,7 +20,7 @@
             android:layout_margin="20dp"
             android:background="@mipmap/ic_dds"/>
         <EditText
-            android:id="@+id/author_input"
+            android:id="@+id/author_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
@@ -30,6 +30,15 @@
             android:hint="Enter Author"
             android:textSize="45dp"
             android:textColor="@color/fontPrimary"/>
+        <EditText
+            android:id="@+id/team_num_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Team Number"
+            android:inputType="number"
+            android:textColor="@color/fontPrimary"
+            android:textSize="45dp"
+            android:layout_margin="10dp"/>
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,8 +52,7 @@
                 android:textSize="40dp"
                 android:layout_margin="15dp"
                 android:textColor="@color/redPrimary"
-                android:buttonTint="@color/redPrimary"
-                android:onClick="onRadioButtonClicked"/>
+                android:buttonTint="@color/redPrimary"/>
             <RadioButton android:id="@+id/blueTeam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,15 +61,14 @@
                 android:text="Blue"
                 android:buttonTint="@color/bluePrimary"
                 android:textSize="40dp"
-                android:textColor="@color/bluePrimary"
-                android:onClick="onRadioButtonClicked"/>
+                android:textColor="@color/bluePrimary"/>
         </RadioGroup>
-
         <EditText
-            android:id="@+id/TeamNumEntry"
+            android:id="@+id/round_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Team Number"
+            android:hint="Round #"
+            android:textColor="@color/fontPrimary"
             android:inputType="number"
             android:textSize="45dp"
             android:layout_margin="10dp"/>
@@ -69,7 +76,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Entry_bottom_panel"
+        android:id="@+id/entry_bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/greySecondary"
@@ -86,12 +93,10 @@
             android:text="Begin Scouting"
             android:textAllCaps="true"
             android:textSize="40dp"
-            android:maxLines="1"
-            android:maxLength="6"
-            android:clickable="false"
             android:layout_weight="1"
             android:textColor="@color/fontPrimary"/>
         <Button
+            android:id="@+id/local_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bluePrimary"
