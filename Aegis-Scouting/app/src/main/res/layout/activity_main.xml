@@ -18,6 +18,7 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_margin="20dp"
+            android:layout_gravity="center_horizontal"
             android:background="@mipmap/ic_dds"/>
         <EditText
             android:id="@+id/author_entry"

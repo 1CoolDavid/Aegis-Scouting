@@ -13,6 +13,7 @@ public class TeamEntry {
     private int habStart;
     private int hatchCnt;
     private int cargoCnt;
+    private int preload; // 0 - nothing; 1-cargo; 2-hatch;
 
     private boolean color; //red is false, blue is true;
     private boolean cargo;

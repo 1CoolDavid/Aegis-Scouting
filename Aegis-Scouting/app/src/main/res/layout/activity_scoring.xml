@@ -8,6 +8,14 @@
     tools:context=".ScoringActivity">
 
     <LinearLayout
+        android:id="@+id/hab_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/score_tracker_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
