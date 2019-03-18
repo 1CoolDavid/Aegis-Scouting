@@ -57,11 +57,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Errors Detected"); //title
                 builder.setMessage("Please input a valid team number (positive values, etc). The author name should have no special characters and be no longer than 25 characters. A color must be selected."); //message to display
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                 AlertDialog alert = builder.create();
                 alert.show();
             } else {
@@ -70,17 +66,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     AlertDialog.Builder is5243 = new AlertDialog.Builder(this);
                     is5243.setTitle("Are You Scouting 5243?");
                     is5243.setMessage("Please confirm that you are scouting 5243 and are not just saying you are from 5243");
-                    is5243.setPositiveButton("I'm Scouting 5243", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int which) { dialog.dismiss();
-                           startActivity(new Intent(MainActivity.this, ScoringActivity.class));
-                       }
+                    is5243.setPositiveButton("I'm Scouting 5243", (dialog, which) -> { dialog.dismiss();
+                        startActivity(new Intent(MainActivity.this, ScoringActivity.class));
                     });
-                    is5243.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            return;
-                        }
+                    is5243.setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss();
+                        return;
                     });
 
                     AlertDialog alert = is5243.create();

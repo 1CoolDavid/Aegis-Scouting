@@ -16,4 +16,5 @@
     <color name="yellowSecondary">#b7b327</color>
     <color name="greenPrimary">#779933</color>
     <color name="greenSecondary">#5c7829</color>
+    <color name="lightGrey">#98999b</color>
 </resources>
