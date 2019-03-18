@@ -30,6 +30,7 @@ public class TeamEntry {
         description = "This person was too lazy to add a description";
         habClimb = -1;
         habStart = -1;
+        preload = 0;
     }
 
     public void setTeamNum(int n) { teamNum = n; }
@@ -56,6 +57,8 @@ public class TeamEntry {
 
     public void setAuthor(String a) { author = a; }
 
+    public void setPreload(int pre) { preload = pre; }
+
     public boolean isCargo() { return cargo; }
 
     public boolean isColor() { return color; }
@@ -79,6 +82,8 @@ public class TeamEntry {
     public String getDescription() { return description; }
 
     public String getAuthor() { return author; }
+
+    public String getCollin() { return "Collin was Here";}
 
     public void incrementCargo() { cargoCnt++; }
 
