@@ -2,16 +2,26 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 import static frc.aegis.scoutingapp.MainActivity.entryList;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
@@ -21,6 +31,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
     TextView hatchCount, cargoCount;
     EditText notes;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    final String UPLOAD_KEY = "Aegis";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb2.setOnClickListener(this);
         climb3.setOnClickListener(this);
 
+        pref = getSharedPreferences(TAG, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -80,12 +94,20 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             alert.show();
         } else if(v.getId() == submitbtn.getId()) {
             AlertDialog.Builder goBack = new AlertDialog.Builder(this);
-            goBack.setTitle("Confirm Submition");
+            goBack.setTitle("Confirm Submission");
             goBack.setMessage("Please confirm that you want to submit your entry");
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
-                entryList.add(teamEntry);
-                teamEntry = null;
-                //TODO: Upload
+                if(teamEntry != null) {
+                    teamEntry.fillData();
+                    teamEntry.toFile();
+                    entryList.add(teamEntry);
+                    teamEntry = null;
+
+
+                }
+                else {
+                    Toast.makeText(this, "Data already uploaded", Toast.LENGTH_SHORT).show();
+                }
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
