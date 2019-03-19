@@ -21,7 +21,7 @@
             android:layout_marginHorizontal="50dp"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/incrementHatch"
+                android:id="@+id/decrementHatch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -37,14 +37,16 @@
                     android:layout_weight="1"
                     android:src="@mipmap/ic_hatch"/>
                 <TextView
+                    android:id="@+id/hatch_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textColor="@color/fontPrimary"
                     android:text="0"
                     android:textSize="30dp"/>
             </LinearLayout>
             <Button
-                android:id="@+id/decrementHatch"
+                android:id="@+id/incrementHatch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -60,8 +62,8 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/incrementCargo"
+            <Button
+                android:id="@+id/decrementCargo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -77,14 +79,16 @@
                     android:layout_weight="1"
                     android:src="@mipmap/ic_cargo"/>
                 <TextView
+                    android:id="@+id/cargo_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textColor="@color/fontPrimary"
                     android:text="0"
                     android:textSize="30dp"/>
             </LinearLayout>
-            <ImageButton
-                android:id="@+id/decrementCargo"
+            <Button
+                android:id="@+id/incrementCargo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -119,7 +123,7 @@
             android:layout_margin="15dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/Hab_1"
+            <RadioButton android:id="@+id/hab_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -127,7 +131,7 @@
                 android:textSize="40dp"
                 android:textColor="@color/fontPrimary"
                 android:layout_margin="15dp" />
-            <RadioButton android:id="@+id/Hab_2"
+            <RadioButton android:id="@+id/hab_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -152,12 +156,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:orientation="horizontal">
+            <RadioButton android:id="@+id/climb_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="None"
+                android:textSize="35dp"
+                android:textColor="@color/fontPrimary"
+                android:layout_margin="15dp" />
             <RadioButton android:id="@+id/climb_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Level 1"
-                android:textSize="40dp"
+                android:textSize="35dp"
                 android:textColor="@color/fontPrimary"
                 android:layout_margin="15dp" />
             <RadioButton android:id="@+id/climb_2"
@@ -166,7 +178,7 @@
                 android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:text="Level 2"
-                android:textSize="40dp"
+                android:textSize="35dp"
                 android:textColor="@color/fontPrimary"/>
             <RadioButton android:id="@+id/climb_3"
                 android:layout_width="wrap_content"
@@ -174,7 +186,7 @@
                 android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:text="Level 3"
-                android:textSize="40dp"
+                android:textSize="35dp"
                 android:textColor="@color/fontPrimary"/>
         </RadioGroup>
     </LinearLayout>

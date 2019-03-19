@@ -65,6 +65,10 @@ public class TeamEntry {
 
     public boolean isHatch() { return hatch; }
 
+    public boolean getColor() { return color; }
+
+    public int getPreload() { return preload; }
+
     public int getHabClimb() { return habClimb; }
 
     public int getHabStart() { return habStart; }
@@ -82,8 +86,6 @@ public class TeamEntry {
     public String getDescription() { return description; }
 
     public String getAuthor() { return author; }
-
-    public String getCollin() { return "Collin was Here";}
 
     public void incrementCargo() { cargoCnt++; }
 

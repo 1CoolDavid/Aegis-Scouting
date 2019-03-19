@@ -2,9 +2,7 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +10,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton redOpt, blueOpt;
     public static TeamEntry teamEntry;
+    public static ArrayList<TeamEntry> entryList = new ArrayList<>();
     boolean color, errors;
 
 
@@ -39,6 +40,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         localbtn.setOnClickListener(this);
         redOpt.setOnClickListener(this);
         blueOpt.setOnClickListener(this);
+
+        if(teamEntry != null) {
+            numEntry.setText(Integer.toString(teamEntry.getTeamNum()));
+            authorEntry.setText(teamEntry.getAuthor());
+            roundEntry.setText(Integer.toString(teamEntry.getRound()));
+            if(teamEntry.getColor())
+                blueOpt.toggle();
+            else
+                redOpt.toggle();
+        }
     }
 
     @Override
