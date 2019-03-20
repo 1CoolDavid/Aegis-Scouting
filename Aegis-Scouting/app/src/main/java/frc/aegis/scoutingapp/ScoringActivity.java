@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -84,6 +85,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             AlertDialog alert = goBack.create();
             alert.show();
         } else if(v.getId() == submitbtn.getId()) {
+            if(teamEntry.getHabClimb() == -1 || teamEntry.getHabStart() == -1) {
+                return;
+            }
             AlertDialog.Builder goBack = new AlertDialog.Builder(this);
             goBack.setTitle("Confirm Submission");
             goBack.setMessage("Please confirm that you want to submit your entry");
