@@ -1,18 +1,14 @@
 package frc.aegis.scoutingapp;
 
-import android.os.Build;
 import android.os.Environment;
-import android.provider.ContactsContract;
 
 import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class TeamEntry {
-
     private int teamNum;
     private int round;
     private int points;

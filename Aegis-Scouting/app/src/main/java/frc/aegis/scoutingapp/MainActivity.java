@@ -3,23 +3,32 @@ package frc.aegis.scoutingapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton redOpt, blueOpt;
     public static TeamEntry teamEntry;
     public static ArrayList<TeamEntry> entryList = new ArrayList<>();
     boolean color, errors;
+    public static SharedPreferences pref;
+    public static SharedPreferences.Editor editor;
+    public static Gson gson;
 
 
     @Override
@@ -49,6 +58,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 blueOpt.toggle();
             else
                 redOpt.toggle();
+        }
+        pref = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        editor = pref.edit();
+        gson = new Gson();
+        try {
+            entryList.addAll(getData());
+        }catch (Exception e) {
+
         }
     }
 
@@ -99,5 +116,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             color=false;
         if(v.getId() == R.id.blueTeam)
             color=true;
+    }
+
+    public static List getData() {
+        Type type = new TypeToken<List<TeamEntry>>(){}.getType();
+        List<TeamEntry> list = gson.fromJson("KEY", type);
+        return list;
     }
 }

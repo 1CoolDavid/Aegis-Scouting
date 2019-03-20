@@ -18,28 +18,31 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static frc.aegis.scoutingapp.MainActivity.editor;
 import static frc.aegis.scoutingapp.MainActivity.entryList;
+import static frc.aegis.scoutingapp.MainActivity.gson;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
 public class ScoringActivity extends Activity implements View.OnClickListener {
-
-    Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
-    RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
-    TextView hatchCount, cargoCount;
-    EditText notes;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    final String UPLOAD_KEY = "Aegis";
+    private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
+    private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
+    private TextView hatchCount, cargoCount;
+    private EditText notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,15 +104,14 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setTitle("Confirm Submission");
             goBack.setMessage("Please confirm that you want to submit your entry");
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
-                if(teamEntry != null) {
                     teamEntry.fillData();
                     teamEntry.toFile();
                     entryList.add(teamEntry);
+                    String jsonEntries = gson.toJson(entryList);
+                    editor.putString("KEY", jsonEntries);
+                    editor.commit();
                     teamEntry = null;
-                }
-                else {
-                    Toast.makeText(this, "Data already uploaded", Toast.LENGTH_SHORT).show();
-                }
+                    startActivity(new Intent(this, MainActivity.class));
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
