@@ -24,12 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton redOpt, blueOpt;
     public static TeamEntry teamEntry;
-    public static ArrayList<TeamEntry> entryList = new ArrayList<>();
     boolean color, errors;
-    public static SharedPreferences pref;
-    public static SharedPreferences.Editor editor;
-    public static Gson gson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +53,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 blueOpt.toggle();
             else
                 redOpt.toggle();
-        }
-        pref = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        editor = pref.edit();
-        gson = new Gson();
-        try {
-            entryList.addAll(getData());
-        }catch (Exception e) {
-
         }
     }
 
@@ -111,16 +98,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
         if(v.getId() == R.id.local_btn)
-
+            startActivity(new Intent(this, LocalDataActivity.class));
         if(v.getId() == R.id.redTeam)
             color=false;
         if(v.getId() == R.id.blueTeam)
             color=true;
-    }
-
-    public static List getData() {
-        Type type = new TypeToken<List<TeamEntry>>(){}.getType();
-        List<TeamEntry> list = gson.fromJson("KEY", type);
-        return list;
     }
 }

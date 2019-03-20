@@ -2,45 +2,27 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static android.content.ContentValues.TAG;
-import static frc.aegis.scoutingapp.MainActivity.editor;
-import static frc.aegis.scoutingapp.MainActivity.entryList;
-import static frc.aegis.scoutingapp.MainActivity.gson;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
     private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
+    private ArrayList<TeamEntry> entryList;
     private TextView hatchCount, cargoCount;
     private EditText notes;
 
@@ -82,6 +64,8 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb1.setOnClickListener(this);
         climb2.setOnClickListener(this);
         climb3.setOnClickListener(this);
+
+        loadData();
     }
 
     @Override
@@ -107,9 +91,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
                     teamEntry.fillData();
                     teamEntry.toFile();
                     entryList.add(teamEntry);
-                    String jsonEntries = gson.toJson(entryList);
-                    editor.putString("KEY", jsonEntries);
-                    editor.commit();
+                    saveData();
                     teamEntry = null;
                     startActivity(new Intent(this, MainActivity.class));
             });
@@ -153,4 +135,26 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             teamEntry.setHabClimb(3);
         }
     }
+
+    public void saveData() {
+        SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String jsonEntries = gson.toJson(entryList);
+        editor.putString("KEY", jsonEntries);
+        editor.apply();
+    }
+
+    public void loadData() {
+        SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String jsonEntries = preferences.getString("KEY", null);
+        Type type = new TypeToken<ArrayList<TeamEntry>>() {}.getType();
+        entryList = gson.fromJson(jsonEntries, type);
+
+        if(entryList == null) {
+            entryList = new ArrayList<>();
+        }
+    }
+
 }
