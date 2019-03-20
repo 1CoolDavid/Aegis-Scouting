@@ -138,12 +138,11 @@ public class TeamEntry {
         return "Team-"+Integer.toString(teamNum) + "_" + "Round-"+Integer.toString(round);
     }
 
-    public File toFile() {
+    public void toFile() {
 
         String fileName = toString()+"-AnalysisData.csv";
         File file;
-        String rootPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/";
-        File root = new File(rootPath);
+        File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Aegis/", fileName);
         if (!root.exists()) {
             root.mkdirs();
         }
@@ -173,9 +172,5 @@ public class TeamEntry {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        return file;
     }
-
-
 }

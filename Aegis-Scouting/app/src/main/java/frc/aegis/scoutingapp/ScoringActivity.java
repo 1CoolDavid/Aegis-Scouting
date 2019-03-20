@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
 import static frc.aegis.scoutingapp.MainActivity.entryList;
@@ -73,8 +79,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb1.setOnClickListener(this);
         climb2.setOnClickListener(this);
         climb3.setOnClickListener(this);
-
-        pref = getSharedPreferences(TAG, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -102,8 +106,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
                     teamEntry.toFile();
                     entryList.add(teamEntry);
                     teamEntry = null;
-
-
                 }
                 else {
                     Toast.makeText(this, "Data already uploaded", Toast.LENGTH_SHORT).show();
