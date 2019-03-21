@@ -2,9 +2,11 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +16,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -93,7 +100,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setMessage("Please confirm that you want to submit your entry");
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
                     teamEntry.fillData();
-                    teamEntry.toFile();
+                    uploadFile(teamEntry);
                     entryList.add(teamEntry);
                     saveData();
                     teamEntry = null;
@@ -161,4 +168,45 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    public static void uploadFile(TeamEntry teamEntry) {
+
+        String fileName = teamEntry.toString()+"-AnalysisData.csv";
+        //File myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File file;
+        try {
+            //System.out.println(myDir.getAbsolutePath());
+            //myDir.mkdirs();
+
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
+            file.mkdirs();
+
+            if (file.getParentFile().mkdirs())
+                file.createNewFile();
+            System.out.println(file.getAbsolutePath());
+            // create FileWriter object with file as parameter
+            File entry = new File(file.getAbsolutePath(), fileName);
+            FileWriter outputfile = new FileWriter(entry);
+
+            // create CSVWriter object filewriter object as parameter
+            CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+
+            // adding header to csv
+            String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
+            writer.writeNext(header);
+
+            // add data to csv
+            String[] data1 = { Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()) };
+            writer.writeNext(data1);
+            String[] data2 = { "Description: ", teamEntry.getDescription() };
+            writer.writeNext(data2);
+
+            // closing writer connection
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

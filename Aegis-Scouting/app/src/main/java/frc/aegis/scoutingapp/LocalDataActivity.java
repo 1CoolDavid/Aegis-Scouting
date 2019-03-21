@@ -17,6 +17,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import static frc.aegis.scoutingapp.ScoringActivity.uploadFile;
+
 public class LocalDataActivity extends Activity implements View.OnClickListener {
 
     private TextView localDisplay;
@@ -33,13 +35,21 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         clear = findViewById(R.id.clear);
         upload = findViewById(R.id.upload);
 
+        back.setOnClickListener(this);
+        clear.setOnClickListener(this);
+        upload.setOnClickListener(this);
+
         loadData();
 
         if(entryList.isEmpty()) {
             localDisplay.setText("No Saved Entries");
+            localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
         }
-        else
+        else {
             localDisplay.setText(entryList.toString());
+            localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
+        }
+
     }
 
     public void onClick(View v) {
@@ -47,6 +57,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             startActivity(new Intent(this, MainActivity.class));
         }
         else if(v.getId() == clear.getId()) {
+            if(entryList.isEmpty()) {
+                return;
+            }
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("Clear Local Data?");
             alertDialog.setMessage("Once cleared, this data cannot be recovered");
@@ -55,12 +68,18 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 entryList.clear();
                 saveData();
                 localDisplay.setText("No Saved Entries");
+                localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
                 Toast.makeText(this, "Local Data Cleared", Toast.LENGTH_SHORT);
             }));
+           AlertDialog alert =  alertDialog.create();
+           alert.show();
         }
         else if(v.getId() == upload.getId()) {
+            if(entryList.isEmpty()) {
+                return;
+            }
             for(TeamEntry t : entryList) {
-                t.toFile();
+                uploadFile(t);
             }
             Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT);
         }

@@ -1,10 +1,12 @@
 package frc.aegis.scoutingapp;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.opencsv.CSVWriter;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -132,41 +134,5 @@ public class TeamEntry {
     @Override
     public String toString() {
         return "Team-"+Integer.toString(teamNum) + "_" + "Round-"+Integer.toString(round);
-    }
-
-    public void toFile() {
-
-        String fileName = toString()+"-AnalysisData.csv";
-        File file;
-        File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Aegis/", fileName);
-        if (!root.exists()) {
-            root.mkdirs();
-        }
-        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Aegis/", fileName);
-
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter(file);
-
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-
-            // adding header to csv
-            String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
-            writer.writeNext(header);
-
-            // add data to csv
-            String[] data1 = { Integer.toString(teamNum), Integer.toString(round), Integer.toString(points), Integer.toString(hatchCnt), Integer.toString(cargoCnt), Integer.toString(habStart), Integer.toString(habClimb) };
-            writer.writeNext(data1);
-            String[] data2 = { "Description: ", description };
-            writer.writeNext(data2);
-
-            // closing writer connection
-            writer.close();
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 }

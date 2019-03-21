@@ -15,11 +15,11 @@
         android:orientation="vertical">
         <ImageView
             android:id="@+id/dds_logo"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_margin="20dp"
             android:layout_gravity="center_horizontal"
-            android:background="@mipmap/ic_dds"/>
+            android:background="@mipmap/ic_first"/>
         <EditText
             android:id="@+id/author_entry"
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_margin="10dp"
             android:drawableTint="@color/blueSecondary"
             android:hint="Your Name"
-            android:textSize="45dp"
+            android:textSize="40dp"
             android:textColor="@color/fontPrimary"/>
         <EditText
             android:id="@+id/team_num_entry"
@@ -38,7 +38,7 @@
             android:hint="Scouted Team #"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
-            android:textSize="45dp"
+            android:textSize="40dp"
             android:layout_margin="10dp"/>
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
