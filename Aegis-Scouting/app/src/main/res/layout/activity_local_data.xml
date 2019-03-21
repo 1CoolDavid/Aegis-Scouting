@@ -4,14 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".LocalDataActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List"
+        android:textSize="40dp"
+        android:textAlignment="center"
+        android:textColor="@color/fontPrimary"
+        android:layout_above="@id/local_text"/>
 
     <TextView
         android:id="@+id/local_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:textColor="@color/fontPrimary"
+        android:textAlignment="center"
         android:text=""
+        android:textSize="35dp"
         android:layout_margin="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/entry_bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/greySecondary"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/mainbck_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blueSecondary"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:textColor="@color/fontPrimary"
+            android:textAllCaps="true"
+            android:text="Back"
+            android:textSize="40dp"/>
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/redSecondary"
+            android:text="Clear"
+            android:textAllCaps="true"
+            android:textSize="40dp"
+            android:layout_weight="1"
+            android:textColor="@color/fontPrimary"/>
+
+        <Button
+            android:id="@+id/upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/greenSecondary"
+            android:text="upload"
+            android:textAllCaps="true"
+            android:textSize="40dp"
+            android:layout_weight="1"
+            android:textColor="@color/fontPrimary"/>
+    </LinearLayout>
 
 </RelativeLayout>

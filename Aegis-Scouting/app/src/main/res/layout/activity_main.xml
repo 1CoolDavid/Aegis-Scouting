@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@color/greenSecondary"
-            android:text="Begin Scouting"
+            android:text="Begin"
             android:textAllCaps="true"
             android:textSize="40dp"
             android:layout_weight="1"
