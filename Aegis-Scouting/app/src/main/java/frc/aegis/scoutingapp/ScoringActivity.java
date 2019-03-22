@@ -25,12 +25,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import static frc.aegis.scoutingapp.MainActivity.entryList;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
     private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
-    private ArrayList<TeamEntry> entryList;
+    //private ArrayList<TeamEntry> entryList;
     private TextView hatchCount, cargoCount;
     private EditText notes;
 
@@ -72,11 +73,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb1.setOnClickListener(this);
         climb2.setOnClickListener(this);
         climb3.setOnClickListener(this);
-
-        loadData();
-
-        if (entryList.isEmpty())
-            initHeaders();
     }
 
     @Override
@@ -104,6 +100,8 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
                     teamEntry.fillData();
                     uploadFile(teamEntry);
+                if (entryList.isEmpty())
+                    initHeaders();
                     entryList.add(teamEntry);
                     saveData();
                     teamEntry = null;
@@ -157,18 +155,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         String jsonEntries = gson.toJson(entryList);
         editor.putString("KEY", jsonEntries);
         editor.apply();
-    }
-
-    public void loadData() {
-        SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String jsonEntries = preferences.getString("KEY", null);
-        Type type = new TypeToken<ArrayList<TeamEntry>>() {}.getType();
-        entryList = gson.fromJson(jsonEntries, type);
-
-        if(entryList == null) {
-            entryList = new ArrayList<>();
-        }
     }
 
     public static void uploadFile(TeamEntry teamEntry) {

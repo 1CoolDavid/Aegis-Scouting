@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton redOpt, blueOpt;
     public static TeamEntry teamEntry;
+    public static ArrayList<TeamEntry> entryList;
     boolean color, errors;
 
     @Override
@@ -54,6 +55,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             else
                 redOpt.toggle();
         }
+
+        loadData();
     }
 
     @Override
@@ -93,7 +96,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     alert.show();
                 }
                 else {
-                    startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                    if (matchingEntry(teamEntry)) {
+                        AlertDialog.Builder match = new AlertDialog.Builder(this);
+                        match.setTitle("Matching Entry Already Detected");
+                        match.setMessage("Team " + Integer.toString(teamEntry.getTeamNum()) + " at round " + Integer.toString(teamEntry.getRound()) + " has already been entered before. Please confirm that this is intentional");
+                        match.setNegativeButton("Cancel", ((dialog, which) -> {
+                            dialog.dismiss();
+                            return;
+                        }));
+                        match.setPositiveButton("Continue", ((dialog, which) -> {
+                            startActivity(new Intent(this, ScoringActivity.class));
+                        }));
+
+                        AlertDialog alert = match.create();
+                        alert.show();
+                    } else {
+                        startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                    }
                 }
             }
         }
@@ -103,5 +122,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
             color=false;
         if(v.getId() == R.id.blueTeam)
             color=true;
+    }
+
+    public void loadData() {
+        SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String jsonEntries = preferences.getString("KEY", null);
+        Type type = new TypeToken<ArrayList<TeamEntry>>() {}.getType();
+        entryList = gson.fromJson(jsonEntries, type);
+
+        if(entryList == null) {
+            entryList = new ArrayList<>();
+        }
+    }
+
+    public boolean matchingEntry(TeamEntry t) {
+        for(TeamEntry entry : entryList) {
+            if (t.equals(entry))
+                return true;
+        }
+        return false;
     }
 }

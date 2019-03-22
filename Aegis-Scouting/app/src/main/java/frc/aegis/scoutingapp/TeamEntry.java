@@ -1,15 +1,5 @@
 package frc.aegis.scoutingapp;
 
-import android.content.Context;
-import android.os.Environment;
-
-import com.opencsv.CSVWriter;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class TeamEntry {
     private int teamNum;
     private int round;
@@ -134,5 +124,11 @@ public class TeamEntry {
     @Override
     public String toString() {
         return "Team-"+Integer.toString(teamNum) + "_" + "Round-"+Integer.toString(round);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        TeamEntry o = (TeamEntry)obj;
+        return o.getTeamNum() == getTeamNum() && o.getRound() == getRound();
     }
 }
