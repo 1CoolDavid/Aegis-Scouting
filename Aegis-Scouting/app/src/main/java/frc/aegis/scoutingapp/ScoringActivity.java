@@ -74,6 +74,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb3.setOnClickListener(this);
 
         loadData();
+
+        if (entryList.isEmpty())
+            initHeaders();
     }
 
     @Override
@@ -183,6 +186,44 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             if (file.getParentFile().mkdirs())
                 file.createNewFile();
             System.out.println(file.getAbsolutePath());
+            File entry = new File(file.getAbsolutePath(), fileName);
+            FileWriter outputfile = new FileWriter(entry);
+
+            // create CSVWriter object filewriter object as parameter
+            CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+
+            // adding header to csv
+            //String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
+            //writer.writeNext(header);
+
+            // add data to csv
+            String[] data1 = { Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
+            writer.writeNext(data1);
+
+            // closing writer connection
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void initHeaders() {
+
+        String fileName = "Headers.csv";
+        File file;
+        try {
+            //System.out.println(myDir.getAbsolutePath());
+            //myDir.mkdirs();
+
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
+            file.mkdirs();
+
+            if (file.getParentFile().mkdirs())
+                file.createNewFile();
+            System.out.println(file.getAbsolutePath());
             // create FileWriter object with file as parameter
             File entry = new File(file.getAbsolutePath(), fileName);
             FileWriter outputfile = new FileWriter(entry);
@@ -193,12 +234,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             // adding header to csv
             String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
             writer.writeNext(header);
-
-            // add data to csv
-            String[] data1 = { Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()) };
-            writer.writeNext(data1);
-            String[] data2 = { "Description: ", teamEntry.getDescription() };
-            writer.writeNext(data2);
 
             // closing writer connection
             writer.flush();

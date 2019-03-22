@@ -105,5 +105,4 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             entryList = new ArrayList<>();
         }
     }
-
 }
