@@ -2,7 +2,6 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,18 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import static frc.aegis.scoutingapp.MainActivity.entryList;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
@@ -31,7 +25,6 @@ import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
     private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
-    //private ArrayList<TeamEntry> entryList;
     private TextView hatchCount, cargoCount;
     private EditText notes;
 
@@ -100,8 +93,8 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
                     teamEntry.fillData();
                     uploadFile(teamEntry);
-                if (entryList.isEmpty())
-                    initHeaders();
+                    if (entryList.isEmpty())
+                        initHeaders();
                     entryList.add(teamEntry);
                     saveData();
                     teamEntry = null;
@@ -148,30 +141,32 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * Updates ArrayList entry in shared preferences
+     */
     public void saveData() {
         SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String jsonEntries = gson.toJson(entryList);
+        Gson gson = new Gson(); //translator
+        String jsonEntries = gson.toJson(entryList); //translates entryList to string
         editor.putString("KEY", jsonEntries);
-        editor.apply();
+        editor.apply(); //Overrides previous ArrayList entry
     }
 
+    /**
+     * Uploads csv file of entry to Documents folder of the device
+     * @param teamEntry the to-be-submitted TeamEntry
+     */
     public static void uploadFile(TeamEntry teamEntry) {
-
         String fileName = teamEntry.toString()+"-AnalysisData.csv";
-        //File myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File file;
         try {
-            //System.out.println(myDir.getAbsolutePath());
-            //myDir.mkdirs();
-
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
-            file.mkdirs();
+            file.mkdirs(); //Creates directory if it doesn't exist.
 
             if (file.getParentFile().mkdirs())
                 file.createNewFile();
-            //System.out.println(file.getAbsolutePath());
+
             File entry = new File(file.getAbsolutePath(), fileName);
             FileWriter outputfile = new FileWriter(entry);
 
@@ -196,20 +191,18 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * Initializes the headers.csv file for easy computation (Exportation purposes)
+     */
     public static void initHeaders() {
-
         String fileName = "Headers.csv";
         File file;
         try {
-            //System.out.println(myDir.getAbsolutePath());
-            //myDir.mkdirs();
-
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
             file.mkdirs();
 
             if (file.getParentFile().mkdirs())
                 file.createNewFile();
-            //System.out.println(file.getAbsolutePath());
             // create FileWriter object with file as parameter
             File entry = new File(file.getAbsolutePath(), fileName);
             FileWriter outputfile = new FileWriter(entry);
@@ -218,7 +211,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // adding header to csv
-            String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
+            String[] header = { "Number", "Round", "Points Scored", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
             writer.writeNext(header);
 
             // closing writer connection

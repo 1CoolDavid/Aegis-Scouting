@@ -99,12 +99,6 @@ public class TeamEntry {
         return true;
     }
 
-    public boolean suspiciousAbilities() {
-        if(!hatch && !cargo)
-            return true;
-        return false;
-    }
-
     public void fillData() {
         hatch = hatchCnt != 0;
         cargo = cargoCnt != 0;
