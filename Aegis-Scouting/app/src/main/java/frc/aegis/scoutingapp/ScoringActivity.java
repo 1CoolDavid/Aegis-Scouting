@@ -185,7 +185,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
 
             if (file.getParentFile().mkdirs())
                 file.createNewFile();
-            System.out.println(file.getAbsolutePath());
+            //System.out.println(file.getAbsolutePath());
             File entry = new File(file.getAbsolutePath(), fileName);
             FileWriter outputfile = new FileWriter(entry);
 
@@ -223,7 +223,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
 
             if (file.getParentFile().mkdirs())
                 file.createNewFile();
-            System.out.println(file.getAbsolutePath());
+            //System.out.println(file.getAbsolutePath());
             // create FileWriter object with file as parameter
             File entry = new File(file.getAbsolutePath(), fileName);
             FileWriter outputfile = new FileWriter(entry);
