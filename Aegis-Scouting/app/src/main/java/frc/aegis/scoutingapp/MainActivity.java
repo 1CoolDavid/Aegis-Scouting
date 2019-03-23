@@ -64,14 +64,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
 
         if(v.getId() == R.id.start_btn) {
-            int previousRound;
-
-            if(entryList == null || entryList.isEmpty())
-                previousRound = -1;
-            else {
-                previousRound = entryList.get(entryList.size()-1).getRound(); //Gets the round of the previous entry for later comparison
-            }
-
             //Checks for empty fields by catching NullPointerExceptions
             try {
                 teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), color);
@@ -106,16 +98,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     AlertDialog alert = is5243.create();
                     alert.show();
                 } else {
-                    if(teamEntry.getRound() <= previousRound || teamEntry.getRound()-1 > previousRound) {
-                        AlertDialog.Builder round = new AlertDialog.Builder(this);
-                        round.setTitle("Confirm Round Number");
-                        round.setMessage("The previous entry's round was "+Integer.toString(previousRound)+ ". Are you sure the round number is correct?");
-                        round.setPositiveButton("Yes", ((dialog, which) -> startActivity(new Intent(MainActivity.this, ScoringActivity.class))));
-                        round.setNegativeButton("No", ((dialog, which) -> {
-                            dialog.dismiss();
-                            return;
-                        }));
-                    } else if (matchingEntry(teamEntry)) {
+                    if (matchingEntry(teamEntry)) {
                         AlertDialog.Builder match = new AlertDialog.Builder(this);
                         match.setTitle("Matching Entry Already Detected");
                         match.setMessage("Team " + Integer.toString(teamEntry.getTeamNum()) + " at round " + Integer.toString(teamEntry.getRound()) + " has already been entered before. Please confirm that this is intentional");
@@ -128,7 +111,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         AlertDialog alert = match.create();
                         alert.show();
                     } else {
-                        startActivity(new Intent(MainActivity.this, ScoringActivity.class));
+                        startActivity(new Intent(this, ScoringActivity.class));
                     }
                 }
             }

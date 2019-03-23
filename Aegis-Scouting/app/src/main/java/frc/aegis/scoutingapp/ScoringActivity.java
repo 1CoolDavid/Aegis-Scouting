@@ -91,6 +91,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setTitle("Confirm Submission");
             goBack.setMessage("Please confirm that you want to submit your entry");
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
+                    teamEntry.setDescription(notes.getText().toString());
                     teamEntry.fillData();
                     uploadFile(teamEntry);
                     if (entryList.isEmpty())
