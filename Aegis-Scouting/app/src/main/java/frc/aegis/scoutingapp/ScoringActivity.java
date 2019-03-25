@@ -25,7 +25,7 @@ import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
     private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
-    private TextView hatchCount, cargoCount;
+    private TextView hatchCount, cargoCount, teamNum;
     private EditText notes;
 
     @Override
@@ -51,6 +51,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
 
         hatchCount = findViewById(R.id.hatch_num);
         cargoCount = findViewById(R.id.cargo_num);
+        teamNum = findViewById(R.id.team_num_display);
+
+        teamNum.setText(Integer.toString(teamEntry.getTeamNum()));
 
         notes = findViewById(R.id.description);
 
@@ -174,12 +177,8 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             // create CSVWriter object filewriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
-            // adding header to csv
-            //String[] header = { "Number", "Round", "Points Scored", "# Hatches", "# Cargo", "Hab Start", "Hab Climb", "Description" };
-            //writer.writeNext(header);
-
             // add data to csv
-            String[] data1 = { Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
+            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
             writer.writeNext(data1);
 
             // closing writer connection
@@ -212,7 +211,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // adding header to csv
-            String[] header = { "Number", "Round", "Points Scored", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
+            String[] header = { "Author", "Number", "Round", "Points Scored", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
             writer.writeNext(header);
 
             // closing writer connection

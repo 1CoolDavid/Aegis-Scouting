@@ -7,8 +7,22 @@
     android:background="@color/background"
     tools:context=".ScoringActivity">
 
+    <TextView
+        android:id="@+id/team_num_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:text="NULL"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/fontPrimary"/>
+
     <LinearLayout
         android:id="@+id/score_tracker_panel"
+        android:layout_below="@id/team_num_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -29,7 +43,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight=".75"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="match_parent"
@@ -71,7 +85,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.75"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="match_parent"
