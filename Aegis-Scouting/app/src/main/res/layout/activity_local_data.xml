@@ -7,28 +7,72 @@
     android:background="@color/background"
     tools:context=".LocalDataActivity">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/local_pass_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="List"
-        android:textSize="40dp"
-        android:textAlignment="center"
-        android:textColor="@color/fontPrimary"
-        android:layout_above="@id/local_text"/>
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/local_text"
+        <EditText
+            android:id="@+id/local_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:hint="Enter Password"
+            android:textColor="@color/fontPrimary"
+            android:textSize="35dp"
+            android:inputType="numberPassword"/>
+
+        <Button
+            android:id="@+id/local_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/blueSecondary"
+            android:textColor="@color/fontPrimary"
+            android:text="Login"
+            android:textSize="35dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/data_display_layout"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/fontPrimary"
-        android:textAlignment="center"
-        android:text=""
-        android:textSize="35dp"
-        android:layout_margin="20dp"/>
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List"
+                android:textSize="40dp"
+                android:textAlignment="center"
+                android:textColor="@color/fontPrimary"
+                android:layout_above="@id/local_text"/>
+
+            <TextView
+                android:id="@+id/local_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/fontPrimary"
+                android:textAlignment="center"
+                android:text=""
+                android:textSize="35dp"
+                android:layout_margin="20dp"/>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/entry_bottom_panel"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/greySecondary"

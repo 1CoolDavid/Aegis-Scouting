@@ -163,6 +163,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      */
     public static void uploadFile(TeamEntry teamEntry) {
         String fileName = teamEntry.toString()+"-AnalysisData.csv";
+        String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
@@ -178,7 +179,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // add data to csv
-            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
+            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), pre, Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
             writer.writeNext(data1);
 
             // closing writer connection
@@ -186,7 +187,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             writer.close();
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -211,7 +211,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // adding header to csv
-            String[] header = { "Author", "Number", "Round", "Points Scored", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
+            String[] header = { "Author", "Number", "Round", "Points Scored", "Preload", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
             writer.writeNext(header);
 
             // closing writer connection
@@ -219,7 +219,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             writer.close();
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

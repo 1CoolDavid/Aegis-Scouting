@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -23,9 +24,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton redOpt, blueOpt;
+    private ImageButton preloadbtn;
     public static TeamEntry teamEntry; //Current Entry
     public static ArrayList<TeamEntry> entryList; //Data
-    boolean color, errors;
+    private boolean color, errors;
+    private int preloadStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +44,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
         redOpt = (RadioButton)findViewById(R.id.redTeam);
         blueOpt = (RadioButton)findViewById(R.id.blueTeam);
 
+        preloadbtn = (ImageButton)findViewById(R.id.preload_selection);
+
         beginbtn.setOnClickListener(this);
         localbtn.setOnClickListener(this);
         redOpt.setOnClickListener(this);
         blueOpt.setOnClickListener(this);
+        preloadbtn.setOnClickListener(this);
+
+        preloadStatus = 0;
 
         //Inputting previous entries
         if(teamEntry != null) {
             numEntry.setText(Integer.toString(teamEntry.getTeamNum()));
             authorEntry.setText(teamEntry.getAuthor());
             roundEntry.setText(Integer.toString(teamEntry.getRound()));
+            preloadStatus = teamEntry.getPreload();
+
             if(teamEntry.getColor())
                 blueOpt.toggle();
             else
                 redOpt.toggle();
+
+            switch (preloadStatus) {
+                case 0:
+                    preloadbtn.setBackgroundResource(R.mipmap.ic_neither);
+                    break;
+                case 1:
+                    preloadbtn.setBackgroundResource(R.mipmap.ic_cargo);
+                    break;
+                case 2:
+                    preloadbtn.setBackgroundResource(R.mipmap.ic_hatch);
+                    break;
+            }
         }
 
         loadData();
@@ -71,6 +93,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            teamEntry.setPreload(preloadStatus);
 
             //Checks for trolls
             errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || (!redOpt.isChecked() && !blueOpt.isChecked());
@@ -122,6 +146,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
             color=false;
         if(v.getId() == R.id.blueTeam)
             color=true;
+        if(v.getId() == R.id.preload_selection) {
+            if(preloadStatus == 0) {
+                preloadbtn.setBackgroundResource(R.mipmap.ic_cargo);
+                preloadStatus++;
+            }
+            else if(preloadStatus == 1) {
+                preloadbtn.setBackgroundResource(R.mipmap.ic_hatch);
+                preloadStatus++;
+            }
+            else { //2
+                preloadbtn.setBackgroundResource(R.mipmap.ic_neither);
+                preloadStatus = 0;
+            }
+        }
     }
 
     /**

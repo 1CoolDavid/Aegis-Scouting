@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +26,10 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
 
     private TextView localDisplay;
     private ArrayList<TeamEntry> entryList;
-    private Button back, clear, upload;
+    private Button back, clear, upload, login;
+    private LinearLayout passLayout, bottomLayout;
+    private ScrollView dataLayout;
+    private EditText localPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +40,16 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         back = findViewById(R.id.mainbck_btn);
         clear = findViewById(R.id.clear);
         upload = findViewById(R.id.upload);
+        login = findViewById(R.id.local_login);
+        passLayout = findViewById(R.id.local_pass_layout);
+        bottomLayout = findViewById(R.id.entry_bottom_panel);
+        dataLayout = findViewById(R.id.data_display_layout);
+        localPass = findViewById(R.id.local_pass);
 
         back.setOnClickListener(this);
         clear.setOnClickListener(this);
         upload.setOnClickListener(this);
+        login.setOnClickListener(this);
 
         loadData();
 
@@ -82,6 +94,16 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 uploadFile(t);
             }
             Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT);
+        }
+        else if(v.getId() == login.getId()) {
+            if(Integer.parseInt(localPass.getText().toString()) == 127813) {
+                passLayout.setVisibility(View.GONE);
+                bottomLayout.setVisibility(View.VISIBLE);
+                dataLayout.setVisibility(View.VISIBLE);
+            }
+            else {
+                Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

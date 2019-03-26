@@ -52,7 +52,7 @@ public class TeamEntry {
 
     public void setAuthor(String a) { author = a; }
 
-    public void setPreload(int pre) { preload = pre; }
+    public void setPreload(int pre) { preload = pre; } //0 - neither, 1 - cargo, 2 - hatch
 
     public boolean isCargo() { return cargo; }
 
