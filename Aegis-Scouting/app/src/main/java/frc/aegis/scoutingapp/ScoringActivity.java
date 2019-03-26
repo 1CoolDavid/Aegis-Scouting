@@ -24,7 +24,7 @@ import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
-    private RadioButton hab1, hab2, climb0, climb1, climb2, climb3;
+    private RadioButton climb0, climb1, climb2, climb3;
     private TextView hatchCount, cargoCount, teamNum;
     private EditText notes;
 
@@ -40,9 +40,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         hatch_down = findViewById(R.id.decrementHatch);
         cargo_up = findViewById(R.id.incrementCargo);
         cargo_down = findViewById(R.id.decrementCargo);
-
-        hab1 = findViewById(R.id.hab_1);
-        hab2 = findViewById(R.id.hab_2);
 
         climb1 = findViewById(R.id.climb_1);
         climb2 = findViewById(R.id.climb_2);
@@ -63,8 +60,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         hatch_down.setOnClickListener(this);
         cargo_up.setOnClickListener(this);
         cargo_down.setOnClickListener(this);
-        hab1.setOnClickListener(this);
-        hab2.setOnClickListener(this);
         climb0.setOnClickListener(this);
         climb1.setOnClickListener(this);
         climb2.setOnClickListener(this);
@@ -130,10 +125,6 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
                 teamEntry.decrementCargo();
                 cargoCount.setText(Integer.toString(teamEntry.getCargoCnt()));
             }
-        } else if(v.getId() == hab1.getId()) {
-            teamEntry.setHabStart(1);
-        } else if(v.getId() == hab2.getId()) {
-            teamEntry.setHabStart(2);
         } else if(v.getId() == climb0.getId()) {
             teamEntry.setHabClimb(0);
         } else if(v.getId() == climb1.getId()) {

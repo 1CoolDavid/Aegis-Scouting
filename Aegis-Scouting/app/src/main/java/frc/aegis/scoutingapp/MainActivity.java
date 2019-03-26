@@ -23,12 +23,12 @@ import java.util.List;
 public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
-    private RadioButton redOpt, blueOpt;
+    private RadioButton redOpt, blueOpt, hab1, hab2;
     private ImageButton preloadbtn;
     public static TeamEntry teamEntry; //Current Entry
     public static ArrayList<TeamEntry> entryList; //Data
     private boolean color, errors;
-    private int preloadStatus;
+    private int preloadStatus, habStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         redOpt = (RadioButton)findViewById(R.id.redTeam);
         blueOpt = (RadioButton)findViewById(R.id.blueTeam);
+        hab1 = (RadioButton)findViewById(R.id.hab_1);
+        hab2 = (RadioButton)findViewById(R.id.hab_2);
 
         preloadbtn = (ImageButton)findViewById(R.id.preload_selection);
 
@@ -50,9 +52,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         localbtn.setOnClickListener(this);
         redOpt.setOnClickListener(this);
         blueOpt.setOnClickListener(this);
+        hab1.setOnClickListener(this);
+        hab2.setOnClickListener(this);
         preloadbtn.setOnClickListener(this);
 
         preloadStatus = 0;
+        habStart = 1;
 
         //Inputting previous entries
         if(teamEntry != null) {
@@ -60,6 +65,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             authorEntry.setText(teamEntry.getAuthor());
             roundEntry.setText(Integer.toString(teamEntry.getRound()));
             preloadStatus = teamEntry.getPreload();
+            habStart = teamEntry.getHabStart();
 
             if(teamEntry.getColor())
                 blueOpt.toggle();
@@ -76,6 +82,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 case 2:
                     preloadbtn.setBackgroundResource(R.mipmap.ic_hatch);
                     break;
+            }
+
+            switch (habStart) {
+                case 1:
+                    hab1.toggle();
+                case 2:
+                    hab2.toggle();
             }
         }
 
@@ -95,6 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
 
             teamEntry.setPreload(preloadStatus);
+            teamEntry.setHabStart(habStart);
 
             //Checks for trolls
             errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || (!redOpt.isChecked() && !blueOpt.isChecked());
@@ -159,6 +173,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 preloadbtn.setBackgroundResource(R.mipmap.ic_neither);
                 preloadStatus = 0;
             }
+        }
+        if(v.getId() == R.id.hab_1) {
+            habStart=1;
+        }
+        if(v.getId() == R.id.hab_2) {
+            habStart=2;
         }
     }
 

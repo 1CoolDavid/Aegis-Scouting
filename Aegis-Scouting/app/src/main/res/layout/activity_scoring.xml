@@ -114,46 +114,13 @@
     <!-- Vertical LinearLayout of image buttons (show the rocket)
     Same type of approach for cargo holder-->
     <LinearLayout
-        android:id="@+id/hab_input"
+        android:id="@+id/climb_input"
         android:layout_below="@id/score_tracker_panel"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="35dp"
-            android:textColor="@color/fontPrimary"
-            android:layout_gravity="center"
-            android:textAllCaps="true"
-            android:text="Hab Level At Start"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-            <RadioButton android:id="@+id/hab_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Level 1"
-                android:textSize="45dp"
-                android:textColor="@color/fontPrimary"
-                android:layout_margin="15dp" />
-            <RadioButton android:id="@+id/hab_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:text="Level 2"
-                android:textSize="45dp"
-                android:textColor="@color/fontPrimary"/>
-        </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
@@ -209,7 +176,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_bar"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/hab_input"
         android:orientation="vertical">
 
         <EditText

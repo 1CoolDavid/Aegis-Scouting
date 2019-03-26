@@ -8,15 +8,16 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_margin="35dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/entry_bottom_panel"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/dds_logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="20dp"
             android:layout_gravity="center_horizontal"
             android:background="@mipmap/ic_first"/>
@@ -29,16 +30,18 @@
             android:layout_margin="10dp"
             android:drawableTint="@color/blueSecondary"
             android:hint="Your Name"
-            android:textSize="40dp"
+            android:textColorHint="@color/fontPrimary"
+            android:textSize="35dp"
             android:textColor="@color/fontPrimary"/>
         <EditText
             android:id="@+id/team_num_entry"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Scouted Team #"
+            android:textColorHint="@color/fontPrimary"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
-            android:textSize="40dp"
+            android:textSize="35dp"
             android:layout_margin="10dp"/>
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -50,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Red"
-                android:textSize="40dp"
+                android:textSize="35dp"
                 android:layout_margin="15dp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"/>
@@ -61,7 +64,7 @@
                 android:layout_weight="1"
                 android:text="Blue"
                 android:buttonTint="@color/bluePrimary"
-                android:textSize="40dp"
+                android:textSize="35dp"
                 android:textColor="@color/bluePrimary"/>
         </RadioGroup>
         <EditText
@@ -69,32 +72,72 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Round #"
+            android:textColorHint="@color/fontPrimary"
             android:textColor="@color/fontPrimary"
             android:inputType="number"
-            android:textSize="45dp"
+            android:textSize="35dp"
             android:layout_margin="10dp"/>
         <LinearLayout
             android:layout_marginVertical="15dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:hint="Preload:"
-                android:textSize="40dp"
-                android:textColor="@color/fontSecondary"/>
+                android:text="Preload:"
+                android:textSize="35dp"
+                android:textColor="@color/fontPrimary"/>
             <ImageButton
                 android:id="@+id/preload_selection"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_gravity="center"
                 android:background="@mipmap/ic_neither"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/hab_input"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical"></LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/fontPrimary"
+            android:layout_gravity="center"
+            android:textAllCaps="true"
+            android:text="Hab Level At Start"/>
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/hab_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Level 1"
+                android:textSize="35dp"
+                android:textColor="@color/fontPrimary"
+                android:layout_margin="15dp" />
+            <RadioButton android:id="@+id/hab_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:text="Level 2"
+                android:textSize="35dp"
+                android:textColor="@color/fontPrimary"/>
+        </RadioGroup>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/entry_bottom_panel"
@@ -102,6 +145,7 @@
         android:layout_height="wrap_content"
         android:background="@color/greySecondary"
         android:orientation="horizontal"
+        android:layout_marginTop="15dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
