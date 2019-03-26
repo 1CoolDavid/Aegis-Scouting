@@ -96,7 +96,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT);
         }
         else if(v.getId() == login.getId()) {
-            if(Integer.parseInt(localPass.getText().toString()) == 127813) {
+            if(Integer.parseInt(localPass.getText().toString()) == 127812) {
                 passLayout.setVisibility(View.GONE);
                 bottomLayout.setVisibility(View.VISIBLE);
                 dataLayout.setVisibility(View.VISIBLE);
