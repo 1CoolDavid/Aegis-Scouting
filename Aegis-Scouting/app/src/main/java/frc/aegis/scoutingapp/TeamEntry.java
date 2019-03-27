@@ -69,7 +69,7 @@ public class TeamEntry {
 
     public void setExtend(boolean ext) { extend = ext; }
 
-    public void setDescription(String d) { description = d; }
+    public void setDescription(String d) { description = d.replace("\"",""); }
 
     public void setAuthor(String a) { author = a; }
 
