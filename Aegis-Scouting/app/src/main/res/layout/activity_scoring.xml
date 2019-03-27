@@ -8,7 +8,7 @@
     tools:context=".ScoringActivity">
 
     <TextView
-        android:id="@+id/team_num_display"
+        android:id="@+id/team_info_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:id="@+id/score_tracker_panel"
-        android:layout_below="@id/team_num_display"
+        android:layout_below="@id/team_info_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -117,9 +117,10 @@
         android:id="@+id/climb_input"
         android:layout_below="@id/score_tracker_panel"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="10dp"
         android:orientation="vertical">
 
         <TextView
@@ -136,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:layout_gravity="center"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/climb_0"
                 android:layout_width="wrap_content"
@@ -170,7 +172,68 @@
                 android:textSize="30dp"
                 android:textColor="@color/fontPrimary"/>
         </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Penalties"
+            android:textAllCaps="true"
+            android:textColor="@color/fontPrimary"
+            android:layout_gravity="center"
+            android:textSize="35dp"/>
+        <LinearLayout
+            android:id="@+id/penaltyInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <CheckBox
+                android:id="@+id/pinning_chk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Pinning"
+                android:textColor="@color/fontPrimary"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+            <CheckBox
+                android:id="@+id/descore_chk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Descore"
+                android:textColor="@color/fontPrimary"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+            <CheckBox
+                android:id="@+id/extension_chk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/fontPrimary"
+                android:textSize="20dp"
+                android:text="Extends"
+                android:layout_weight="1"/>
+            <CheckBox
+                android:id="@+id/yellow_chk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yellow Card"
+                android:textColor="@color/fontPrimary"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+            <CheckBox
+                android:id="@+id/red_chk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Red Card"
+                android:textColor="@color/fontPrimary"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -187,7 +250,6 @@
             android:layout_gravity="center"
             android:hint="Notes"
             android:textSize="35dp"/>
-
     </LinearLayout>
 
     <LinearLayout

@@ -12,25 +12,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/entry_bottom_panel"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
         <ImageView
-            android:id="@+id/dds_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="20dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@mipmap/ic_first"/>
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_first"/>
         <EditText
             android:id="@+id/author_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:layout_margin="10dp"
-            android:drawableTint="@color/blueSecondary"
+            android:layout_marginBottom="10dp"
             android:hint="Your Name"
-            android:textColorHint="@color/fontPrimary"
+            android:textColorHint="@color/fontSecondary"
             android:textSize="35dp"
             android:textColor="@color/fontPrimary"/>
         <EditText
@@ -38,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Scouted Team #"
-            android:textColorHint="@color/fontPrimary"
+            android:textColorHint="@color/fontSecondary"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
             android:textSize="35dp"
@@ -72,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Round #"
-            android:textColorHint="@color/fontPrimary"
+            android:textColorHint="@color/fontSecondary"
             android:textColor="@color/fontPrimary"
             android:inputType="number"
             android:textSize="35dp"

@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
@@ -25,7 +27,8 @@ import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 public class ScoringActivity extends Activity implements View.OnClickListener {
     private Button backbtn, submitbtn, hatch_up, hatch_down, cargo_up, cargo_down;
     private RadioButton climb0, climb1, climb2, climb3;
-    private TextView hatchCount, cargoCount, teamNum;
+    private TextView hatchCount, cargoCount, teamInfo;
+    private CheckBox pin, descore, extend, yellow, red;
     private EditText notes;
 
     @Override
@@ -48,11 +51,17 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
 
         hatchCount = findViewById(R.id.hatch_num);
         cargoCount = findViewById(R.id.cargo_num);
-        teamNum = findViewById(R.id.team_num_display);
+        teamInfo = findViewById(R.id.team_info_display);
 
-        teamNum.setText(Integer.toString(teamEntry.getTeamNum()));
+        pin = findViewById(R.id.pinning_chk);
+        descore = findViewById(R.id.descore_chk);
+        extend = findViewById(R.id.extension_chk);
+        yellow = findViewById(R.id.yellow_chk);
+        red = findViewById(R.id.red_chk);
 
         notes = findViewById(R.id.description);
+
+        autoFill();
 
         backbtn.setOnClickListener(this);
         submitbtn.setOnClickListener(this);
@@ -64,6 +73,11 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         climb1.setOnClickListener(this);
         climb2.setOnClickListener(this);
         climb3.setOnClickListener(this);
+        pin.setOnClickListener(this);
+        descore.setOnClickListener(this);
+        extend.setOnClickListener(this);
+        yellow.setOnClickListener(this);
+        red.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +87,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setTitle("Go Back?");
             goBack.setMessage("Please confirm that you want to be sent to the previous page");
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
+                if(!notes.getText().toString().equals("")) {
+                    teamEntry.setDescription(notes.getText().toString());
+                }
                 startActivity(new Intent(ScoringActivity.this, MainActivity.class));
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
@@ -82,7 +99,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             AlertDialog alert = goBack.create();
             alert.show();
         } else if(v.getId() == submitbtn.getId()) {
-            if(teamEntry.getHabClimb() == -1 || teamEntry.getHabStart() == -1) {
+            if(teamEntry.getHabClimb() == -1) {
                 return;
             }
             AlertDialog.Builder goBack = new AlertDialog.Builder(this);
@@ -133,6 +150,16 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             teamEntry.setHabClimb(2);
         } else if(v.getId() == climb3.getId()) {
             teamEntry.setHabClimb(3);
+        } else if(v.getId() == pin.getId()) {
+            teamEntry.setPinning(!teamEntry.hasPinned());
+        } else if(v.getId() == descore.getId()) {
+            teamEntry.setDescored(!teamEntry.hasDescored());
+        } else if(v.getId() == extend.getId()) {
+            teamEntry.setExtend(!teamEntry.hasExtended());
+        } else if(v.getId() == yellow.getId()) {
+            teamEntry.setYellowCard(!teamEntry.hasYellow());
+        } else if(v.getId() == red.getId()) {
+            teamEntry.setRedCard(!teamEntry.hasRed());
         }
     }
 
@@ -155,6 +182,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     public static void uploadFile(TeamEntry teamEntry) {
         String fileName = teamEntry.toString()+"-AnalysisData.csv";
         String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
+        String color = teamEntry.getColor() ? "Blue" : "Red";
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
@@ -170,7 +198,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // add data to csv
-            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), Integer.toString(teamEntry.getPoints()), pre, Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), teamEntry.getDescription() };
+            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), color, Integer.toString(teamEntry.getPoints()), pre, Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), Boolean.toString(teamEntry.hasPinned()), Boolean.toString(teamEntry.hasDescored()), Boolean.toString(teamEntry.hasExtended()), Boolean.toString(teamEntry.hasYellow()), Boolean.toString(teamEntry.hasRed()), teamEntry.getDescription() };
             writer.writeNext(data1);
 
             // closing writer connection
@@ -202,7 +230,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // adding header to csv
-            String[] header = { "Author", "Number", "Round", "Points Scored", "Preload", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Description" };
+            String[] header = { "Author", "Number", "Round", "Color", "Points Scored", "Preload", "Hatches", "Cargo", "Hab Start", "Hab Climb", "Pinning", "Descoring", "Extends", "Yellow Card", "Red Card" ,"Description" };
             writer.writeNext(header);
 
             // closing writer connection
@@ -211,6 +239,31 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void autoFill() {
+        teamInfo.setText("Team: " + teamEntry.getTeamNum());
+        hatchCount.setText(Integer.toString(teamEntry.getHatchCnt()));
+        cargoCount.setText(Integer.toString(teamEntry.getCargoCnt()));
+
+        if(teamEntry.getHabClimb() == 0)
+            climb0.toggle();
+        else if(teamEntry.getHabClimb() == 1)
+            climb1.toggle();
+        else if(teamEntry.getHabClimb() == 2)
+            climb2.toggle();
+        else if(teamEntry.getHabClimb() == 3)
+            climb3.toggle();
+
+        red.setChecked(teamEntry.hasRed());
+        yellow.setChecked(teamEntry.hasYellow());
+        pin.setChecked(teamEntry.hasPinned());
+        descore.setChecked(teamEntry.hasDescored());
+        extend.setChecked(teamEntry.hasExtended());
+
+        if(!teamEntry.getDescription().equals("This person was too lazy to add a description")) {
+            notes.setText(teamEntry.getDescription());
         }
     }
 }

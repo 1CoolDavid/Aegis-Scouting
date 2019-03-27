@@ -27,7 +27,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageButton preloadbtn;
     public static TeamEntry teamEntry; //Current Entry
     public static ArrayList<TeamEntry> entryList; //Data
-    private boolean color, errors;
+    private boolean color, errors, midMatch;
     private int preloadStatus, habStart;
 
     @Override
@@ -91,6 +91,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     hab2.toggle();
             }
         }
+        midMatch = teamEntry != null && (teamEntry.getHatchCnt() != 0 || teamEntry.getCargoCnt() != 0 || teamEntry.getHabClimb() != -1 || !teamEntry.hasDescored() || !teamEntry.hasPinned() || !teamEntry.hasYellow() || !teamEntry.hasRed());
 
         loadData();
     }
@@ -101,7 +102,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if(v.getId() == R.id.start_btn) {
             //Checks for empty fields by catching NullPointerExceptions
             try {
-                teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), color);
+                if(midMatch) {
+                    teamEntry.setAuthor(authorEntry.getText().toString());
+                    teamEntry.setTeamNum(Integer.parseInt(numEntry.getText().toString()));
+                    teamEntry.setRound(Integer.parseInt(roundEntry.getText().toString()));
+                    teamEntry.setColor(color);
+                }
+                else
+                    teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), color);
             } catch (Exception e) {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
@@ -111,12 +119,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
             teamEntry.setHabStart(habStart);
 
             //Checks for trolls
-            errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || (!redOpt.isChecked() && !blueOpt.isChecked());
+            errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || (!redOpt.isChecked() && !blueOpt.isChecked()) || (!hab1.isChecked() && !hab2.isChecked());
 
             if (errors) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Errors Detected");
-                builder.setMessage("Please input a valid team number (positive values, etc). The author name should have no special characters and be no longer than 25 characters. A color must be selected."); //message to display
+                builder.setMessage("Please input a valid team number (positive values, etc). The author name should have no special characters and be no longer than 25 characters. A color and hab level must be selected."); //message to display
                 builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                 AlertDialog alert = builder.create();
                 alert.show();

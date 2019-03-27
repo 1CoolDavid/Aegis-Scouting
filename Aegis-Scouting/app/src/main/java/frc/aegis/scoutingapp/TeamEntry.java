@@ -13,6 +13,11 @@ public class TeamEntry {
     private boolean color; //red is false, blue is true;
     private boolean cargo;
     private boolean hatch;
+    private boolean yellow;
+    private boolean red;
+    private boolean descored;
+    private boolean pinning;
+    private boolean extend;
 
     private String author;
     private String description;
@@ -26,6 +31,10 @@ public class TeamEntry {
         habClimb = -1;
         habStart = -1;
         preload = 0;
+        yellow = false;
+        descored = false;
+        pinning = false;
+        extend = false;
     }
 
     public void setTeamNum(int n) { teamNum = n; }
@@ -42,23 +51,43 @@ public class TeamEntry {
 
     public void setHatchCnt(int hc) { hatchCnt = hc; }
 
+    public void setPreload(int pre) { preload = pre; } //0 - neither, 1 - cargo, 2 - hatch
+
     public void setColor(boolean col) { color = col; }
 
     public void setCargo(boolean canCargo) { cargo = canCargo; }
 
     public void setHatch(boolean canHatch) { hatch = canHatch; }
 
+    public void setYellowCard(boolean y) { yellow = y; }
+
+    public void setRedCard(boolean r) { red = r; }
+
+    public void setDescored(boolean d) { descored = d; }
+
+    public void setPinning(boolean pin) { pinning = pin; }
+
+    public void setExtend(boolean ext) { extend = ext; }
+
     public void setDescription(String d) { description = d; }
 
     public void setAuthor(String a) { author = a; }
-
-    public void setPreload(int pre) { preload = pre; } //0 - neither, 1 - cargo, 2 - hatch
 
     public boolean isCargo() { return cargo; }
 
     public boolean isColor() { return color; }
 
     public boolean isHatch() { return hatch; }
+
+    public boolean hasYellow() { return yellow; }
+
+    public boolean hasRed() { return red; }
+
+    public boolean hasDescored() { return descored; }
+
+    public boolean hasPinned() { return pinning; }
+
+    public boolean hasExtended() { return extend; }
 
     public boolean getColor() { return color; }
 
