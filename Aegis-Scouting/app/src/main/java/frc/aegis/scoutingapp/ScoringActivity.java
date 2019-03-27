@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
@@ -108,9 +107,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
                     teamEntry.setDescription(notes.getText().toString());
                     teamEntry.fillData();
-                    uploadFile(teamEntry);
-                    if (entryList.isEmpty())
+                    if (noLocalData())
                         initHeaders();
+                    uploadFile(teamEntry);
                     entryList.add(teamEntry);
                     saveData();
                     teamEntry = null;
@@ -180,26 +179,23 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * @param teamEntry the to-be-submitted TeamEntry
      */
     public static void uploadFile(TeamEntry teamEntry) {
-        String fileName = teamEntry.toString()+"-AnalysisData.csv";
+        //String fileName = teamEntry.toString()+"-AnalysisData.csv";
+        String fileName = "AnalysisData.csv";
         String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
         String color = teamEntry.getColor() ? "Blue" : "Red";
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
-            file.mkdirs(); //Creates directory if it doesn't exist.
-
-            if (file.getParentFile().mkdirs())
-                file.createNewFile();
 
             File entry = new File(file.getAbsolutePath(), fileName);
-            FileWriter outputfile = new FileWriter(entry);
+            FileWriter outputfile = new FileWriter(entry, true);
 
             // create CSVWriter object filewriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile, ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
             // add data to csv
-            String[] data1 = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), color, Integer.toString(teamEntry.getPoints()), pre, Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), Boolean.toString(teamEntry.hasPinned()), Boolean.toString(teamEntry.hasDescored()), Boolean.toString(teamEntry.hasExtended()), Boolean.toString(teamEntry.hasYellow()), Boolean.toString(teamEntry.hasRed()), teamEntry.getDescription() };
-            writer.writeNext(data1);
+            String[] data = { teamEntry.getAuthor(), Integer.toString(teamEntry.getTeamNum()), Integer.toString(teamEntry.getRound()), color, Integer.toString(teamEntry.getPoints()), pre, Integer.toString(teamEntry.getHatchCnt()), Integer.toString(teamEntry.getCargoCnt()), Integer.toString(teamEntry.getHabStart()), Integer.toString(teamEntry.getHabClimb()), Boolean.toString(teamEntry.hasPinned()), Boolean.toString(teamEntry.hasDescored()), Boolean.toString(teamEntry.hasExtended()), Boolean.toString(teamEntry.hasYellow()), Boolean.toString(teamEntry.hasRed()), teamEntry.getDescription() };
+            writer.writeNext(data);
 
             // closing writer connection
             writer.flush();
@@ -214,7 +210,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * Initializes the headers.csv file for easy computation (Exportation purposes)
      */
     public static void initHeaders() {
-        String fileName = "Headers.csv";
+        String fileName = "AnalysisData.csv";
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
@@ -240,6 +236,12 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean noLocalData() {
+        String fileName = "AnalysisData.csv";
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
+        return new File(file.getAbsolutePath(), fileName).exists();
     }
 
     public void autoFill() {
