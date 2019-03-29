@@ -108,7 +108,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             for(TeamEntry t : entryList) {
                 uploadFile(t);
             }
-            Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT).show();
         }
         else if(v.getId() == login.getId()) {
             if(Integer.parseInt(localPass.getText().toString()) == 127812) {
