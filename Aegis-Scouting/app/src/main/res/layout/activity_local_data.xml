@@ -84,7 +84,7 @@
             android:id="@+id/mainbck_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightGrey"
+            android:background="@color/bluePrimary"
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:textColor="@color/fontPrimary"
@@ -93,16 +93,16 @@
             android:textSize="30dp"/>
 
         <Button
-            android:id="@+id/blueUpload"
+            android:id="@+id/clear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@color/bluePrimary"
-            android:text="upload"
-            android:textColor="@color/fontPrimary"
+            android:background="@color/redSecondary"
+            android:text="Clear"
             android:textAllCaps="true"
+            android:textSize="30dp"
             android:layout_weight="1"
-            android:textSize="30dp"/>
+            android:textColor="@color/fontPrimary"/>
 
         <Button
             android:id="@+id/upload"
@@ -111,18 +111,6 @@
             android:layout_margin="10dp"
             android:background="@color/greenSecondary"
             android:text="upload"
-            android:textAllCaps="true"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:textColor="@color/fontPrimary"/>
-
-        <Button
-            android:id="@+id/clear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/redSecondary"
-            android:text="Clear"
             android:textAllCaps="true"
             android:textSize="30dp"
             android:layout_weight="1"
