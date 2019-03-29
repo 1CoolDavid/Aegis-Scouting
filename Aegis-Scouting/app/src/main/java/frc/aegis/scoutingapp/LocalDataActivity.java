@@ -10,7 +10,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -210,5 +209,4 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             Toast.makeText(this, "Bluetooth is cancelled", Toast.LENGTH_LONG).show();
         }
     }
-
 }

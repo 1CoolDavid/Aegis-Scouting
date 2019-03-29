@@ -30,6 +30,8 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     private TextView hatchCount, cargoCount, teamInfo;
     private CheckBox pin, descore, extend, yellow, red;
     private EditText notes;
+    public static final String DEVICE_NAME = Build.MANUFACTURER;
+    public static final String DEVICE_MODEL = Build.FINGERPRINT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +182,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * @param teamEntry the to-be-submitted TeamEntry
      */
     public static void uploadFile(TeamEntry teamEntry) {
-        //String fileName = teamEntry.toString()+"-AnalysisData.csv";
-        String fileName = "AnalysisData.csv";
+        String fileName = ("AnalysisData" + DEVICE_NAME + DEVICE_MODEL + ".csv");
         String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
         String color = teamEntry.getColor() ? "Blue" : "Red";
         File file;
@@ -211,10 +212,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * Initializes the headers.csv file for easy computation (Exportation purposes)
      */
     public static void initHeaders() {
-        String deviceName = Build.MANUFACTURER;
-        String deviceModel = Build.FINGERPRINT;
-        //String fileName = "AnalysisData.csv";
-        String fileName = ("AnalysisData" + deviceName + deviceModel + ".csv");
+        String fileName = ("AnalysisData" + DEVICE_NAME + DEVICE_MODEL + ".csv");
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
