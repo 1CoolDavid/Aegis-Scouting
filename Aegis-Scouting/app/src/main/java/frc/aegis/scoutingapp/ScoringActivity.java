@@ -100,7 +100,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
-               // return;
+                return;
             });
             AlertDialog alert = goBack.create();
             alert.show();
@@ -114,8 +114,9 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             goBack.setPositiveButton("Confirm", (dialog, which) -> { dialog.dismiss();
                     teamEntry.setDescription(notes.getText().toString());
                     teamEntry.fillData();
-                    if (noLocalData())
+                    if (noLocalData()) {
                         initHeaders();
+                    }
                     uploadFile(teamEntry);
                     entryList.add(teamEntry);
                     saveData();
@@ -124,7 +125,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
-                //return;
+                return;
             });
             AlertDialog alert = goBack.create();
             alert.show();
@@ -186,7 +187,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * @param teamEntry the to-be-submitted TeamEntry
      */
     public static void uploadFile(TeamEntry teamEntry) {
-        String fileName = ("AnalysisData" + DEVICE_NAME + DEVICE_MODEL + ".csv");
+        String fileName = ("AnalysisData.csv");
         String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
         String color = teamEntry.getColor() ? "Blue" : "Red";
         File file;
@@ -216,13 +217,13 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * Initializes the headers.csv file for easy computation (Exportation purposes)
      */
     public static void initHeaders() {
-        String fileName = ("AnalysisData" + DEVICE_NAME + DEVICE_MODEL + ".csv");
+        String fileName = ("AnalysisData.csv");
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
             file.mkdirs();
 
-            if (file.getParentFile().mkdirs())
+            if(file.getParentFile().mkdirs())
                 file.createNewFile();
             // create FileWriter object with file as parameter
             File entry = new File(file.getAbsolutePath(), fileName);
@@ -238,6 +239,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             // closing writer connection
             writer.flush();
             writer.close();
+            System.out.println("We made it!");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -247,7 +249,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     public static boolean noLocalData() {
         String fileName = "AnalysisData.csv";
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
-        return new File(file.getAbsolutePath(), fileName).exists();
+        return !(new File(file.getAbsolutePath(), fileName).exists());
     }
 
     public void autoFill() {
