@@ -20,6 +20,7 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 import static frc.aegis.scoutingapp.MainActivity.entryList;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
@@ -30,7 +31,12 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     private TextView hatchCount, cargoCount, teamInfo;
     private CheckBox pin, descore, extend, yellow, red;
     private EditText notes;
-
+    //public static final String DEVICE_NAME = Build.MANUFACTURER;
+    //public static final String DEVICE_MODEL = Build.FINGERPRINT;
+    public static final int min = 20;
+    public static final int max = 80;
+    public static final int DEVICE_NAME = new Random().nextInt(max - min + 1) + min;
+    public static final int DEVICE_MODEL = new Random().nextInt(max - min + 1) + min;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
