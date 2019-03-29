@@ -84,35 +84,47 @@
             android:id="@+id/mainbck_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blueSecondary"
+            android:background="@color/lightGrey"
             android:layout_weight="1"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:textColor="@color/fontPrimary"
             android:textAllCaps="true"
             android:text="Back"
-            android:textSize="40dp"/>
+            android:textSize="30dp"/>
 
         <Button
-            android:id="@+id/clear"
+            android:id="@+id/blueUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@color/redSecondary"
-            android:text="Clear"
+            android:layout_margin="10dp"
+            android:background="@color/bluePrimary"
+            android:text="upload"
+            android:textColor="@color/fontPrimary"
             android:textAllCaps="true"
-            android:textSize="40dp"
             android:layout_weight="1"
-            android:textColor="@color/fontPrimary"/>
+            android:textSize="30dp"/>
 
         <Button
             android:id="@+id/upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:background="@color/greenSecondary"
             android:text="upload"
             android:textAllCaps="true"
-            android:textSize="40dp"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:textColor="@color/fontPrimary"/>
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/redSecondary"
+            android:text="Clear"
+            android:textAllCaps="true"
+            android:textSize="30dp"
             android:layout_weight="1"
             android:textColor="@color/fontPrimary"/>
     </LinearLayout>

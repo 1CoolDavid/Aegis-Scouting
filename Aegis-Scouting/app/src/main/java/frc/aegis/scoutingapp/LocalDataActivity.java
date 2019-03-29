@@ -2,9 +2,15 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +22,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import static frc.aegis.scoutingapp.ScoringActivity.initHeaders;
 import static frc.aegis.scoutingapp.ScoringActivity.noLocalData;
@@ -27,10 +35,12 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
 
     private TextView localDisplay;
     private ArrayList<TeamEntry> entryList;
-    private Button back, clear, upload, login;
+    private Button back, clear, upload, blue, login;
     private LinearLayout passLayout, bottomLayout;
     private ScrollView dataLayout;
     private EditText localPass;
+    private static final int DISCOVER_DURATION = 300;
+    private static final int REQUEST_BLU = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +51,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         back = findViewById(R.id.mainbck_btn);
         clear = findViewById(R.id.clear);
         upload = findViewById(R.id.upload);
+        blue = findViewById(R.id.blueUpload);
         login = findViewById(R.id.local_login);
         passLayout = findViewById(R.id.local_pass_layout);
         bottomLayout = findViewById(R.id.entry_bottom_panel);
@@ -49,6 +60,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
 
         back.setOnClickListener(this);
         clear.setOnClickListener(this);
+        blue.setOnClickListener(this);
         upload.setOnClickListener(this);
         login.setOnClickListener(this);
 
@@ -109,6 +121,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show();
             }
         }
+        else if(v.getId() == blue.getId()) {
+            sendViaBluetooth();
+        }
     }
 
     public void saveData() {
@@ -131,4 +146,69 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             entryList = new ArrayList<>();
         }
     }
+
+    public void sendViaBluetooth() {
+        if (!new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/AnalysisData.csv").exists()) {
+            Toast.makeText(this, "No Data to send", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (btAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not supported on this device", Toast.LENGTH_LONG).show();
+        } else {
+            enableBluetooth();
+        }
+    }
+
+    public void enableBluetooth() {
+        Intent discoveryIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoveryIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVER_DURATION);
+        startActivityForResult(discoveryIntent, REQUEST_BLU);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == DISCOVER_DURATION && requestCode == REQUEST_BLU) {
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("*/*");
+
+            File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/AnalysisData.csv");
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+
+            PackageManager pm = getPackageManager();
+            List<ResolveInfo> appsList = pm.queryIntentActivities(intent, 0);
+
+            if (appsList.size() > 0) {
+                String packageName = null;
+                String className = null;
+                boolean found = false;
+
+                for (ResolveInfo info : appsList) {
+                    packageName = info.activityInfo.packageName;
+                    if (packageName.equals("com.android.bluetooth")) {
+                        className = info.activityInfo.name;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    Toast.makeText(this, "Bluetooth havn't been found", Toast.LENGTH_LONG).show();
+                } else {
+                    intent.setClassName(packageName, className);
+                    startActivity(intent);
+                }
+            }
+        } else if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(this, "Data Sent", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Bluetooth is cancelled", Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
