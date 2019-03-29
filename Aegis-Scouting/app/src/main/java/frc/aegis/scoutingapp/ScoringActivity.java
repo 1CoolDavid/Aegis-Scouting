@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -93,7 +94,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
-                return;
+               // return;
             });
             AlertDialog alert = goBack.create();
             alert.show();
@@ -117,7 +118,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
             });
             goBack.setNegativeButton("Cancel", (dialog, which) -> {
                 dialog.dismiss();
-                return;
+                //return;
             });
             AlertDialog alert = goBack.create();
             alert.show();
@@ -210,7 +211,10 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * Initializes the headers.csv file for easy computation (Exportation purposes)
      */
     public static void initHeaders() {
-        String fileName = "AnalysisData.csv";
+        String deviceName = Build.MANUFACTURER;
+        String deviceModel = Build.FINGERPRINT;
+        //String fileName = "AnalysisData.csv";
+        String fileName = ("AnalysisData" + deviceName + deviceModel + ".csv");
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
