@@ -133,7 +133,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     teamEntry.setColor(deviceId.contains("Blue"));
                 }
                 else
-                    teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), teamEntry.getColor());
+                    teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), deviceId.contains("Blue"));
             } catch (Exception e) {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
