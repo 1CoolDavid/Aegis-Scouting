@@ -7,7 +7,103 @@
     android:background="@color/background"
     tools:context=".MainActivity">
 
+    <ImageButton
+        android:id="@+id/gear_btn"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@mipmap/ic_gear"/>
+    <TextView
+        android:id="@+id/location_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:text="No Location"
+        android:textSize="25dp"
+        android:textColor="@color/fontPrimary"/>
+
     <LinearLayout
+        android:id="@+id/id_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/foreground">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="15dp">
+
+            <RadioButton
+                android:id="@+id/red_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Red 1"
+                android:textSize="35dp"
+                android:textColor="@color/redPrimary"
+                android:buttonTint="@color/redPrimary"
+                android:layout_margin="10dp"/>
+            <RadioButton
+                android:id="@+id/red_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Red 2"
+                android:textSize="35dp"
+                android:textColor="@color/redPrimary"
+                android:buttonTint="@color/redPrimary"
+                android:layout_margin="10dp"/>
+            <RadioButton
+                android:id="@+id/red_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Red 3"
+                android:textSize="35dp"
+                android:textColor="@color/redPrimary"
+                android:buttonTint="@color/redPrimary"
+                android:layout_margin="10dp"/>
+            <RadioButton
+                android:id="@+id/blue_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blue 1"
+                android:textSize="35dp"
+                android:textColor="@color/blueSecondary"
+                android:buttonTint="@color/blueSecondary"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
+            <RadioButton
+                android:id="@+id/blue_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blue 2"
+                android:textSize="35dp"
+                android:textColor="@color/blueSecondary"
+                android:buttonTint="@color/blueSecondary"
+                android:layout_margin="10dp"/>
+            <RadioButton
+                android:id="@+id/blue_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blue 3"
+                android:textSize="35dp"
+                android:textColor="@color/blueSecondary"
+                android:buttonTint="@color/blueSecondary"
+                android:layout_margin="10dp"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_alignParentLeft="false"
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,17 +112,17 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_first"/>
         <EditText
             android:id="@+id/author_entry"
             android:layout_width="match_parent"
+            android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:layout_marginBottom="10dp"
             android:hint="Your Name"
             android:textColorHint="@color/fontSecondary"
             android:textSize="35dp"
@@ -41,30 +137,6 @@
             android:textColor="@color/fontPrimary"
             android:textSize="35dp"
             android:layout_margin="10dp"/>
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="horizontal">
-            <RadioButton android:id="@+id/redTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Red"
-                android:textSize="35dp"
-                android:layout_margin="15dp"
-                android:textColor="@color/redPrimary"
-                android:buttonTint="@color/redPrimary"/>
-            <RadioButton android:id="@+id/blueTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:text="Blue"
-                android:buttonTint="@color/bluePrimary"
-                android:textSize="35dp"
-                android:textColor="@color/bluePrimary"/>
-        </RadioGroup>
         <EditText
             android:id="@+id/round_entry"
             android:layout_width="match_parent"

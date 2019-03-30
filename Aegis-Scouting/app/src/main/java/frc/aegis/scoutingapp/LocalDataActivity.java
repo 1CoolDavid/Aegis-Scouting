@@ -2,17 +2,9 @@ package frc.aegis.scoutingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,10 +16,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import static frc.aegis.scoutingapp.ScoringActivity.initHeaders;
 import static frc.aegis.scoutingapp.ScoringActivity.noLocalData;
@@ -92,7 +82,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 saveData();
                 localDisplay.setText("No Saved Entries");
                 localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
-                Toast.makeText(this, "Local Data Cleared", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Local Data Cleared", Toast.LENGTH_SHORT).show();
             }));
            AlertDialog alert =  alertDialog.create();
            alert.show();
