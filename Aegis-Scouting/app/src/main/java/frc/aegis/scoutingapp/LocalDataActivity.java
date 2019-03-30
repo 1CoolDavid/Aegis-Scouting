@@ -1,5 +1,6 @@
 package frc.aegis.scoutingapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -32,6 +33,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
     private ScrollView dataLayout;
     private EditText localPass;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +59,18 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         if(entryList.isEmpty()) {
             localDisplay.setText("No Saved Entries");
             localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
-        }
-        else {
+        } else {
             localDisplay.setText(entryList.toString());
             localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
         }
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void onClick(View v) {
         if(v.getId() == back.getId()) {
             startActivity(new Intent(this, MainActivity.class));
-        }
-        else if(v.getId() == clear.getId()) {
+        } else if(v.getId() == clear.getId()) {
             if(entryList.isEmpty()) {
                 return;
             }
@@ -84,10 +85,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
                 Toast.makeText(this, "Local Data Cleared", Toast.LENGTH_SHORT).show();
             }));
-           AlertDialog alert =  alertDialog.create();
-           alert.show();
-        }
-        else if(v.getId() == upload.getId()) {
+            AlertDialog alert =  alertDialog.create();
+            alert.show();
+        } else if(v.getId() == upload.getId()) {
             if(entryList.isEmpty()) {
                 return;
             }
@@ -98,14 +98,12 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 uploadFile(t);
             }
             Toast.makeText(this, "Local Data Uploaded", Toast.LENGTH_SHORT).show();
-        }
-        else if(v.getId() == login.getId()) {
+        } else if(v.getId() == login.getId()) {
             if(Integer.parseInt(localPass.getText().toString()) == 127812) {
                 passLayout.setVisibility(View.GONE);
                 bottomLayout.setVisibility(View.VISIBLE);
                 dataLayout.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show();
             }
         }

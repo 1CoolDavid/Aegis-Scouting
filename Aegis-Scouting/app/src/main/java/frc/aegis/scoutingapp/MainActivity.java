@@ -1,5 +1,6 @@
 package frc.aegis.scoutingapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -20,7 +21,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
@@ -35,33 +35,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int preloadStatus, habStart;
     public static String deviceId;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        beginbtn = (Button)findViewById(R.id.start_btn);
-        localbtn = (Button)findViewById(R.id.local_btn);
+        beginbtn = findViewById(R.id.start_btn);
+        localbtn = findViewById(R.id.local_btn);
 
-        numEntry = (EditText)findViewById(R.id.team_num_entry);
-        roundEntry = (EditText)findViewById(R.id.round_entry);
-        authorEntry = (EditText)findViewById(R.id.author_entry);
+        numEntry = findViewById(R.id.team_num_entry);
+        roundEntry = findViewById(R.id.round_entry);
+        authorEntry = findViewById(R.id.author_entry);
 
-        hab1 = (RadioButton)findViewById(R.id.hab_1);
-        hab2 = (RadioButton)findViewById(R.id.hab_2);
-        red1 = (RadioButton)findViewById(R.id.red_1);
-        red2 = (RadioButton)findViewById(R.id.red_2);
-        red3 = (RadioButton)findViewById(R.id.red_3);
-        blue1 = (RadioButton)findViewById(R.id.blue_1);
-        blue2 = (RadioButton)findViewById(R.id.blue_2);
-        blue3 = (RadioButton)findViewById(R.id.blue_3);
+        hab1 = findViewById(R.id.hab_1);
+        hab2 = findViewById(R.id.hab_2);
+        red1 = findViewById(R.id.red_1);
+        red2 = findViewById(R.id.red_2);
+        red3 = findViewById(R.id.red_3);
+        blue1 = findViewById(R.id.blue_1);
+        blue2 = findViewById(R.id.blue_2);
+        blue3 = findViewById(R.id.blue_3);
 
-        preloadbtn = (ImageButton)findViewById(R.id.preload_selection);
-        gearbtn = (ImageButton)findViewById(R.id.gear_btn);
+        preloadbtn = findViewById(R.id.preload_selection);
+        gearbtn = findViewById(R.id.gear_btn);
 
-        main = (LinearLayout)findViewById(R.id.mainLayout);
-        location = (LinearLayout)findViewById(R.id.id_bar);
+        main = findViewById(R.id.mainLayout);
+        location = findViewById(R.id.id_bar);
 
-        locationTxt = (TextView)findViewById(R.id.location_txt);
+        locationTxt = findViewById(R.id.location_txt);
 
         beginbtn.setOnClickListener(this);
         localbtn.setOnClickListener(this);
@@ -163,7 +164,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     });
                     is5243.setNegativeButton("Cancel", (dialog, which) -> {
                         dialog.dismiss();
-                        return;
+                        //return;
                     });
 
                     AlertDialog alert = is5243.create();
@@ -175,7 +176,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         match.setMessage("Team " + Integer.toString(teamEntry.getTeamNum()) + " at round " + Integer.toString(teamEntry.getRound()) + " has already been entered before. Please confirm that this is intentional");
                         match.setNegativeButton("Cancel", ((dialog, which) -> {
                             dialog.dismiss();
-                            return;
+                            // return;
                         }));
                         match.setPositiveButton("Continue", ((dialog, which) -> {
                             saveLocation();
@@ -219,7 +220,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 alertDialog.setTitle("Location Already Entered");
                 alertDialog.setPositiveButton("OK", ((dialog, which) -> {
                     dialog.dismiss();
-                    return;
+                    // return;
                 }));
                 alertDialog.setMessage("Data has already been entered under the current location. To change the set location, clear the local cache on the app");
                 AlertDialog alert = alertDialog.create();
@@ -310,7 +311,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         SharedPreferences pref = getSharedPreferences("location preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("LOC", deviceId);
-        editor.commit();
+        editor.apply(); //change to apply to run in background
     }
 
     public void loadLocation() {

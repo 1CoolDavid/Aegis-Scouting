@@ -9,7 +9,6 @@ public class TeamEntry {
     private int hatchCnt;
     private int cargoCnt;
     private int preload; // 0 - nothing; 1-cargo; 2-hatch;
-
     private boolean color; //red is false, blue is true;
     private boolean cargo;
     private boolean hatch;
@@ -22,7 +21,7 @@ public class TeamEntry {
     private String author;
     private String description;
 
-    public TeamEntry(String a, int num, int round, boolean c) {
+    TeamEntry(String a, int num, int round, boolean c) {
         author = a;
         teamNum = num;
         this.round = round;
@@ -37,89 +36,141 @@ public class TeamEntry {
         extend = false;
     }
 
-    public void setTeamNum(int n) { teamNum = n; }
+    void setYellowCard(boolean y) {
+        yellow = y;
+    }
 
-    public void setRound(int r) { round = r; }
-
+    void setRedCard(boolean r) {
+        red = r;
+    }
     public void setPoints(int p) { points = p; }
 
-    public void setHabClimb(int hc) { habClimb = hc; }
+    void setDescored(boolean d) {
+        descored = d;
+    }
 
-    public void setHabStart(int hs) { habStart = hs; }
-
+    void setPinning(boolean pin) {
+        pinning = pin;
+    }
     public void setCargoCnt(int cc) { cargoCnt = cc; }
-
     public void setHatchCnt(int hc) { hatchCnt = hc; }
 
-    public void setPreload(int pre) { preload = pre; } //0 - neither, 1 - cargo, 2 - hatch
-
+    void setExtend(boolean ext) {
+        extend = ext;
+    }
     public void setColor(boolean col) { color = col; }
-
     public void setCargo(boolean canCargo) { cargo = canCargo; }
-
     public void setHatch(boolean canHatch) { hatch = canHatch; }
 
-    public void setYellowCard(boolean y) { yellow = y; }
+    //public boolean isCargo() { return cargo; }
+    //public boolean isColor() { return color; }
+    //public boolean isHatch() { return hatch; }
+    boolean hasYellow() {
+        return yellow;
+    }
 
-    public void setRedCard(boolean r) { red = r; }
+    boolean hasRed() {
+        return red;
+    }
 
-    public void setDescored(boolean d) { descored = d; }
+    boolean hasDescored() {
+        return descored;
+    }
 
-    public void setPinning(boolean pin) { pinning = pin; }
+    boolean hasPinned() {
+        return pinning;
+    }
 
-    public void setExtend(boolean ext) { extend = ext; }
+    boolean hasExtended() {
+        return extend;
+    }
 
-    public void setDescription(String d) { description = d.replace("\"",""); }
+    int getPreload() {
+        return preload;
+    }
 
-    public void setAuthor(String a) { author = a; }
+    void setPreload(int pre) {
+        preload = pre;
+    } //0 - neither, 1 - cargo, 2 - hatch
 
-    public boolean isCargo() { return cargo; }
+    int getHabClimb() {
+        return habClimb;
+    }
 
-    public boolean isColor() { return color; }
+    void setHabClimb(int hc) {
+        habClimb = hc;
+    }
 
-    public boolean isHatch() { return hatch; }
+    int getHabStart() {
+        return habStart;
+    }
 
-    public boolean hasYellow() { return yellow; }
+    void setHabStart(int hs) {
+        habStart = hs;
+    }
 
-    public boolean hasRed() { return red; }
-
-    public boolean hasDescored() { return descored; }
-
-    public boolean hasPinned() { return pinning; }
-
-    public boolean hasExtended() { return extend; }
-
+    int getPoints() {
+        return points;
+    }
     public boolean getColor() { return color; }
 
-    public int getPreload() { return preload; }
+    int getRound() {
+        return round;
+    }
 
-    public int getHabClimb() { return habClimb; }
+    void setRound(int r) {
+        round = r;
+    }
 
-    public int getHabStart() { return habStart; }
+    int getTeamNum() {
+        return teamNum;
+    }
 
-    public int getPoints() { return points; }
+    void setTeamNum(int n) {
+        teamNum = n;
+    }
 
-    public int getRound() { return round; }
+    int getCargoCnt() {
+        return cargoCnt;
+    }
 
-    public int getTeamNum() { return teamNum; }
+    int getHatchCnt() {
+        return hatchCnt;
+    }
 
-    public int getCargoCnt() { return cargoCnt; }
+    String getDescription() {
+        return description;
+    }
 
-    public int getHatchCnt() { return hatchCnt; }
+    void setDescription(String d) {
+        description = d.replace("\"", "");
+    }
 
-    public String getDescription() { return description; }
+    String getAuthor() {
+        return author;
+    }
 
-    public String getAuthor() { return author; }
+    void setAuthor(String a) {
+        author = a;
+    }
 
-    public void incrementCargo() { cargoCnt++; }
+    void incrementCargo() {
+        cargoCnt++;
+    }
 
-    public void decrementCargo() { cargoCnt--; }
+    void decrementCargo() {
+        cargoCnt--;
+    }
 
-    public void incrementHatch() { hatchCnt++; }
+    void incrementHatch() {
+        hatchCnt++;
+    }
 
-    public void decrementHatch() { hatchCnt--; }
+    void decrementHatch() {
+        hatchCnt--;
+    }
 
-    public boolean validAuthor() {
+    boolean validAuthor() {
         char[] charray = author.toCharArray();
         for(char c : charray) {
             if(!Character.isAlphabetic(c) && c != ' ')
@@ -128,7 +179,7 @@ public class TeamEntry {
         return true;
     }
 
-    public void fillData() {
+    void fillData() {
         hatch = hatchCnt != 0;
         cargo = cargoCnt != 0;
         points += (hatchCnt*2) + (cargoCnt*3);
