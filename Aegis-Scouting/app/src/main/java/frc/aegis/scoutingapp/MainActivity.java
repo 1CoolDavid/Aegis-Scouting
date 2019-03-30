@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -17,16 +20,20 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
-    private RadioButton redOpt, blueOpt, hab1, hab2;
-    private ImageButton preloadbtn;
+    private RadioButton hab1, hab2, red1, red2, red3, blue1, blue2, blue3;
+    private ImageButton preloadbtn, gearbtn;
+    private LinearLayout main, location;
+    private TextView locationTxt;
     public static TeamEntry teamEntry; //Current Entry
     public static ArrayList<TeamEntry> entryList; //Data
-    private boolean color, errors, midMatch;
+    private boolean errors, midMatch;
     private int preloadStatus, habStart;
+    public static String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +46,40 @@ public class MainActivity extends Activity implements View.OnClickListener {
         roundEntry = (EditText)findViewById(R.id.round_entry);
         authorEntry = (EditText)findViewById(R.id.author_entry);
 
-        redOpt = (RadioButton)findViewById(R.id.redTeam);
-        blueOpt = (RadioButton)findViewById(R.id.blueTeam);
         hab1 = (RadioButton)findViewById(R.id.hab_1);
         hab2 = (RadioButton)findViewById(R.id.hab_2);
+        red1 = (RadioButton)findViewById(R.id.red_1);
+        red2 = (RadioButton)findViewById(R.id.red_2);
+        red3 = (RadioButton)findViewById(R.id.red_3);
+        blue1 = (RadioButton)findViewById(R.id.blue_1);
+        blue2 = (RadioButton)findViewById(R.id.blue_2);
+        blue3 = (RadioButton)findViewById(R.id.blue_3);
 
         preloadbtn = (ImageButton)findViewById(R.id.preload_selection);
+        gearbtn = (ImageButton)findViewById(R.id.gear_btn);
+
+        main = (LinearLayout)findViewById(R.id.mainLayout);
+        location = (LinearLayout)findViewById(R.id.id_bar);
+
+        locationTxt = (TextView)findViewById(R.id.location_txt);
 
         beginbtn.setOnClickListener(this);
         localbtn.setOnClickListener(this);
-        redOpt.setOnClickListener(this);
-        blueOpt.setOnClickListener(this);
+        red1.setOnClickListener(this::IdClicker);
+        red2.setOnClickListener(this::IdClicker);
+        red3.setOnClickListener(this::IdClicker);
+        blue1.setOnClickListener(this::IdClicker);
+        blue2.setOnClickListener(this::IdClicker);
+        blue3.setOnClickListener(this::IdClicker);
         hab1.setOnClickListener(this);
         hab2.setOnClickListener(this);
         preloadbtn.setOnClickListener(this);
+        gearbtn.setOnClickListener(this);
+        main.setOnClickListener(this);
+
+        loadLocation();
+
+        displayLocation();
 
         preloadStatus = 0;
         habStart = 1;
@@ -64,11 +91,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             roundEntry.setText(Integer.toString(teamEntry.getRound()));
             preloadStatus = teamEntry.getPreload();
             habStart = teamEntry.getHabStart();
-
-            if(teamEntry.getColor())
-                blueOpt.toggle();
-            else
-                redOpt.toggle();
 
             switch (preloadStatus) {
                 case 0:
@@ -97,17 +119,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+        if(v.getId() != R.id.gear_btn) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)main.getLayoutParams();
+            params.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            location.setVisibility(View.GONE);
+        }
         if(v.getId() == R.id.start_btn) {
-            //Checks for empty fields by catching NullPointerExceptions
             try {
                 if(midMatch) {
                     teamEntry.setAuthor(authorEntry.getText().toString());
                     teamEntry.setTeamNum(Integer.parseInt(numEntry.getText().toString()));
                     teamEntry.setRound(Integer.parseInt(roundEntry.getText().toString()));
-                    teamEntry.setColor(color);
+                    teamEntry.setColor(deviceId.contains("Blue"));
                 }
                 else
-                    teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), color);
+                    teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), teamEntry.getColor());
             } catch (Exception e) {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
@@ -117,7 +143,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             teamEntry.setHabStart(habStart);
 
             //Checks for trolls
-            errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || (!redOpt.isChecked() && !blueOpt.isChecked()) || (!hab1.isChecked() && !hab2.isChecked());
+            errors = !teamEntry.validAuthor() || teamEntry.getAuthor().length() >= 25 || teamEntry.getAuthor().length() <= 0 || teamEntry.getTeamNum() >= 10000 || teamEntry.getTeamNum() <= 0 || teamEntry.getRound() < 0 || deviceId == null || (!hab1.isChecked() && !hab2.isChecked());
 
             if (errors) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -132,6 +158,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     is5243.setTitle("Are You Scouting 5243?");
                     is5243.setMessage("Please confirm that you are scouting 5243 and are not just saying you are from 5243");
                     is5243.setPositiveButton("I'm Scouting 5243", (dialog, which) -> { dialog.dismiss();
+                        saveLocation();
                         startActivity(new Intent(MainActivity.this, ScoringActivity.class));
                     });
                     is5243.setNegativeButton("Cancel", (dialog, which) -> {
@@ -150,11 +177,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             dialog.dismiss();
                             return;
                         }));
-                        match.setPositiveButton("Continue", ((dialog, which) -> startActivity(new Intent(this, ScoringActivity.class))));
+                        match.setPositiveButton("Continue", ((dialog, which) -> {
+                            saveLocation();
+                            startActivity(new Intent(this, ScoringActivity.class));
+                        }));
 
                         AlertDialog alert = match.create();
                         alert.show();
                     } else {
+                        saveLocation();
                         startActivity(new Intent(this, ScoringActivity.class));
                     }
                 }
@@ -162,10 +193,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         if(v.getId() == R.id.local_btn)
             startActivity(new Intent(this, LocalDataActivity.class));
-        if(v.getId() == R.id.redTeam)
-            color=false;
-        if(v.getId() == R.id.blueTeam)
-            color=true;
         if(v.getId() == R.id.preload_selection) {
             if(preloadStatus == 0) {
                 preloadbtn.setBackgroundResource(R.mipmap.ic_cargo);
@@ -186,6 +213,69 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if(v.getId() == R.id.hab_2) {
             habStart=2;
         }
+        if(v.getId() == R.id.gear_btn) {
+            if ((entryList != null && !entryList.isEmpty())) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("Location Already Entered");
+                alertDialog.setPositiveButton("OK", ((dialog, which) -> {
+                    dialog.dismiss();
+                    return;
+                }));
+                alertDialog.setMessage("Data has already been entered under the current location. To change the set location, clear the local cache on the app");
+                AlertDialog alert = alertDialog.create();
+                alert.show();
+            } else {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) main.getLayoutParams();
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                location.setVisibility(View.VISIBLE);
+                if(deviceId == null)
+                    return;
+                switch (deviceId) {
+                    case "RedOne":
+                        red1.toggle();
+                        break;
+                    case "RedTwo":
+                        red2.toggle();
+                        break;
+                    case "RedThree":
+                        red3.toggle();
+                        break;
+                    case "BlueOne":
+                        blue1.toggle();
+                        break;
+                    case "BlueTwo":
+                        blue2.toggle();
+                        break;
+                    case "BlueThree":
+                        blue3.toggle();
+                        break;
+                }
+            }
+        }
+    }
+
+    public void IdClicker(View v) {
+        switch (v.getId()) {
+            case R.id.red_1:
+                deviceId = "RedOne";
+                break;
+            case R.id.red_2:
+                deviceId = "RedTwo";
+                break;
+            case R.id.red_3:
+                deviceId = "RedThree";
+                break;
+            case R.id.blue_1:
+                deviceId = "BlueOne";
+                break;
+            case R.id.blue_2:
+                deviceId = "BlueTwo";
+                break;
+            case R.id.blue_3:
+                deviceId = "BlueThree";
+                break;
+        }
+        displayLocation();
     }
 
     /**
@@ -214,5 +304,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 return true;
         }
         return false;
+    }
+
+    public void saveLocation() {
+        SharedPreferences pref = getSharedPreferences("location preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("LOC", deviceId);
+        editor.commit();
+    }
+
+    public void loadLocation() {
+        SharedPreferences pref = getSharedPreferences("location preferences", MODE_PRIVATE);
+        deviceId = pref.getString("LOC", null);
+    }
+
+    public void displayLocation() {
+        if(deviceId != null) {
+            if(deviceId.contains("Red")) {
+                locationTxt.setTextColor(getResources().getColor(R.color.redPrimary));
+                locationTxt.setText(deviceId.replace("Red", "Red "));
+            } else {
+                locationTxt.setTextColor(getResources().getColor(R.color.colorPrimary));
+                locationTxt.setText(deviceId.replace("Blue", "Blue "));
+            }
+        }
     }
 }

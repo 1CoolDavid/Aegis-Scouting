@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static frc.aegis.scoutingapp.MainActivity.deviceId;
 import static frc.aegis.scoutingapp.MainActivity.entryList;
 import static frc.aegis.scoutingapp.MainActivity.teamEntry;
 
@@ -181,7 +182,11 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * @param teamEntry the to-be-submitted TeamEntry
      */
     public static void uploadFile(TeamEntry teamEntry) {
-        String fileName = ("AnalysisData.csv");
+        String fileName;
+        if(deviceId == null)
+            fileName = "AnalysisData.csv";
+        else
+            fileName = ("AnalysisData_"+deviceId+".csv");
         String pre = teamEntry.getPreload() == 0 ? "Neither" : teamEntry.getPreload() == 1 ? "Cargo" : "Hatch";
         String color = teamEntry.getColor() ? "Blue" : "Red";
         File file;
@@ -211,7 +216,11 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
      * Initializes the headers.csv file for easy computation (Exportation purposes)
      */
     public static void initHeaders() {
-        String fileName = ("AnalysisData.csv");
+        String fileName;
+        if(deviceId == null)
+            fileName = "AnalysisData.csv";
+        else
+            fileName = ("AnalysisData_"+deviceId+".csv");
         File file;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
@@ -241,7 +250,11 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
     }
 
     public static boolean noLocalData() {
-        String fileName = "AnalysisData.csv";
+        String fileName;
+        if(deviceId == null)
+            fileName = "AnalysisData.csv";
+        else
+            fileName = ("AnalysisData_"+deviceId+".csv");
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Aegis/");
         return !(new File(file.getAbsolutePath(), fileName).exists());
     }
