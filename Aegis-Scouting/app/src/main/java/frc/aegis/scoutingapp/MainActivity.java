@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+
 public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
@@ -254,6 +255,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
     }
+
+    // adding Sentry.IO Error Trackr
+   /* public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Context ctx = this.getApplicationContext();
+
+        // Use the Sentry DSN (client key) from the Project Settings page on Sentry
+        String sentryDsn = "https://c11ad45a67d24c93a77aaf9890fdf0b1@sentry.io/1428669";
+        Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
+
+        // Alternatively, if you configured your DSN in a `sentry.properties`
+        // file (see the configuration documentation).
+        Sentry.init(new AndroidSentryClientFactory(ctx));
+    }*/
 
     public void IdClicker(View v) {
         switch (v.getId()) {
