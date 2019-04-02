@@ -3,6 +3,7 @@ package frc.aegis.scoutingapp;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,8 +23,11 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+
+public class MainActivity<ctx> extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton hab1, hab2, red1, red2, red3, blue1, blue2, blue3;
@@ -220,6 +224,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("Location Already Entered");
                 alertDialog.setPositiveButton("OK", ((dialog, which) -> {
+                    Sentry.capture("User atttempted to select new location when one was entered");
                     dialog.dismiss();
                     // return;
                 }));
@@ -254,19 +259,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
-    }
-
-    // adding Sentry.IO Error Trackr
-   /* public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         Context ctx = this.getApplicationContext();
 
         // Use the Sentry DSN (client key) from the Project Settings page on Sentry
         String sentryDsn = "https://c11ad45a67d24c93a77aaf9890fdf0b1@sentry.io/1428669";
         Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
+    }
 
-        // Alternatively, if you configured your DSN in a `sentry.properties`
+    // adding Sentry.IO Error Trackr
+   /* public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);*/
+
+
+
+        /* Alternatively, if you configured your DSN in a `sentry.properties`
         // file (see the configuration documentation).
         Sentry.init(new AndroidSentryClientFactory(ctx));
     }*/
