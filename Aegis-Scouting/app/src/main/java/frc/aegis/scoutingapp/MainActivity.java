@@ -142,7 +142,7 @@ public class MainActivity<ctx> extends Activity implements View.OnClickListener 
                     teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), deviceId.contains("Blue"));
             } catch (Exception e) {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                Sentry.capture("User did not fill all fields");
+                Sentry.capture(e);
                 return;
             }
 
