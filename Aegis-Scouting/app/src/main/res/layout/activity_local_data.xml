@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -36,6 +37,47 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:background="@color/lightGrey"
+        android:orientation="vertical"
+        android:layout_margin="15dp">
+
+        <EditText
+            android:id="@+id/num_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/fontPrimary"
+            android:hint="Team #"
+            android:inputType="number"/>
+        <EditText
+            android:id="@+id/round_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:textColorHint="@color/fontPrimary"
+            android:hint="Round #"
+            android:inputType="number"/>
+        <Button
+            android:id="@+id/search_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:text="Search"
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:textColor="@color/fontPrimary"
+            android:background="@color/greenSecondary"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/data_display_layout"
         android:visibility="gone"
@@ -49,9 +91,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/data_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="List"
+                android:text="Entry List"
                 android:textSize="40dp"
                 android:textAlignment="center"
                 android:textColor="@color/fontPrimary"
@@ -99,6 +142,18 @@
             android:layout_margin="10dp"
             android:background="@color/redSecondary"
             android:text="Clear"
+            android:textAllCaps="true"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:textColor="@color/fontPrimary"/>
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/purplePrimary"
+            android:text="Search"
             android:textAllCaps="true"
             android:textSize="30dp"
             android:layout_weight="1"

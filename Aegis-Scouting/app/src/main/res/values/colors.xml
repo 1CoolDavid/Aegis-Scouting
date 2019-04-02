@@ -18,4 +18,6 @@
     <color name="greenPrimary">#779933</color>
     <color name="greenSecondary">#5c7829</color>
     <color name="lightGrey">#98999b</color>
+    <color name="purplePrimary">#8003bf</color>
+    <color name="purpleSecondary">#9c1edb</color>
 </resources>
