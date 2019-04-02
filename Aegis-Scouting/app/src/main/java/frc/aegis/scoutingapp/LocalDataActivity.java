@@ -3,6 +3,7 @@ package frc.aegis.scoutingapp;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
 
 import static frc.aegis.scoutingapp.ScoringActivity.initHeaders;
 import static frc.aegis.scoutingapp.ScoringActivity.noLocalData;
@@ -53,6 +57,11 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         clear.setOnClickListener(this);
         upload.setOnClickListener(this);
         login.setOnClickListener(this);
+        Context ctx = this.getApplicationContext();
+
+        // Use the Sentry DSN (client key) from the Project Settings page on Sentry -- RTS
+        String sentryDsn = "https://c11ad45a67d24c93a77aaf9890fdf0b1@sentry.io/1428669";
+        Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
 
         loadData();
 
@@ -105,6 +114,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 dataLayout.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                Sentry.capture("User attempted invalid login with code " + localPass.getText().toString());
             }
         }
     }

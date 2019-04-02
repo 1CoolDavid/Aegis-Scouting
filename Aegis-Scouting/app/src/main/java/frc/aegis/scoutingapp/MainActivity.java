@@ -142,6 +142,7 @@ public class MainActivity<ctx> extends Activity implements View.OnClickListener 
                     teamEntry = new TeamEntry(authorEntry.getText().toString(), Integer.parseInt(numEntry.getText().toString()), Integer.parseInt(roundEntry.getText().toString()), deviceId.contains("Blue"));
             } catch (Exception e) {
                 Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Sentry.capture("User did not fill all fields");
                 return;
             }
 
@@ -154,6 +155,7 @@ public class MainActivity<ctx> extends Activity implements View.OnClickListener 
             if (errors) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Errors Detected");
+                Sentry.capture("user Error on team input page. Invalid Character");
                 builder.setMessage("Please input a valid team number (positive values, etc). The author name should have no special characters and be no longer than 25 characters. A color and hab level must be selected."); //message to display
                 builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                 AlertDialog alert = builder.create();
@@ -180,6 +182,7 @@ public class MainActivity<ctx> extends Activity implements View.OnClickListener 
                         match.setTitle("Matching Entry Already Detected");
                         match.setMessage("Team " + Integer.toString(teamEntry.getTeamNum()) + " at round " + Integer.toString(teamEntry.getRound()) + " has already been entered before. Please confirm that this is intentional");
                         match.setNegativeButton("Cancel", ((dialog, which) -> {
+                            Sentry.capture("User attempted to enter a team that was already scouted");
                             dialog.dismiss();
                             // return;
                         }));
@@ -261,21 +264,11 @@ public class MainActivity<ctx> extends Activity implements View.OnClickListener 
         }
         Context ctx = this.getApplicationContext();
 
-        // Use the Sentry DSN (client key) from the Project Settings page on Sentry
+        // Use the Sentry DSN (client key) from the Project Settings page on Sentry -- RTS
         String sentryDsn = "https://c11ad45a67d24c93a77aaf9890fdf0b1@sentry.io/1428669";
         Sentry.init(sentryDsn, new AndroidSentryClientFactory(ctx));
     }
 
-    // adding Sentry.IO Error Trackr
-   /* public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);*/
-
-
-
-        /* Alternatively, if you configured your DSN in a `sentry.properties`
-        // file (see the configuration documentation).
-        Sentry.init(new AndroidSentryClientFactory(ctx));
-    }*/
 
     public void IdClicker(View v) {
         switch (v.getId()) {

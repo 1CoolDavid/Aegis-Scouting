@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import io.sentry.Sentry;
 
 import static frc.aegis.scoutingapp.MainActivity.deviceId;
 import static frc.aegis.scoutingapp.MainActivity.entryList;
@@ -209,6 +210,7 @@ public class ScoringActivity extends Activity implements View.OnClickListener {
         }
         catch (IOException e) {
             e.printStackTrace();
+            Sentry.capture(e);
         }
     }
 
