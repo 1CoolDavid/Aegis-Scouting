@@ -1,10 +1,12 @@
 package frc.aegis.scoutingapp;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,13 +30,15 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
 
     private TextView localDisplay;
     private ArrayList<TeamEntry> entryList, searched;
+    private ArrayList<Button> queryButtons;
     private Button back, clear, upload, login, searchLauncher, search;
-    private LinearLayout passLayout, bottomLayout, searchLayout;
+    private LinearLayout passLayout, bottomLayout, searchLayout, queryLayout;
     private RelativeLayout background;
     private ScrollView dataLayout;
     private EditText localPass, numSearch, roundSearch;
-    private TextView dataLabel;
+    private TextView dataLabel, summary;
     private boolean searching;
+    private int openSummary = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +56,13 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         bottomLayout = findViewById(R.id.entry_bottom_panel);
         dataLayout = findViewById(R.id.data_display_layout);
         searchLayout = findViewById(R.id.search_layout);
+        queryLayout = findViewById(R.id.query_layout);
         background = findViewById(R.id.background);
         localPass = findViewById(R.id.local_pass);
         numSearch = findViewById(R.id.num_search);
         roundSearch = findViewById(R.id.round_search);
         dataLabel = findViewById(R.id.data_label);
+        queryButtons = new ArrayList<>();
 
         back.setOnClickListener(this);
         clear.setOnClickListener(this);
@@ -110,12 +116,15 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 dataLabel.setText("Query List");
             }
             searching = false;
+            queryLayout.setVisibility(View.VISIBLE);
             searchLayout.setVisibility(View.GONE);
             dataLayout.setVisibility(View.VISIBLE);
         }
         else if(searching) {
             searching = false;
             searchLayout.setVisibility(View.GONE);
+            queryLayout.removeAllViews();
+            queryLayout.setVisibility(View.GONE);
             dataLayout.setVisibility(View.VISIBLE);
         }
 
@@ -132,6 +141,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                     dataLabel.setText("Entry List");
                     localDisplay.setText(entryList.toString());
                     localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
+                    queryLayout.removeAllViews();
+                    queryLayout.setVisibility(View.GONE);
+                    localDisplay.setVisibility(View.VISIBLE);
                     Toast.makeText(this, "Query Cleared", Toast.LENGTH_SHORT).show();
                 }));
                 alertDialog.setNegativeButton("Cancel", ((dialog, which) -> {return;}));
@@ -208,33 +220,58 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
     }
 
     public ArrayList<TeamEntry> findEntry(int num, int round) {
+        int countId = 0;
         ArrayList<TeamEntry> entries = new ArrayList<>();
         for(TeamEntry e : entryList) {
             if(e.getRound() == round && e.getTeamNum() == num) {
                 entries.add(e);
+                queryButtons.add(getButtonQueryDisplay(e, countId));
+                countId++;
             }
         }
         return entries;
     }
 
     public ArrayList<TeamEntry> findTeam(int num) {
+        int countId = 0;
         ArrayList<TeamEntry> entries = new ArrayList<>();
         for(TeamEntry e : entryList) {
             if(e.getTeamNum() == num) {
                 entries.add(e);
+                queryButtons.add(getButtonQueryDisplay(e, countId));
+                countId++;
             }
         }
         return entries;
     }
 
     public ArrayList<TeamEntry> findRound(int round) {
+        int countId = 0;
         ArrayList<TeamEntry> entries = new ArrayList<>();
         for(TeamEntry e : entryList) {
             if(e.getRound() == round) {
                 entries.add(e);
+                queryButtons.add(getButtonQueryDisplay(e, countId));
+                countId++;
             }
         }
         return entries;
+    }
+
+    public Button getButtonQueryDisplay(TeamEntry entry, int countId) { //TODO: Button creation
+        Button b = new Button(this);
+        b.setBackgroundColor(getResources().getColor(R.color.lightGrey));
+        b.setText(entry.toString());
+        b.setTextSize(20);
+        b.setTextColor(getResources().getColor(R.color.greySecondary));
+        b.setId(countId);
+        b.setOnClickListener(this::queryClicker);
+        b.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(25, 5, 25 ,5);
+        b.setLayoutParams(params);
+        queryLayout.addView(b);
+        return b;
     }
 
     public void changeDisplay(ArrayList<TeamEntry> al) {
@@ -243,8 +280,39 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             localDisplay.setTextColor(getResources().getColor(R.color.redPrimary));
         }
         else {
-            localDisplay.setText(searched.toString());
-            localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
+            queryLayout.setVisibility(View.VISIBLE);
+            localDisplay.setVisibility(View.GONE);
+        }
+    }
+
+    public void queryClicker(View v) {
+        if(v.getId() == openSummary) {
+            queryLayout.removeView(summary);
+            openSummary = -1;
+            return;
+        }
+        openSummary = v.getId();
+        summary = new TextView(this);
+        TeamEntry entry = searched.get(v.getId());
+        summary.setBackgroundColor(getResources().getColor(R.color.lightGrey));
+        summary.setTextColor(getResources().getColor(R.color.fontPrimary));
+        summary.setText(entry.getSummary());
+        summary.setTextSize(20);
+        summary.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(25, 5, 25 ,5);
+        summary.setLayoutParams(params);
+        queryLayout.removeAllViews();
+
+        int size = queryButtons.size();
+
+        for(int i = 0; i<size; i++) {
+            if (i == v.getId()) {
+                queryLayout.addView(queryButtons.get(i));
+                queryLayout.addView(summary);
+            }
+            else
+                queryLayout.addView(queryButtons.get(i));
         }
     }
 }

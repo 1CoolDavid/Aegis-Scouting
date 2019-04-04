@@ -144,6 +144,10 @@ public class TeamEntry {
             points+=12;
     }
 
+    public String getSummary() {
+        return Integer.toString(teamNum) +" starting from level " + Integer.toString(habStart) + " scored " + Integer.toString(points) + " points by scoring " + Integer.toString(cargoCnt) + " cargo, " + Integer.toString(hatchCnt) + " hatches, and climbing to level " + Integer.toString(habClimb);
+    }
+
     @Override
     public String toString() {
         return "Team-"+Integer.toString(teamNum) + "_" + "Round-"+Integer.toString(round);

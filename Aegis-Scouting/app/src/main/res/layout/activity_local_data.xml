@@ -100,6 +100,15 @@
                 android:textColor="@color/fontPrimary"
                 android:layout_above="@id/local_text"/>
 
+            <LinearLayout
+                android:id="@+id/query_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/local_text"
                 android:layout_width="match_parent"

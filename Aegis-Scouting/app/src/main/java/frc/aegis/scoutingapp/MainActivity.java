@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             habStart=2;
         }
         if(v.getId() == R.id.gear_btn) {
-            if ((entryList != null && !entryList.isEmpty())) {
+            if ((entryList != null && !entryList.isEmpty()) && deviceId != null){
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("Location Already Entered");
                 alertDialog.setPositiveButton("OK", ((dialog, which) -> {
