@@ -10,19 +10,19 @@
     <ImageButton
         android:id="@+id/gear_btn"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_margin="10sp"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
         android:background="@mipmap/ic_gear"/>
     <TextView
         android:id="@+id/location_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="10sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:text="No Location"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textColor="@color/fontPrimary"/>
 
     <LinearLayout
@@ -38,173 +38,182 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_margin="15dp">
+            android:layout_margin="15sp">
 
             <RadioButton
                 android:id="@+id/red_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 1"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5sp"/>
             <RadioButton
                 android:id="@+id/red_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 2"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5sp"/>
             <RadioButton
                 android:id="@+id/red_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 3"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5sp"/>
             <RadioButton
                 android:id="@+id/blue_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 1"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="5sp"
+                android:layout_marginRight="5sp"
+                android:layout_marginLeft="5sp"/>
             <RadioButton
                 android:id="@+id/blue_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 2"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10sp"/>
             <RadioButton
                 android:id="@+id/blue_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 3"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10sp"/>
         </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_alignParentLeft="false"
-        android:layout_margin="10dp"
+        android:layout_margin="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/entry_bottom_panel"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:weightSum="1"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:adjustViewBounds="true"
+            android:layout_width="95sp"
+            android:layout_height="0sp"
             android:layout_gravity="center"
+            android:layout_weight=".15"
             android:src="@mipmap/ic_first"/>
         <EditText
             android:id="@+id/author_entry"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:layout_height="0sp"
+            android:layout_weight="0.15"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:hint="Your Name"
             android:textColorHint="@color/fontSecondary"
-            android:textSize="35dp"
+            android:textSize="30sp"
             android:textColor="@color/fontPrimary"/>
         <EditText
             android:id="@+id/team_num_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0sp"
+            android:layout_weight="0.15"
             android:hint="Scouted Team #"
             android:textColorHint="@color/fontSecondary"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
-            android:textSize="35dp"
-            android:layout_margin="10dp"/>
+            android:textSize="30sp"
+            android:layout_margin="10sp"/>
         <EditText
             android:id="@+id/round_entry"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0sp"
+            android:layout_weight="0.15"
             android:hint="Round #"
             android:textColorHint="@color/fontSecondary"
             android:textColor="@color/fontPrimary"
             android:inputType="number"
-            android:textSize="35dp"
-            android:layout_margin="10dp"/>
+            android:textSize="30sp"
+            android:layout_margin="10sp"/>
         <LinearLayout
-            android:layout_marginVertical="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
             android:orientation="horizontal"
+            android:layout_weight="0.2"
+            android:weightSum="1"
+            android:gravity="center_horizontal"
+            android:layout_marginVertical="15sp"
             android:layout_gravity="center">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0sp"
+                android:layout_weight="0.4"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="15dp"
+                android:layout_margin="5sp"
                 android:text="Preload:"
-                android:textSize="35dp"
+                android:textSize="30sp"
                 android:textColor="@color/fontPrimary"/>
             <ImageButton
                 android:id="@+id/preload_selection"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
                 android:layout_gravity="center"
                 android:background="@mipmap/ic_neither"/>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/hab_input"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical"></LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:layout_height="0sp"
+            android:layout_weight="0.09"
+            android:layout_marginVertical="15sp"
+            android:textSize="30sp"
             android:textColor="@color/fontPrimary"
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:text="Hab Level At Start"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/lvlOptions"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_height="0sp"
             android:layout_gravity="center"
+            android:layout_weight="0.15"
+            android:weightSum="1"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/hab_1"
-                android:layout_width="wrap_content"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Level 1"
-                android:textSize="35dp"
+                android:textSize="30sp"
                 android:textColor="@color/fontPrimary"
-                android:layout_margin="15dp" />
+                android:layout_margin="15sp" />
             <RadioButton android:id="@+id/hab_2"
-                android:layout_width="wrap_content"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
+                android:layout_margin="15sp"
+                android:layout_weight="0.5"
                 android:text="Level 2"
-                android:textSize="35dp"
+                android:textSize="30sp"
                 android:textColor="@color/fontPrimary"/>
         </RadioGroup>
     </LinearLayout>
@@ -214,7 +223,7 @@
         android:layout_height="wrap_content"
         android:background="@color/greySecondary"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="15sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
@@ -224,21 +233,27 @@
             android:layout_height="wrap_content"
             android:background="@color/blueSecondary"
             android:layout_weight="1"
-            android:layout_margin="20dp"
+            android:layout_margin="20sp"
             android:textColor="@color/fontPrimary"
             android:textAllCaps="true"
-            android:text="Local Data"
-            android:textSize="40dp"/>
+            android:text="Local"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"/>
 
         <Button
             android:id="@+id/start_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="20sp"
             android:background="@color/greenSecondary"
             android:text="Begin"
             android:textAllCaps="true"
-            android:textSize="40dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
             android:layout_weight="1"
             android:textColor="@color/fontPrimary"/>
     </LinearLayout>
