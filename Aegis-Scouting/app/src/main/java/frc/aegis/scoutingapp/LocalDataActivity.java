@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -296,7 +297,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         summary.setBackgroundColor(getResources().getColor(R.color.lightGrey));
         summary.setTextColor(getResources().getColor(R.color.fontPrimary));
         summary.setText(entry.getSummary());
-        summary.setTextSize(20);
+        summary.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         summary.setGravity(Gravity.CENTER_HORIZONTAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(25, 5, 25 ,5);
