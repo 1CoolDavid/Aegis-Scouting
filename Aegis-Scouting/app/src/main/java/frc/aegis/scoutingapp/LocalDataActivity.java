@@ -84,7 +84,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
             searchLauncher.setClickable(false);
         }
         else {
-            localDisplay.setText(entryList.toString());
+            String list = entryList.toString();
+            list = list.substring(1, list.length()-1);
+            localDisplay.setText(list);
             localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
         }
     }
@@ -139,7 +141,9 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
                 alertDialog.setPositiveButton("Ok", ((dialog, which) -> {
                     searched = null;
                     dataLabel.setText("Entry List");
-                    localDisplay.setText(entryList.toString());
+                    String list = entryList.toString();
+                    list = list.substring(1, list.length()-1);
+                    localDisplay.setText(list);
                     localDisplay.setTextColor(getResources().getColor(R.color.greenPrimary));
                     queryLayout.removeAllViews();
                     queryLayout.setVisibility(View.GONE);
@@ -260,7 +264,7 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
 
     public Button getButtonQueryDisplay(TeamEntry entry, int countId) { //TODO: Button creation
         Button b = new Button(this);
-        b.setBackgroundColor(getResources().getColor(R.color.lightGrey));
+        b.setBackgroundColor(getResources().getColor(R.color.honeydew));
         b.setText(entry.toString());
         b.setTextSize(20);
         b.setTextColor(getResources().getColor(R.color.greySecondary));
@@ -294,8 +298,8 @@ public class LocalDataActivity extends Activity implements View.OnClickListener 
         openSummary = v.getId();
         summary = new TextView(this);
         TeamEntry entry = searched.get(v.getId());
-        summary.setBackgroundColor(getResources().getColor(R.color.lightGrey));
-        summary.setTextColor(getResources().getColor(R.color.fontPrimary));
+        summary.setBackgroundColor(getResources().getColor(R.color.honeydew));
+        summary.setTextColor(getResources().getColor(R.color.jet));
         summary.setText(entry.getSummary());
         summary.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         summary.setGravity(Gravity.CENTER_HORIZONTAL);

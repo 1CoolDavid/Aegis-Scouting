@@ -20,4 +20,10 @@
     <color name="lightGrey">#98999b</color>
     <color name="purplePrimary">#8003bf</color>
     <color name="purpleSecondary">#9c1edb</color>
+
+    <color name="honeydew">#e8f7ee</color>
+    <color name="eggshell">#e4dfda</color>
+    <color name="bluegreen">#48a9a6</color>
+    <color name="jet">#363636</color>
+    <color name="navy">#242f40</color>
 </resources>
