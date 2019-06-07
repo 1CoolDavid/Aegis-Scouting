@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +31,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button beginbtn, localbtn;
     private EditText numEntry, roundEntry, authorEntry;
     private RadioButton hab1, hab2, red1, red2, red3, blue1, blue2, blue3;
+    private RadioGroup lvlOptions, locSelect;
     private ImageButton preloadbtn, gearbtn;
-    private LinearLayout main, location;
-    private TextView locationTxt;
+    private ImageView logo;
+    private LinearLayout main, location, preloadLayout, bottom;
+    private RelativeLayout full;
+    private TextView locationTxt, habLabel, preloadTxt;
     public static TeamEntry teamEntry; //Current Entry
     public static ArrayList<TeamEntry> entryList; //Data
     private boolean errors, midMatch;
@@ -55,13 +63,36 @@ public class MainActivity extends Activity implements View.OnClickListener {
         blue2 = (RadioButton)findViewById(R.id.blue_2);
         blue3 = (RadioButton)findViewById(R.id.blue_3);
 
+        lvlOptions = findViewById(R.id.lvlOptions);
+        locSelect = findViewById(R.id.loc_selection);
+
         preloadbtn = (ImageButton)findViewById(R.id.preload_selection);
         gearbtn = (ImageButton)findViewById(R.id.gear_btn);
 
-        main = (LinearLayout)findViewById(R.id.mainLayout);
+        logo = findViewById(R.id.first_logo);
+
+        main = findViewById(R.id.mainLayout);
         location = (LinearLayout)findViewById(R.id.id_bar);
+        full = (RelativeLayout)findViewById(R.id.fullLayout);
+        full.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    full.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                else {
+                    full.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    autoSize(main.getHeight(), full.getHeight());
+                    System.out.println("I ran");
+                }
+            }
+        });
+        preloadLayout = findViewById(R.id.preloadLayout);
+        bottom = findViewById(R.id.entry_bottom_panel);
 
         locationTxt = (TextView)findViewById(R.id.location_txt);
+        habLabel = findViewById(R.id.hab_label);
+        preloadTxt = findViewById(R.id.preloadTxt);
 
         beginbtn.setOnClickListener(this);
         localbtn.setOnClickListener(this);
@@ -76,6 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         preloadbtn.setOnClickListener(this);
         gearbtn.setOnClickListener(this);
         main.setOnClickListener(this);
+
 
         loadLocation();
 
@@ -329,4 +361,53 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
     }
+
+    public void autoSize(int mainHeight, int fullHeight) {
+        authorEntry.setHeight((int)(mainHeight*.1));
+        roundEntry.setHeight((int)(mainHeight*.1));
+        numEntry.setHeight((int)(mainHeight*.1));
+        ViewGroup.LayoutParams params = preloadLayout.getLayoutParams();
+        params.height = (int)(mainHeight*.15);
+        habLabel.setHeight((int)(mainHeight*.1));
+        params = lvlOptions.getLayoutParams();
+        params.height = (int)(mainHeight*.3);
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        params = bottom.getLayoutParams();
+        params.height = (int)(mainHeight*.1);
+        params = gearbtn.getLayoutParams();
+        params.height = (int)(full.getWidth()*.07);
+        params.width = (int)(full.getWidth()*.07);
+        params = logo.getLayoutParams();
+        params.width = (int)(full.getWidth()*.15);
+        params.width = (int)(full.getWidth()*.15);
+        params = main.getLayoutParams();
+        params.width = (int)(full.getWidth()*.5);
+        ((RelativeLayout.LayoutParams)main.getLayoutParams()).setMargins(spToPx(10), gearbtn.getBottom(), spToPx(10), spToPx(10));
+        params = habLabel.getLayoutParams();
+        params.height = (int)(mainHeight*.1);
+        params = preloadbtn.getLayoutParams();
+        params.width = (int)(main.getWidth()*.4);
+        params.height = (int)(main.getWidth()*.4);
+        params = preloadLayout.getLayoutParams();
+        params.height = preloadbtn.getLayoutParams().height;
+        blue2.setTextSize(red1.getTextSize());
+        blue1.setTextSize(red1.getTextSize());
+        red2.setTextSize(red1.getTextSize());
+        red3.setTextSize(red1.getTextSize());
+        blue3.setTextSize(red1.getTextSize());
+
+    }
+
+    public void onRestart() {
+        super.onRestart();
+    }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+    public int spToPx(float sp) {
+        return (int)(sp * getResources().getDisplayMetrics().scaledDensity);
+    }
+
 }

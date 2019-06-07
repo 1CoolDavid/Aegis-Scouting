@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fullLayout"
     android:background="@color/jet"
     tools:context=".MainActivity">
 
@@ -23,8 +24,20 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:text="No Location"
-        android:textSize="25sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeMaxTextSize="50sp"
         android:textColor="@color/fontPrimary"/>
+
+    <ImageView
+        android:id="@+id/first_logo"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:gravity="top|center"
+        android:src="@mipmap/ic_first"/>
 
     <LinearLayout
         android:id="@+id/id_bar"
@@ -36,6 +49,7 @@
         android:background="@color/greyPrimary">
 
         <RadioGroup
+            android:id="@+id/loc_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -46,7 +60,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 1"
-                android:textSize="35sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -55,7 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 2"
-                android:textSize="35sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -64,7 +79,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 3"
-                android:textSize="35sp"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -73,7 +87,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 1"
-                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_marginTop="20sp"
@@ -85,7 +98,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 2"
-                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_margin="10sp"/>
@@ -94,7 +106,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 3"
-                android:textSize="35sp"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_margin="10sp"/>
@@ -104,89 +115,91 @@
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_alignParentLeft="false"
-        android:layout_margin="10sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginTop="70sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/entry_bottom_panel"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="1"
         android:orientation="vertical">
-        <ImageView
-            android:adjustViewBounds="true"
-            android:layout_width="95sp"
-            android:layout_height="0sp"
-            android:layout_gravity="center"
-            android:layout_weight=".1"
-            android:src="@mipmap/ic_first"/>
+
         <EditText
             android:id="@+id/author_entry"
             android:layout_width="match_parent"
             android:layout_margin="10sp"
-            android:layout_height="0sp"
-            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeMaxTextSize="70sp"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:hint="Your Name"
             android:textColorHint="@color/foreground"
-            android:textSize="25sp"
             android:textColor="@color/fontPrimary"/>
         <EditText
             android:id="@+id/team_num_entry"
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
             android:hint="Scouted Team #"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeMaxTextSize="70sp"
             android:textColorHint="@color/foreground"
             android:inputType="number"
             android:textColor="@color/fontPrimary"
-            android:textSize="25sp"
             android:layout_margin="10sp"/>
         <EditText
             android:id="@+id/round_entry"
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
             android:hint="Round #"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeMaxTextSize="70sp"
             android:textColorHint="@color/foreground"
             android:textColor="@color/fontPrimary"
             android:inputType="number"
-            android:textSize="25sp"
             android:layout_margin="10sp"/>
         <LinearLayout
+            android:id="@+id/preloadLayout"
             android:layout_width="match_parent"
-            android:layout_height="0sp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="0.2"
-            android:weightSum="1"
             android:gravity="center_horizontal"
             android:layout_marginVertical="15sp"
             android:layout_gravity="center">
 
             <TextView
-                android:layout_width="0sp"
-                android:layout_weight="0.4"
+                android:id="@+id/preloadTxt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="5sp"
                 android:text="Preload:"
-                android:textSize="25sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:textColor="@color/fontPrimary"/>
             <ImageButton
                 android:id="@+id/preload_selection"
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:background="@mipmap/ic_neither"/>
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0sp"
-            android:layout_weight="0.1"
+            android:id="@+id/hab_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10sp"
-            android:textSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:textAlignment="center"
             android:textColor="@color/fontPrimary"
             android:layout_gravity="center"
             android:textAllCaps="true"
@@ -195,16 +208,19 @@
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/lvlOptions"
             android:layout_width="wrap_content"
-            android:layout_height="0sp"
-            android:layout_gravity="center"
-            android:layout_weight="0.15"
+            android:layout_height="wrap_content"
             android:weightSum="1"
+            android:layout_gravity="center_horizontal"
+
             android:orientation="horizontal">
             <RadioButton android:id="@+id/hab_1"
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="Level 1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:textSize="20sp"
                 android:textColor="@color/fontPrimary"
                 android:layout_margin="15sp" />
@@ -213,6 +229,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15sp"
                 android:layout_weight="0.5"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:text="Level 2"
                 android:textSize="20sp"
                 android:textColor="@color/fontPrimary"/>
@@ -224,33 +243,39 @@
         android:layout_height="wrap_content"
         android:background="@color/greySecondary"
         android:orientation="horizontal"
-        android:layout_marginTop="15sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/local_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/blueSecondary"
             android:layout_weight="1"
-            android:layout_margin="20sp"
+            android:layout_margin="10dp"
             android:textColor="@color/fontPrimary"
             android:textAllCaps="true"
+            android:layout_marginRight="15dp"
             android:text="Local"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="50sp"
             android:textSize="25sp"/>
 
         <Button
             android:id="@+id/start_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20sp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="15dp"
             android:background="@color/greenSecondary"
             android:text="Begin"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="50sp"
             android:textAllCaps="true"
             android:textSize="25sp"
             android:layout_weight="1"
             android:textColor="@color/fontPrimary"/>
     </LinearLayout>
-
 </RelativeLayout>
