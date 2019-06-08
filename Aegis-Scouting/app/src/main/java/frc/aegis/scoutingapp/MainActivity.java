@@ -373,7 +373,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         params.height = (int)(mainHeight*.3);
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params = bottom.getLayoutParams();
-        params.height = (int)(mainHeight*.1);
+        params.height = (int)(mainHeight*.15);
         params = gearbtn.getLayoutParams();
         params.height = (int)(full.getWidth()*.07);
         params.width = (int)(full.getWidth()*.07);
@@ -390,11 +390,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         params.height = (int)(main.getWidth()*.4);
         params = preloadLayout.getLayoutParams();
         params.height = preloadbtn.getLayoutParams().height;
-        blue2.setTextSize(red1.getTextSize());
-        blue1.setTextSize(red1.getTextSize());
-        red2.setTextSize(red1.getTextSize());
-        red3.setTextSize(red1.getTextSize());
-        blue3.setTextSize(red1.getTextSize());
 
     }
 

@@ -61,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:text="Red 1"
                 android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="1sp"
-                android:autoSizeMaxTextSize="50sp"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -71,6 +71,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 2"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -79,6 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Red 3"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/redPrimary"
                 android:buttonTint="@color/redPrimary"
                 android:layout_margin="5sp"/>
@@ -87,6 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_marginTop="20sp"
@@ -98,6 +107,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 2"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_margin="10sp"/>
@@ -106,6 +118,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blue 3"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="1px"
+                android:autoSizeMaxTextSize="50px"
                 android:textColor="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
                 android:layout_margin="10sp"/>
@@ -217,7 +232,7 @@
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Level 1"
+                android:text="Lvl 1"
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="1sp"
                 android:autoSizeMaxTextSize="50sp"
@@ -232,7 +247,7 @@
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="1sp"
                 android:autoSizeMaxTextSize="50sp"
-                android:text="Level 2"
+                android:text="Lvl 2"
                 android:textSize="20sp"
                 android:textColor="@color/fontPrimary"/>
         </RadioGroup>
@@ -258,7 +273,7 @@
             android:layout_marginRight="15dp"
             android:text="Local"
             android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMinTextSize="1sp"
             android:autoSizeMaxTextSize="50sp"
             android:textSize="25sp"/>
 
@@ -271,7 +286,7 @@
             android:background="@color/greenSecondary"
             android:text="Begin"
             android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMinTextSize="1sp"
             android:autoSizeMaxTextSize="50sp"
             android:textAllCaps="true"
             android:textSize="25sp"
