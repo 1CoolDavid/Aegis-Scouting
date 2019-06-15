@@ -283,7 +283,8 @@
             android:textSize="35sp"
             android:textAllCaps="true"
             android:textColor="@color/fontPrimary"
-            android:background="@color/colorPrimaryDark" />
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:background="@drawable/roundedbutton"/>
         <Button
             android:id="@+id/submit_btn"
             android:layout_width="match_parent"
@@ -294,6 +295,7 @@
             android:textSize="35sp"
             android:textAllCaps="true"
             android:textColor="@color/fontPrimary"
-            android:background="@color/greenSecondary" />
+            android:backgroundTint="@color/greenSecondary"
+            android:background="@drawable/roundedbutton"/>
     </LinearLayout>
 </RelativeLayout>
