@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:aegis_scouting/Data_Mngr/tower.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
-  int _number, _round, _score, _skyStones, _stones, _maxHeight, _markerHeight, _numberOfTowers;
+  int _number, _round, _score, _skyStones, _stones, _maxHeight, _markerHeight, _numberOfTowers, _avgTowerHeight;
   bool _color, _autonInterfere, _invalidPossession, _skybridge, _red, _yellow, _platformIn, _platformOut, _parking, _marker;
   String _author, _description;
   DateTime _date;
+  Foundation _foundation;
   
   TeamEntry(int number, int round, bool color, String author) {
     _number = number;
@@ -29,7 +31,9 @@ class TeamEntry{
 
   void setMarkerHeight(int h) => _markerHeight = h;
 
-  void setNumberOfTowers(int t) => _numberOfTowers =t;
+  void setNumberOfTowers(int t) => _numberOfTowers = t;
+
+  void setAvgTowerHeight(int a) => _avgTowerHeight = a;
 
   void setColor(bool c) => _color = c;
 
@@ -96,6 +100,8 @@ class TeamEntry{
   String getAuthor() => _author;
 
   String getDescription() => _description;
+
+  Foundation getFoundation() => _foundation;
 
   DateTime getDate() => _date;
 

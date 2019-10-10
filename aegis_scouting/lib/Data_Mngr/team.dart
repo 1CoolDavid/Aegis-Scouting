@@ -32,14 +32,19 @@ class Team{
   }
   
   void fillData() {
-    double stone, sky, height, allPoints, towers;
+    double stone, sky, height, hcount, allPoints, towers;
     int maxHeight, red, yellow, bridge, auton, possession;
     for(TeamEntry t in _entries) {
       stone += t.getStones();
       _stones.add(t.getStones());
       sky += t.getSkyStones();
       _skyStones.add(t.getSkyStones());
-      height += t.getMaxHeight();
+      t.getFoundation().towers.forEach(
+        (tower) { 
+          height+=tower.getHeight(); 
+          hcount++;
+        }
+      );
       maxHeight = t.getMaxHeight() > maxHeight ? t.getMaxHeight() : maxHeight;
       allPoints += t.getScore();
       _scores.add(t.getScore());
@@ -53,7 +58,7 @@ class Team{
     }
     _avgStones = stone/_len;
     _avgSkyStones = sky/_len;
-    _avgHeight = height/_len;
+    _avgHeight = height/hcount;
     _avgScore = allPoints/_len;
     _avgNumberOfTowers = towers/_len;
     _reds = red;
