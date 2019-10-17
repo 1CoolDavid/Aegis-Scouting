@@ -30,6 +30,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/images/ScoutingCat.png"
+  image_path_android: "assets/images/ScoutingCat.png"
+  adaptive_icon_background: "assets/images/ScoutBG.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -42,10 +50,14 @@ flutter:
     - assets/images/CarolinaGearCat.png
     - assets/images/stone.png
     - assets/images/stone_icon.png
+    - assets/images/skystone.png
+    - assets/images/skystones.png
+    - assets/images/noskystone.png
     - assets/images/covered_stone_icon.png
     - assets/images/BlueGearCat.png
     - assets/images/blue_marked_stone_icon.png
     - assets/images/red_marked_stone_icon.png
+    
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

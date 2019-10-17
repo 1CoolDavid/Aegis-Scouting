@@ -4,7 +4,7 @@ import 'package:aegis_scouting/Data_Mngr/tower.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
-  int _number, _round, _score, _skyStones, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _avgTowerHeight=0;
+  int _number, _round, _score, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _avgTowerHeight=0;
   bool _color=false, _autonInterfere=false, _invalidPossession=false, _skybridge=false, _red=false, _yellow=false, _platformIn=false, _platformOut=false, _parking=false, _marker=false;
   String _author="", _description="";
   DateTime _date;

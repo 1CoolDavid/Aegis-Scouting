@@ -4,6 +4,7 @@ import 'package:aegis_scouting/main.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyForm extends StatefulWidget {
   MyForm({Key key, this.title}) : super(key: key);
@@ -29,8 +30,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
   List<Tower> _towers = new List();
   ScrollController _towerScroller;
   String _description ="";
-
-  
 
   @override
   initState() {
@@ -238,8 +237,8 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   Widget towerToWidget(Tower t) {
     return new AnimatedContainer(
-      constraints: t.getHeight() <= 7 ? BoxConstraints.tightFor(height: MediaQuery.of(context).size.height*.27, width: MediaQuery.of(context).size.width*.25)
-        : BoxConstraints.tightFor(height: MediaQuery.of(context).size.height*.35, width: MediaQuery.of(context).size.width*.25),
+      constraints: t.getHeight() <= 7 ? BoxConstraints.tightFor(height: MediaQuery.of(context).size.height*.27, width: MediaQuery.of(context).size.width*MyApp.towerWidth)
+        : BoxConstraints.tightFor(height: MediaQuery.of(context).size.height*.35, width: MediaQuery.of(context).size.width*MyApp.towerWidth),
       duration: new Duration(seconds: 1),
       child: new Card(
         shape: new RoundedRectangleBorder(
@@ -272,7 +271,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           t.setHeight(t.getHeight()+1);
                         });
                       },
-                      
                     ),
                   ),
                   new Padding(
@@ -316,11 +314,11 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     )
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: .5),
+                    padding: EdgeInsets.only(top: 5),
                     child: new Text(
                       "("+t.getHeight().toString()+")",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: t.getHeight() <= 10 ? Colors.black : Color.fromRGBO(227, 18, 18, 1.0), //ten is the limit
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -336,7 +334,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   Widget recordBuilder(context) {
     return new Scaffold(
-      resizeToAvoidBottomPadding: false,
       bottomNavigationBar: new FancyBottomNavigation(
         activeIconColor: Color.fromRGBO(255, 255, 255, 1.0),
         inactiveIconColor: MyApp.columbiaBlue, //sligthly darker than this: 11, 166, 173 or try black
@@ -361,12 +358,14 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           formKey.currentState.save();
           if(position == 0) {
             setState(() {
+              prevDisplay = PreviousDisplay.Form;
               display = Display.Stats;
             });
           } else if(position == 1) {
             //Do nothing
           } else if(position == 2) {
             setState(() {
+              prevDisplay = PreviousDisplay.Form;
               display = Display.Management;
             });
           } else {
@@ -393,7 +392,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           },
         ),
       ),
-      body: new Container(
+      body: new SingleChildScrollView(
         padding: EdgeInsets.all(5),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -406,7 +405,11 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new IconButton(
-                    icon: new Icon(Icons.arrow_downward),
+                    icon: new Icon(
+                      Icons.arrow_downward, 
+                      color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
+                    ),
+                    highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
                     iconSize: (MediaQuery.of(context).size.width*.10),
                     onPressed: () {
                       if(_currentEntry.getStones() != 0) {
@@ -436,7 +439,11 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     ],
                   ),
                   new IconButton(
-                    icon: new Icon(Icons.arrow_upward),
+                    icon: new Icon(
+                      Icons.arrow_upward,
+                      color: Color.fromRGBO(255,69,0,1), //reddit joke
+                    ),
+                    highlightColor: Color.fromRGBO(250, 119, 70, 0),
                     iconSize: (MediaQuery.of(context).size.width*.10),
                     onPressed: () {
                       if(_currentEntry.getStones() < 60) {
@@ -448,6 +455,42 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     },
                   ),
                 ],
+              ),
+            ),
+            new Card(
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget> [
+                  new Text(
+                    "SkyStones",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.height*.03,
+                    ),
+                  ),
+                  new FlatButton(
+                    child: new Image(
+                      image: _currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : _currentEntry.getSkyStones() == 1 ?
+                      AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
+                      height: MediaQuery.of(context).size.height*.15,
+                    ),
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {
+                      setState(() {
+                        print(_currentEntry.getSkyStones());
+                        if(_currentEntry.getSkyStones() == 1) {
+                          _currentEntry.setSkyStones(2);
+                        } else if(_currentEntry.getSkyStones() == 2) {
+                          _currentEntry.setSkyStones(0);
+                        } else {
+                          _currentEntry.setSkyStones(1);
+                        }
+                      });
+                    },
+                  )
+                ]
               ),
             ),
             new SingleChildScrollView(
@@ -463,7 +506,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                         setState(() {
                           _towers.add(new Tower(context, _currentEntry.getColor())); 
                         });
-                      _towerScroller.animateTo((MediaQuery.of(context).size.width*.3)*(_towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                      _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(_towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
                       },
                     ),
                   ),
@@ -496,7 +539,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
             new Container(
               width: MediaQuery.of(context).size.width*.90,
               child: new TextFormField(
-                
                 onChanged: (String value)=> _description = value,
                 textAlign: TextAlign.left,
                 decoration: new InputDecoration(
@@ -513,18 +555,17 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    
     if(display == Display.Form) {
-      if(prevDisplay == PreviousDisplay.Loading) {
-        return new Container(
-          child: new FadeTransition(
-            child: formBuilder(context),
-            opacity: _fadeController,
-          )
-        );
-      }
       return formBuilder(context);
     } else if(display == Display.Record) {
       if(prevDisplay == PreviousDisplay.Form) {
+        prevDisplay = PreviousDisplay.None;
         _towers.forEach((t) => t.setColor(_currentEntry.getColor()));
         if(_stones > 0) {
           _currentEntry.setStones(_stones);

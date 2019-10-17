@@ -9,11 +9,14 @@ class MyApp extends StatelessWidget {
   static const Color columbiaBlue = const Color.fromRGBO(185, 217, 235, 1);
   static const Color niceBlue = const Color.fromRGBO(15, 221, 231, 1.0);
   static const Color coolBlue = const Color.fromRGBO(3, 169, 252,1);
+  static double towerWidth = 0;
+  static double towerHeight = 0; 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Aegis Scouting',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -116,7 +119,13 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    if(MyApp.towerWidth == 0.0) {
+      MyApp.towerWidth = MediaQuery.of(context).size.width <= 500 ? 0.35 : 0.25;
+    }
+    if(MyApp.towerHeight == 0) {
+      MyApp.towerHeight = MediaQuery.of(context).size.height > 900 ? 0.27 : 0.3; 
+    }
     if(display == Display.Loading) {
       transitioner(context);
       return new Scaffold(
