@@ -60,7 +60,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
       resizeToAvoidBottomPadding: false,
       bottomNavigationBar: new FancyBottomNavigation(
         activeIconColor: Color.fromRGBO(255, 255, 255, 1.0),
-        inactiveIconColor: MyApp.coolBlue, //sligthly darker than this: 11, 166, 173 or try black
+        inactiveIconColor: MyApp.niceBlue, //sligthly darker than this: 11, 166, 173 or try black
         circleColor: MyApp.coolBlue,
         initialSelection: display == Display.Form || display == Display.Record ? 1 : 
           display == Display.Stats ? 0 : 2, 
@@ -219,6 +219,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                         formKey.currentState.save();
                         setState(() {
                           _currentEntry = new TeamEntry(int.parse(_teamNum), int.parse(_round), _color, _author);
+                          if(prevDisplay != PreviousDisplay.Record) {
+                            _towers.add(new Tower(context, _color));
+                          }
                           display = Display.Record;
                           prevDisplay = PreviousDisplay.Form;
                         });
@@ -291,7 +294,10 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       icon: new Icon(Icons.remove),
                       onPressed: () {
                         setState(() {
-                          t.setHeight(t.getHeight()-1); 
+                          t.setHeight(t.getHeight()-1);
+                          if(t.getHeight() == 0) {
+                            _towers.remove(t);
+                          }
                         });
                       },
                     ), 
@@ -336,8 +342,8 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
     return new Scaffold(
       bottomNavigationBar: new FancyBottomNavigation(
         activeIconColor: Color.fromRGBO(255, 255, 255, 1.0),
-        inactiveIconColor: MyApp.columbiaBlue, //sligthly darker than this: 11, 166, 173 or try black
-        circleColor: MyApp.coolBlue,
+        inactiveIconColor: MyApp.niceBlue, //sligthly darker than this: 11, 166, 173 or try black
+        circleColor: display == Display.Record ? Colors.greenAccent[400] : MyApp.coolBlue,
         initialSelection: display == Display.Form || display == Display.Record ? 1 : 
           display == Display.Stats ? 0 : 2, 
         tabs: [
@@ -355,21 +361,18 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           )
         ],
         onTabChangedListener: (position) {
-          formKey.currentState.save();
           if(position == 0) {
             setState(() {
-              prevDisplay = PreviousDisplay.Form;
               display = Display.Stats;
+              prevDisplay = PreviousDisplay.Record;
             });
           } else if(position == 1) {
-            //Do nothing
+            //Save Data
           } else if(position == 2) {
-            setState(() {
-              prevDisplay = PreviousDisplay.Form;
-              display = Display.Management;
-            });
+            display = Display.Management;
+            prevDisplay = PreviousDisplay.Record;
           } else {
-            print(position);
+            //Unreachable
           }
         },
       ),
@@ -461,10 +464,11 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget> [
                   new Text(
                     "SkyStones",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: MediaQuery.of(context).size.height*.03,
@@ -474,12 +478,12 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     child: new Image(
                       image: _currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : _currentEntry.getSkyStones() == 1 ?
                       AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
-                      height: MediaQuery.of(context).size.height*.15,
+                      height: MediaQuery.of(context).size.height*.10,
+                      width: MediaQuery.of(context).size.width*.25,
                     ),
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       setState(() {
-                        print(_currentEntry.getSkyStones());
                         if(_currentEntry.getSkyStones() == 1) {
                           _currentEntry.setSkyStones(2);
                         } else if(_currentEntry.getSkyStones() == 2) {
@@ -492,14 +496,92 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                   )
                 ]
               ),
+            ), 
+            new Card(
+              child: new Padding(
+                padding: EdgeInsets.all(5),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new ChoiceChip(
+                      elevation: _currentEntry.hasPlatformIn() ? 5 : 2,
+                      label: new Text(
+                        "Foundation In",
+                        style: _currentEntry.hasPlatformIn() ? new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.height*.015,
+                        ) : new TextStyle(
+                          color: Colors.black,
+                          fontSize: MediaQuery.of(context).size.height*.015,
+                        )
+                      ),
+                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      onSelected: (bool value) { 
+                        setState(() {
+                          _currentEntry.setPlatformIn(value);
+                        }); 
+                      },
+                      selected: _currentEntry.hasPlatformIn(),
+                      backgroundColor: Colors.white,
+                    ),
+                    new ChoiceChip(
+                      label: new Text(
+                        "Foundation Out",
+                        style: _currentEntry.hasPlatformOut() ? new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.height*.015
+                        ) : new TextStyle(
+                          color: Colors.black,
+                          fontSize: MediaQuery.of(context).size.height*.015,
+                        )
+                      ),
+                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      onSelected: (bool value) { 
+                        setState(() {
+                          _currentEntry.setPlatformOut(value);
+                        }); 
+                      },
+                      elevation: _currentEntry.hasPlatformOut() ? 5 : 2,
+                      selected: _currentEntry.hasPlatformOut(),
+                      backgroundColor: Colors.white,
+                    ),
+                    new ChoiceChip(
+                      elevation: _currentEntry.hasParked() ? 5 : 2,
+                      label: new Text(
+                        "Parked",
+                        style: _currentEntry.hasParked() ? new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.height*.015,
+                        ) : new TextStyle(
+                          color: Colors.black,
+                          fontSize: MediaQuery.of(context).size.height*.015,
+                        )
+                      ),
+                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      onSelected: (bool value) { 
+                        setState(() {
+                          _currentEntry.setParking(value);
+                        }); 
+                      },
+                      selected: _currentEntry.hasParked(),
+                      backgroundColor: Colors.white,
+                    )
+                  ],
+                ),
+              ),
             ),
             new SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               controller: _towerScroller,
-              child: new Row(
+              child: _towers.length != 0 ? new Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: _towers.map((t) => towerToWidget(t)).toList() + [
                   new Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
                     child: new IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
@@ -511,17 +593,53 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     ),
                   ),
                 ],
-              ),
+              ) : new Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: new Text(
+                      "Add A Tower",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height*.03
+                      ),
+                    ),
+                  ),
+                  new Padding(
+                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
+                    child: new RaisedButton(
+                      child: new Icon(
+                        Icons.add
+                      ), 
+                      onPressed: () {
+                        setState(() {
+                          _towers.add(new Tower(context, _currentEntry.getColor())); 
+                        });
+                        _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(_towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(200),
+                        side: new BorderSide(color: Colors.black)
+                      )       
+                    ),
+                  ),
+                ],
+              )
             ),
             new Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width*.65,
               child: new RaisedButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                color: Colors.orange[500],
                 child: new Text(
                   "Penalties",
                   style: new TextStyle(
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: MediaQuery.of(context).size.height*.02
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -607,7 +725,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               textAlign: TextAlign.center,
             ),
             value: autonPenalty,
-            activeColor: MyApp.coolBlue,
+            activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
                 autonPenalty = value; 
@@ -620,7 +738,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               textAlign: TextAlign.center,
             ),
             value: possessionPenalty,
-            activeColor: MyApp.coolBlue,
+            activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
                 possessionPenalty = value; 
@@ -633,7 +751,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               textAlign: TextAlign.center,
             ),
             value: skybridge,
-            activeColor: MyApp.coolBlue,
+            activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
                 skybridge = value; 
@@ -646,7 +764,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               textAlign: TextAlign.center,
             ),
             value: red,
-            activeColor: MyApp.coolBlue,
+            activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
                 red = value; 
@@ -659,7 +777,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               textAlign: TextAlign.center,
             ),
             value: yellow,
-            activeColor: MyApp.coolBlue,
+            activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
                 yellow = value; 
@@ -667,8 +785,7 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
             },
           ),
         ],
-      ),
-                          
+      ),             
       actions: <Widget>[
         new FlatButton(
           child: new Text("Done"),
