@@ -23,13 +23,9 @@ class MyForm extends StatefulWidget {
   @override
   MyFormPage createState() => MyFormPage();
 }
-bool autonPenalty = false, possessionPenalty = false, skybridge = false, red = false, yellow = false;
+//bool autonPenalty = false, possessionPenalty = false, skybridge = false, red = false, yellow = false;
 
 class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
-
-  List<Tower> _towers = new List();
-  ScrollController _towerScroller;
-  String _description ="";
 
   @override
   initState() {
@@ -43,6 +39,8 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
     _towerScroller = new ScrollController();
   }
 
+  ScrollController _towerScroller;
+
   final formKey = new GlobalKey<FormState>();
 
   AnimationController _fadeController;
@@ -50,10 +48,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   String _author, _teamNum, _round;
   bool _color = false; //blue is true
-  bool _marked = false;
-  int _stones = 0;
-
-  TeamEntry _currentEntry;
 
   Widget formBuilder(context) {
     return new Scaffold(
@@ -153,7 +147,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 child: new Padding(
                   padding: EdgeInsets.all(5),
                   child: new TextFormField(
-                    initialValue: _currentEntry != null ? _currentEntry.getAuthor() : "",
+                    initialValue: currentEntry != null ? currentEntry.getAuthor() : "",
                     textAlign: TextAlign.left,
                     onSaved: (value) =>_author = value,
                     validator: (value) => !new RegExp(r'[%0-9!@#$^&*()_\_\\|\[\]{};:.,?~=+"/]').hasMatch(value) && value.isNotEmpty ? null : "Invalid name",
@@ -170,7 +164,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 child: new Padding(
                   padding: EdgeInsets.all(5),
                   child: new TextFormField(
-                    initialValue: _currentEntry != null ? _currentEntry.getNumber().toString() : "",
+                    initialValue: currentEntry != null ? currentEntry.getNumber().toString() : "",
                     textAlign: TextAlign.left,
                     keyboardType: TextInputType.number,
                     onSaved: (value) => _teamNum = value,
@@ -188,7 +182,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 child: new Padding(
                   padding: EdgeInsets.all(5),
                   child: new TextFormField(
-                    initialValue: _currentEntry != null ? _currentEntry.getRound().toString() : "",
+                    initialValue: currentEntry != null ? currentEntry.getRound().toString() : "",
                     textAlign: TextAlign.left,
                     keyboardType: TextInputType.number,
                     onSaved: (value) => _round = value,
@@ -218,9 +212,16 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       if(formKey.currentState.validate()) {
                         formKey.currentState.save();
                         setState(() {
-                          _currentEntry = new TeamEntry(int.parse(_teamNum), int.parse(_round), _color, _author);
-                          if(prevDisplay != PreviousDisplay.Record) {
-                            _towers.add(new Tower(context, _color));
+                          if(currentEntry == null) {
+                            currentEntry = new TeamEntry(int.parse(_teamNum), int.parse(_round), _color, _author);
+                            if(prevDisplay != PreviousDisplay.Record) {
+                              currentEntry.getFoundation().towers.add(new Tower(context, _color));
+                            }
+                          } else {
+                            currentEntry.setColor(_color);
+                            currentEntry.setNumber(int.parse(_teamNum));
+                            currentEntry.setRound(int.parse(_round));
+                            currentEntry.setAuthor(_author);
                           }
                           display = Display.Record;
                           prevDisplay = PreviousDisplay.Form;
@@ -283,7 +284,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       color: Colors.red,
                       onPressed: () {
                         setState(() {
-                          _towers.remove(t);
+                          currentEntry.getFoundation().towers.remove(t);
                         });
                       },
                     ),
@@ -296,7 +297,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                         setState(() {
                           t.setHeight(t.getHeight()-1);
                           if(t.getHeight() == 0) {
-                            _towers.remove(t);
+                            currentEntry.getFoundation().towers.remove(t);
                           }
                         });
                       },
@@ -308,13 +309,13 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       icon: t.getMarker() ? Icon(Icons.flag) : Icon(Icons.outlined_flag),
                       onPressed: () {
                         setState(() {
-                          if(_marked && !t.getMarker()) {
-                            for(Tower t in _towers) {
+                          if(currentEntry.hasMarker() && !t.getMarker()) {
+                            for(Tower t in currentEntry.getFoundation().towers) {
                               t.setMarker(false);
                             }
                           }
                           t.setMarker(!t.getMarker());
-                          _marked = true;
+                          currentEntry.setMarker(true);
                         });
                       },
                     )
@@ -377,9 +378,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
         },
       ),
       appBar: new AppBar(
-        backgroundColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+        backgroundColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
         title: new Text(
-          "Team "+_currentEntry.getNumber().toString() + ", Round " + _currentEntry.getRound().toString(),
+          "Team "+currentEntry.getNumber().toString() + ", Round " + currentEntry.getRound().toString(),
           style: new TextStyle(
             color: Colors.white,
           ),
@@ -388,7 +389,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           icon: new Icon(Icons.arrow_back_ios),
           onPressed: () {
             setState(() {
-              _color = _currentEntry.getColor(); //Easier than directly editing the AppBar
+              _color = currentEntry.getColor(); //Easier than directly editing the AppBar
               display = Display.Form;
               prevDisplay = PreviousDisplay.Record;
             });
@@ -415,10 +416,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
                     iconSize: (MediaQuery.of(context).size.width*.10),
                     onPressed: () {
-                      if(_currentEntry.getStones() != 0) {
+                      if(currentEntry.getStones() != 0) {
                         setState(() {
-                          _currentEntry.setStones(_currentEntry.getStones()-1);
-                          _stones--;
+                          currentEntry.setStones(currentEntry.getStones()-1);
                         });
                       }
                     },
@@ -432,7 +432,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                         width: MediaQuery.of(context).size.width*.15,
                       ),
                       new Text(
-                        _currentEntry.getStones().toString(),
+                        currentEntry.getStones().toString(),
                         textAlign: TextAlign.center,
                         style: new TextStyle(
                           fontWeight: FontWeight.bold,
@@ -449,10 +449,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     highlightColor: Color.fromRGBO(250, 119, 70, 0),
                     iconSize: (MediaQuery.of(context).size.width*.10),
                     onPressed: () {
-                      if(_currentEntry.getStones() < 60) {
+                      if(currentEntry.getStones() < 60) {
                         setState(() {
-                          _currentEntry.setStones(_currentEntry.getStones()+1);
-                          _stones++;
+                          currentEntry.setStones(currentEntry.getStones()+1);
                         });
                       }
                     },
@@ -476,7 +475,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                   ),
                   new FlatButton(
                     child: new Image(
-                      image: _currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : _currentEntry.getSkyStones() == 1 ?
+                      image: currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : currentEntry.getSkyStones() == 1 ?
                       AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
                       height: MediaQuery.of(context).size.height*.10,
                       width: MediaQuery.of(context).size.width*.25,
@@ -484,12 +483,12 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       setState(() {
-                        if(_currentEntry.getSkyStones() == 1) {
-                          _currentEntry.setSkyStones(2);
-                        } else if(_currentEntry.getSkyStones() == 2) {
-                          _currentEntry.setSkyStones(0);
+                        if(currentEntry.getSkyStones() == 1) {
+                          currentEntry.setSkyStones(2);
+                        } else if(currentEntry.getSkyStones() == 2) {
+                          currentEntry.setSkyStones(0);
                         } else {
-                          _currentEntry.setSkyStones(1);
+                          currentEntry.setSkyStones(1);
                         }
                       });
                     },
@@ -505,10 +504,10 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     new ChoiceChip(
-                      elevation: _currentEntry.hasPlatformIn() ? 5 : 2,
+                      elevation: currentEntry.hasPlatformIn() ? 5 : 2,
                       label: new Text(
                         "Foundation In",
-                        style: _currentEntry.hasPlatformIn() ? new TextStyle(
+                        style: currentEntry.hasPlatformIn() ? new TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: MediaQuery.of(context).size.height*.015,
@@ -517,19 +516,19 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           fontSize: MediaQuery.of(context).size.height*.015,
                         )
                       ),
-                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
                       onSelected: (bool value) { 
                         setState(() {
-                          _currentEntry.setPlatformIn(value);
+                          currentEntry.setPlatformIn(value);
                         }); 
                       },
-                      selected: _currentEntry.hasPlatformIn(),
+                      selected: currentEntry.hasPlatformIn(),
                       backgroundColor: Colors.white,
                     ),
                     new ChoiceChip(
                       label: new Text(
                         "Foundation Out",
-                        style: _currentEntry.hasPlatformOut() ? new TextStyle(
+                        style: currentEntry.hasPlatformOut() ? new TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: MediaQuery.of(context).size.height*.015
@@ -538,21 +537,21 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           fontSize: MediaQuery.of(context).size.height*.015,
                         )
                       ),
-                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
                       onSelected: (bool value) { 
                         setState(() {
-                          _currentEntry.setPlatformOut(value);
+                          currentEntry.setPlatformOut(value);
                         }); 
                       },
-                      elevation: _currentEntry.hasPlatformOut() ? 5 : 2,
-                      selected: _currentEntry.hasPlatformOut(),
+                      elevation: currentEntry.hasPlatformOut() ? 5 : 2,
+                      selected: currentEntry.hasPlatformOut(),
                       backgroundColor: Colors.white,
                     ),
                     new ChoiceChip(
-                      elevation: _currentEntry.hasParked() ? 5 : 2,
+                      elevation: currentEntry.hasParked() ? 5 : 2,
                       label: new Text(
                         "Parked",
-                        style: _currentEntry.hasParked() ? new TextStyle(
+                        style: currentEntry.hasParked() ? new TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: MediaQuery.of(context).size.height*.015,
@@ -561,13 +560,13 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           fontSize: MediaQuery.of(context).size.height*.015,
                         )
                       ),
-                      selectedColor: _currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
                       onSelected: (bool value) { 
                         setState(() {
-                          _currentEntry.setParking(value);
+                          currentEntry.setParking(value);
                         }); 
                       },
-                      selected: _currentEntry.hasParked(),
+                      selected: currentEntry.hasParked(),
                       backgroundColor: Colors.white,
                     )
                   ],
@@ -577,18 +576,18 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
             new SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               controller: _towerScroller,
-              child: _towers.length != 0 ? new Row(
+              child: currentEntry.getFoundation().towers.length != 0 ? new Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: _towers.map((t) => towerToWidget(t)).toList() + [
+                children: currentEntry.getFoundation().towers.map((t) => towerToWidget(t)).toList() + [
                   new Padding(
                     padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
                     child: new IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
                         setState(() {
-                          _towers.add(new Tower(context, _currentEntry.getColor())); 
+                          currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
                         });
-                      _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(_towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                      _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
                       },
                     ),
                   ),
@@ -615,9 +614,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       ), 
                       onPressed: () {
                         setState(() {
-                          _towers.add(new Tower(context, _currentEntry.getColor())); 
+                          currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
                         });
-                        _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(_towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                        _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(200),
@@ -657,12 +656,12 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
             new Container(
               width: MediaQuery.of(context).size.width*.90,
               child: new TextFormField(
-                onChanged: (String value)=> _description = value,
+                onChanged: (String value)=> currentEntry.setDescription(value),
                 textAlign: TextAlign.left,
                 decoration: new InputDecoration(
                   labelText: "Description", 
                 ),
-                initialValue: _description,
+                initialValue: currentEntry.getDescription() == null ? "" : currentEntry.getDescription(),
               )
             ),  
           ],    
@@ -672,7 +671,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, [TeamEntry teamEntry]) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -684,10 +683,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
     } else if(display == Display.Record) {
       if(prevDisplay == PreviousDisplay.Form) {
         prevDisplay = PreviousDisplay.None;
-        _towers.forEach((t) => t.setColor(_currentEntry.getColor()));
-        if(_stones > 0) {
-          _currentEntry.setStones(_stones);
-        }
+        currentEntry.getFoundation().towers.forEach((t) => t.setColor(currentEntry.getColor()));
         return new Container(
           child: new FadeTransition(
             child: recordBuilder(context),
@@ -713,7 +709,7 @@ class PenaltyDialog extends StatefulWidget {
 class _PenaltyDialogState extends State<PenaltyDialog> {
   
   @override
-  Widget build(BuildContext context, {Widget content, List<Widget> choices, Widget title, EdgeInsetsGeometry padding, Color color}) {
+  Widget build(BuildContext context, {TeamEntry teamEntry}) {
     return AlertDialog(
       content:new Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -724,11 +720,11 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               "Auton Interference",
               textAlign: TextAlign.center,
             ),
-            value: autonPenalty,
+            value: currentEntry.hasAutonPenalty(),
             activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
-                autonPenalty = value; 
+                currentEntry.setAutonPenalty(value); 
               });
             },
           ), 
@@ -737,11 +733,11 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               "Invalid Possession",
               textAlign: TextAlign.center,
             ),
-            value: possessionPenalty,
+            value: currentEntry.hasPossessionPenalty(),
             activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
-                possessionPenalty = value; 
+                currentEntry.setPossessionPenalty(value); 
               });
             },
           ),
@@ -750,11 +746,11 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               "SkyBridge Penalty",
               textAlign: TextAlign.center,
             ),
-            value: skybridge,
+            value: currentEntry.hasBridgePenalty(),
             activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
-                skybridge = value; 
+                currentEntry.setBridgePenalty(value); 
               });
             },
           ),
@@ -763,11 +759,11 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               "Red Card",
               textAlign: TextAlign.center,
             ),
-            value: red,
+            value: currentEntry.hasRedCard(),
             activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
-                red = value; 
+                currentEntry.setRedCard(value); 
               });
             },
           ),  
@@ -776,11 +772,11 @@ class _PenaltyDialogState extends State<PenaltyDialog> {
               "Yellow Card",
               textAlign: TextAlign.center,
             ),
-            value: yellow,
+            value: currentEntry.hasYellowCard(),
             activeColor: Colors.yellow[700],
             onChanged: (bool value) {
               setState(() {
-                yellow = value; 
+                currentEntry.setYellowCard(value);
               });
             },
           ),

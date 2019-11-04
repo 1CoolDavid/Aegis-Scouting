@@ -15,6 +15,7 @@ class TeamEntry{
     _round = round;
     _color = color;
     _author = author;
+    _foundation = new Foundation();
   }
 
   void setNumber(int n) => _number = n;

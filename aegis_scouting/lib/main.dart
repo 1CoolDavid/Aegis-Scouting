@@ -1,3 +1,4 @@
+import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
 import 'package:aegis_scouting/form.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ enum PreviousDisplay {
 
 Display display = Display.Loading; 
 PreviousDisplay prevDisplay = PreviousDisplay.None;
+TeamEntry currentEntry = null;
 
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
