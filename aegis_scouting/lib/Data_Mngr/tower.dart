@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class Tower{
@@ -68,6 +70,9 @@ class Tower{
 
   void setMarker(bool m) {
     _marker = m;
+    if(_images == null || _images.isEmpty) {
+      return;
+    }
     _images.removeAt(0);
     if(m) {
       _images.insert(0, _flag);
@@ -100,11 +105,24 @@ class Tower{
   int getHeight() => _height;
 
   bool getMarker() => _marker;
+
+  Map<String, dynamic> toJson() =>  {
+    'height' : _height.toString(),
+    'marker' : _marker.toString()
+  };
+
+  Tower.fromJson(Map<String, dynamic> json) {
+    _height = 0;
+    String h = json['height'];
+    int hInt = int.parse(h);
+    setMarker(json['marker'] == 'true');
+    setHeight(json['height'] == null ? 0 : hInt);
+  }
 }
 
 class Foundation{
-  List<Tower> towers = new List();
-  double _len = 0.0;
+  List<Tower> towers;
+  double _len;
 
   void add(Tower t) {
     towers.add(t);
@@ -117,5 +135,25 @@ class Foundation{
       sum+=t.getHeight();
     }
     return sum/_len;
+  }
+
+  Foundation() {
+    towers = new List();
+    _len = 0.0;
+  }
+
+  List<Map<String, dynamic>> toJson() {
+    List<Map<String, dynamic>> jsonList = new List();
+    towers.map((t) => jsonList.add(t.toJson())).toList();
+    return jsonList;
+  }
+
+  Foundation.fromJson(List<Map<String,dynamic>> list) {
+    towers = new List();
+    _len = 0.0;
+    for(Map<String, dynamic> map in list) {
+      towers.add(new Tower.fromJson(map));
+      _len++;
+    }
   }
 }

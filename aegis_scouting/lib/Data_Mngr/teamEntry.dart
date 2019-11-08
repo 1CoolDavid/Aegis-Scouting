@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:aegis_scouting/Data_Mngr/tower.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
-  int _number, _round, _score, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _avgTowerHeight=0;
+  int _number, _round, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _avgTowerHeight=0;
   bool _color=false, _autonInterfere=false, _invalidPossession=false, _skybridge=false, _red=false, _yellow=false, _platformIn=false, _platformOut=false, _parking=false, _marker=false;
   String _author="", _description="";
   DateTime _date;
@@ -21,8 +22,6 @@ class TeamEntry{
   void setNumber(int n) => _number = n;
 
   void setRound(int r) => _round = r;
-
-  void setScore(int s) => _score = s;
 
   void setSkyStones(int s) => _skyStones = s;
 
@@ -65,8 +64,6 @@ class TeamEntry{
   int getNumber() => _number;
 
   int getRound() => _round;
-
-  int getScore() => _score;
 
   int getSkyStones() => _skyStones;
 
@@ -132,7 +129,6 @@ class TeamEntry{
   Map<String, dynamic> toJson() => {
     'number' : _number,
     'round' : _round,
-    'score' : _score,
     'skyStones' : _skyStones,
     'stones' : _stones,
     'maxHeight' : _maxHeight,
@@ -150,43 +146,74 @@ class TeamEntry{
     'marker' : _marker,
     'author' : _author,
     'description' : _description,
-    'date' : _date
+    'foundation' : _foundation.toJson(),
+    'date' : _date.toString()
   };
 
   TeamEntry.fromJson(Map<String, dynamic> json) {
-    TeamEntry t = new TeamEntry(json['number'], json['round'], json['color'], json['author']);
-    t.setScore(json['score']);
-    t.setRound(json['points']);
-    t.setSkyStones(json['skyStones']);
-    t.setStones(json['stones']);
-    t.setMaxHeight(json['maxHeight']);
-    t.setNumberOfTowers(json['numberOfTowers']);
-    t.setAutonPenalty(json['auton']);
-    t.setPossessionPenalty(json['possession']);
-    t.setBridgePenalty(json['bridge']);
-    t.setRedCard(json['red']);
-    t.setYellowCard(json['yellow']);
-    t.setPlatformIn(json['platformIn']);
-    t.setPlatformOut(json['platformOut']);
-    t.setParking(json['parking']);
-    t.setMarker(json['marker']);
-    t.setDescription(json['description']);
-    t.setDate(json['date']);
+    _number = json['number'];
+    _round = json['round'];
+    _color = json['color'];
+    _author = json['author'];
+    _skyStones = json['skyStones'];
+    _stones = json['stones'];
+    _maxHeight = json['maxHeight'];
+    _numberOfTowers = json['numberOfTowers'];
+    _autonInterfere = json['auton'];
+    _invalidPossession = json['possession'];
+    _skybridge = json['bridge'];
+    _red = json['red'];
+    _yellow = json['yellow'];
+    _platformIn = json['platformIn'];
+    _platformOut = json['platformOut'];
+    _parking = json['parking'];
+    _marker = json['marker'];
+    _description = json['description'];
+    _date = DateTime.parse(json['date']);
+    _foundation = new Foundation();
+    _foundation.towers = json['foundation'] != null ? Foundation.fromJson(List.from(json['foundation'])).towers : new List();
+  }
+
+  Widget toWidget(BuildContext context) {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            new Container(
+              child: new Text("Team " +_number.toString() +", Round #"+_round.toString()),
+              padding: EdgeInsets.only(right: 15),
+            ),
+            new Container(
+              color: _color ? Colors.blueAccent : Colors.redAccent,
+              height: MediaQuery.of(context).size.height*.01,
+              width: MediaQuery.of(context).size.height*.01,
+            )
+          ],
+        ),
+        
+        new Text("Stones: "+_stones.toString()),
+        new Text("SkyStones: "+_skyStones.toString()),
+        new Text("Towers: " +_numberOfTowers.toString()),
+        new Divider()
+      ],
+    );
   }
 
   void submit() async {
     setDate(DateTime.now());
+    setNumberOfTowers(_foundation.towers.length);
     SharedPreferences sp = await SharedPreferences.getInstance();
-    List<TeamEntry> entries = new List();
+    List<String> entries = new List();
     if(sp.get(_number.toString()) == null) {
-      entries.add(this);
-      sp.setString(_number.toString(), json.encode(entries));
+      entries.add(json.encode(this));
+      sp.setStringList(_number.toString(), entries);
     } else {
-      json.decode(sp.getString(_number.toString())).forEach(
-        (map) => entries.add(new TeamEntry.fromJson(map))
-      );
-      entries.add(this);
-      sp.setString(_number.toString(), json.encode(entries));
-    }
+      entries = sp.getStringList(_number.toString());
+      entries.add(json.encode(this));
+      sp.setStringList(_number.toString(), entries);
+    } 
   }
 } 

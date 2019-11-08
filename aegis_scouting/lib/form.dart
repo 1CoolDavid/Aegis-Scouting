@@ -1,8 +1,6 @@
 import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
 import 'package:aegis_scouting/Data_Mngr/tower.dart';
 import 'package:aegis_scouting/main.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,10 +21,8 @@ class MyForm extends StatefulWidget {
   @override
   MyFormPage createState() => MyFormPage();
 }
-//bool autonPenalty = false, possessionPenalty = false, skybridge = false, red = false, yellow = false;
 
 class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
-
   @override
   initState() {
     super.initState();
@@ -37,6 +33,13 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
    
     _fadeController.forward();
     _towerScroller = new ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    _towerScroller.dispose();
+    super.dispose();
   }
 
   ScrollController _towerScroller;
@@ -52,45 +55,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
   Widget formBuilder(context) {
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
-      bottomNavigationBar: new FancyBottomNavigation(
-        activeIconColor: Color.fromRGBO(255, 255, 255, 1.0),
-        inactiveIconColor: MyApp.niceBlue, //sligthly darker than this: 11, 166, 173 or try black
-        circleColor: MyApp.coolBlue,
-        initialSelection: display == Display.Form || display == Display.Record ? 1 : 
-          display == Display.Stats ? 0 : 2, 
-        tabs: [
-          new TabData(
-            iconData: Icons.show_chart, //insert chart
-            title: "Statistics", 
-          ),
-          new TabData(
-            iconData: Icons.add, //add box
-            title: "Add Entry"
-          ),
-          new TabData(
-            iconData: Icons.storage,
-            title: "Storage",
-          )
-        ],
-        onTabChangedListener: (position) {
-          formKey.currentState.save();
-          if(position == 0) {
-            setState(() {
-              prevDisplay = PreviousDisplay.Form;
-              display = Display.Stats;
-            });
-          } else if(position == 1) {
-            //Nothing should happen
-          } else if(position == 2) {
-            setState(() {
-              prevDisplay = PreviousDisplay.Form;
-              display = Display.Management;
-            });
-          } else {
-            print(position);
-          }
-        },
-      ),
       appBar: new AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: _color ? Colors.blueAccent : Colors.redAccent,
@@ -186,7 +150,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     textAlign: TextAlign.left,
                     keyboardType: TextInputType.number,
                     onSaved: (value) => _round = value,
-                    validator: (value) => value.isEmpty || (int.parse(value) < 0 || int.parse(value) > 100) ? "Invalid round #" :null,
+                    validator: (value) => value.isEmpty || (int.parse(value) <= 0 || int.parse(value) > 100) ? "Invalid round #" :null,
                     decoration: new InputDecoration(
                       labelText: "Round",
                       labelStyle: new TextStyle(fontStyle: FontStyle.italic),
@@ -249,7 +213,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           borderRadius: BorderRadius.circular(25)
         ),
         child: new Container(
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.all(5),
           child: new Row(
             verticalDirection: VerticalDirection.down,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -264,7 +228,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 ),
               ),
               new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   new Padding(
                     padding: EdgeInsets.only(bottom: .5),
@@ -341,42 +305,36 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   Widget recordBuilder(context) {
     return new Scaffold(
-      bottomNavigationBar: new FancyBottomNavigation(
-        activeIconColor: Color.fromRGBO(255, 255, 255, 1.0),
-        inactiveIconColor: MyApp.niceBlue, //sligthly darker than this: 11, 166, 173 or try black
-        circleColor: display == Display.Record ? Colors.greenAccent[400] : MyApp.coolBlue,
-        initialSelection: display == Display.Form || display == Display.Record ? 1 : 
-          display == Display.Stats ? 0 : 2, 
-        tabs: [
-          new TabData(
-            iconData: Icons.show_chart, //insert chart
-            title: "Statistics", 
-          ),
-          new TabData(
-            iconData: Icons.check, //add box
-            title: "Submit"
-          ),
-          new TabData(
-            iconData: Icons.storage,
-            title: "Storage",
-          )
-        ],
-        onTabChangedListener: (position) {
-          if(position == 0) {
-            setState(() {
-              display = Display.Stats;
-              prevDisplay = PreviousDisplay.Record;
-            });
-          } else if(position == 1) {
-            //Save Data
-          } else if(position == 2) {
-            display = Display.Management;
-            prevDisplay = PreviousDisplay.Record;
-          } else {
-            //Unreachable
-          }
-        },
-      ),
+      bottomNavigationBar:new Container(
+        alignment: Alignment.bottomCenter,
+        height: MediaQuery.of(context).size.height*.08,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[ 
+            new Container(
+              height: MediaQuery.of(context).size.height*.1,
+              padding: EdgeInsets.only(bottom: 15),
+              child: new RaisedButton(
+                color: Colors.greenAccent[400],
+                shape: new CircleBorder(),
+                elevation: 5,
+                child: new Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  currentEntry.submit();
+                  setState(() {
+                    display =Display.Form;
+                    prevDisplay=PreviousDisplay.Record;
+                    currentEntry=null;
+                  });
+                },
+              ),   
+            )
+          ]
+        )
+      ),    
       appBar: new AppBar(
         backgroundColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
         title: new Text(
@@ -429,7 +387,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     children: <Widget>[
                       new Image(
                         image: AssetImage('assets/images/stone.png'),
-                        width: MediaQuery.of(context).size.width*.15,
+                        width: MediaQuery.of(context).size.width*.1,
                       ),
                       new Text(
                         currentEntry.getStones().toString(),
@@ -470,7 +428,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.height*.03,
+                      fontSize: MediaQuery.of(context).size.height*.025,
                     ),
                   ),
                   new FlatButton(
@@ -580,7 +538,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: currentEntry.getFoundation().towers.map((t) => towerToWidget(t)).toList() + [
                   new Padding(
-                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
+                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.1, 5, MediaQuery.of(context).size.height*.1),
                     child: new IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
@@ -652,7 +610,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                 },
               ),
             ),
-            //TODO: 
             new Container(
               width: MediaQuery.of(context).size.width*.90,
               child: new TextFormField(
@@ -677,7 +634,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
       DeviceOrientation.portraitDown,
     ]);
     SystemChrome.setEnabledSystemUIOverlays([]);
-    
+
     if(display == Display.Form) {
       return formBuilder(context);
     } else if(display == Display.Record) {
@@ -692,10 +649,6 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
         );
       }
       return recordBuilder(context);
-    } else if(display == Display.Stats) {
-      return new Container();
-    } else if(display == Display.Management) {
-      return new Container();
     } else {
       return new Container(); //Unreachable
     }
@@ -709,7 +662,7 @@ class PenaltyDialog extends StatefulWidget {
 class _PenaltyDialogState extends State<PenaltyDialog> {
   
   @override
-  Widget build(BuildContext context, {TeamEntry teamEntry}) {
+  Widget build(BuildContext context) {
     return AlertDialog(
       content:new Column(
         mainAxisAlignment: MainAxisAlignment.start,

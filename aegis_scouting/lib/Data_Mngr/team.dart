@@ -13,7 +13,7 @@ class Team{
   List<int> _scores = new List();
 
   //Stats
-  double _avgStones, _avgSkyStones, _avgHeight, _avgScore, _avgNumberOfTowers;
+  double _avgStones, _avgSkyStones, _avgHeight, _avgNumberOfTowers;
   int _maxStoneHeight, _reds, _yellows, _bridges, _autons, _possessions, _len;
   
   Team(int number) {
@@ -46,8 +46,6 @@ class Team{
         }
       );
       maxHeight = t.getMaxHeight() > maxHeight ? t.getMaxHeight() : maxHeight;
-      allPoints += t.getScore();
-      _scores.add(t.getScore());
       towers += t.getNumberOfTowers();
       _numberOfTowers.add(t.getNumberOfTowers());
       red = t.hasRedCard() ? red++ : red;
@@ -59,7 +57,6 @@ class Team{
     _avgStones = stone/_len;
     _avgSkyStones = sky/_len;
     _avgHeight = height/hcount;
-    _avgScore = allPoints/_len;
     _avgNumberOfTowers = towers/_len;
     _reds = red;
     _yellows = yellow;
@@ -74,7 +71,6 @@ class Team{
     _bridges += t.hasBridgePenalty() ? 1 : 0;
     _autons += t.hasAutonPenalty() ? 1 : 0;
     _avgNumberOfTowers = ((_avgNumberOfTowers*_len)+t.getNumberOfTowers())/(_len+1);
-    _avgScore = ((_avgScore*_len)+t.getScore())/(_len+1);
     _avgHeight = ((_avgHeight*_len)+t.getMaxHeight())/(_len+1);
     _avgSkyStones = ((_avgSkyStones*_len)+t.getSkyStones())/(_len+1);
     _avgStones = ((_avgStones*_len)+t.getStones())/(_len+1);
@@ -89,8 +85,6 @@ class Team{
   double getAvgSkyStones() => _avgSkyStones;
 
   double getAvgHeight() => _avgHeight;
-
-  double getAvgAlliancePoints() => _avgScore;
 
   double getAvgNumberOfTowers() => _avgNumberOfTowers;
 
@@ -118,7 +112,6 @@ class Team{
     'avgSkyStones':_avgSkyStones,
     'avgHeight' : _avgHeight,
     'avgNumberOfTowers' : _avgNumberOfTowers,
-    'avgScore' : _avgScore,
     'maxHeight': _maxStoneHeight,
     'reds' : _reds,
     'yellows':_yellows,
@@ -138,7 +131,6 @@ class Team{
     _avgSkyStones=json['avgSkyStones'];
     _avgHeight=json['avgHeight'];
     _avgNumberOfTowers=json['avgNumberOfTowers'];
-    _avgScore=json['avgScore'];
     _maxStoneHeight=json['maxHeight'];
     _reds=json['reds'];
     _yellows=json['yellows'];

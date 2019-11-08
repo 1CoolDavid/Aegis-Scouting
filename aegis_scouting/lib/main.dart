@@ -1,6 +1,5 @@
 import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
-import 'package:aegis_scouting/form.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:aegis_scouting/manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
   static const Color niceBlue = const Color.fromRGBO(15, 221, 231, 1.0);
   static const Color coolBlue = const Color.fromRGBO(3, 169, 252,1);
   static double towerWidth = 0;
-  static double towerHeight = 0; 
+  static double towerHeight = 0;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder> {
-        '/main': (BuildContext context) => MyForm(),      
+        '/manager': (BuildContext context) => MyManager(),      
       },
     );
   }
@@ -54,24 +53,21 @@ class MyHomePage extends StatefulWidget {
 enum Display {
   Form,
   Record,
-  Stats,
   Loading,
-  Management
 }
 
 enum PreviousDisplay {
   Form,
   Record,
-  Stats,
   Loading,
-  Management,
   None
 }
 
 Display display = Display.Loading; 
 PreviousDisplay prevDisplay = PreviousDisplay.None;
-TeamEntry currentEntry = null;
+TeamEntry currentEntry;
 
+int navIndex = 1;
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   //Intro Code
@@ -105,12 +101,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     } 
   }
 
-  void transitioner(BuildContext c) {
+  void transitioner(BuildContext c) async {
     Future.delayed(new Duration(seconds: 4)).whenComplete(() {
       setState(() {
         display = Display.Form;
         prevDisplay = PreviousDisplay.Loading;
-        Navigator.of(context).pushNamed('/main');
+        Navigator.of(context).pushNamed('/manager');
       });
     });
   }
