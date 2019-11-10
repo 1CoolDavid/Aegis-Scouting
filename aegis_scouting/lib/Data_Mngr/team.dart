@@ -32,7 +32,7 @@ class Team{
   }
   
   void fillData() {
-    double stone, sky, height, hcount, allPoints, towers;
+    double stone, sky, height, hcount, towers;
     int maxHeight, red, yellow, bridge, auton, possession;
     for(TeamEntry t in _entries) {
       stone += t.getStones();

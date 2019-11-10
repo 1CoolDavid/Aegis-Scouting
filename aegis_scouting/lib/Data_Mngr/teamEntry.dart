@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
-  int _number, _round, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _avgTowerHeight=0;
+  int _number, _round, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0;
   bool _color=false, _autonInterfere=false, _invalidPossession=false, _skybridge=false, _red=false, _yellow=false, _platformIn=false, _platformOut=false, _parking=false, _marker=false;
   String _author="", _description="";
   DateTime _date;
@@ -32,8 +32,6 @@ class TeamEntry{
   void setMarkerHeight(int h) => _markerHeight = h;
 
   void setNumberOfTowers(int t) => _numberOfTowers = t;
-
-  void setAvgTowerHeight(int a) => _avgTowerHeight = a;
 
   void setColor(bool c) => _color = c;
 
@@ -175,34 +173,37 @@ class TeamEntry{
   }
 
   Widget toWidget(BuildContext context) {
-    return new Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Container(
-              child: new Text("Team " +_number.toString() +", Round #"+_round.toString()),
-              padding: EdgeInsets.only(right: 15),
-            ),
-            new Container(
-              color: _color ? Colors.blueAccent : Colors.redAccent,
-              height: MediaQuery.of(context).size.height*.01,
-              width: MediaQuery.of(context).size.height*.01,
-            )
-          ],
-        ),
-        
-        new Text("Stones: "+_stones.toString()),
-        new Text("SkyStones: "+_skyStones.toString()),
-        new Text("Towers: " +_numberOfTowers.toString()),
-        new Divider()
-      ],
+    return new Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child:  new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              new Container(
+                color: _color ? Colors.blueAccent : Colors.redAccent,
+                height: MediaQuery.of(context).size.height*.01,
+                width: MediaQuery.of(context).size.height*.01,
+              ),
+              new Container(
+                child: new Text("Team " +_number.toString() +", Round #"+_round.toString()),
+                padding: EdgeInsets.only(left: 15),
+              ),
+            ],
+          ),
+          new Text("Stones: "+_stones.toString()),
+          new Text("SkyStones: "+_skyStones.toString()),
+          new Text("Towers: " +_numberOfTowers.toString()),
+        ],
+      ),
     );
   }
 
-  void submit() async {
+  Future<void> submit() async {
     setDate(DateTime.now());
     setNumberOfTowers(_foundation.towers.length);
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -212,8 +213,25 @@ class TeamEntry{
       sp.setStringList(_number.toString(), entries);
     } else {
       entries = sp.getStringList(_number.toString());
+      for(String jsonEntries in entries.toList()) {
+        if(TeamEntry.fromJson(jsonDecode(jsonEntries)).getRound() == _round) {
+          entries.remove(jsonEntries);
+        }
+      }
       entries.add(json.encode(this));
       sp.setStringList(_number.toString(), entries);
     } 
+  }
+
+  Future<void> delete() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    List<String> entries = new List();
+    entries = sp.getStringList(_number.toString());
+    for(String jsonEntries in entries.toList()) {
+      if(TeamEntry.fromJson(jsonDecode(jsonEntries)).getRound() == _round) {
+        entries.remove(jsonEntries);
+      }
+      sp.setStringList(_number.toString(), entries);
+    }
   }
 } 

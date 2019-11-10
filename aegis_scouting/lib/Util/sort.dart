@@ -81,8 +81,8 @@ class Sort{
       return entries;
     }
     
-    List left = new List();
-    List right = new List();
+    List<TeamEntry> left = new List();
+    List<TeamEntry> right = new List();
 
     int middle = len~/2;
 
@@ -146,8 +146,8 @@ class Sort{
       return entries;
     }
     
-    List left = new List();
-    List right = new List();
+    List<TeamEntry> left = new List();
+    List<TeamEntry> right = new List();
 
     int middle = len~/2;
 

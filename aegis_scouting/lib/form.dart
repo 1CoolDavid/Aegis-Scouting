@@ -92,6 +92,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
         ],
       ),
       body: new Container(
+        color: Colors.white,
         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
         child: new Form(
           key: formKey,
@@ -305,6 +306,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   Widget recordBuilder(context) {
     return new Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar:new Container(
         alignment: Alignment.bottomCenter,
         height: MediaQuery.of(context).size.height*.08,
@@ -354,276 +356,279 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
           },
         ),
       ),
-      body: new SingleChildScrollView(
-        padding: EdgeInsets.all(5),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Card(
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new IconButton(
-                    icon: new Icon(
-                      Icons.arrow_downward, 
-                      color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
-                    ),
-                    highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
-                    iconSize: (MediaQuery.of(context).size.width*.10),
-                    onPressed: () {
-                      if(currentEntry.getStones() != 0) {
-                        setState(() {
-                          currentEntry.setStones(currentEntry.getStones()-1);
-                        });
-                      }
-                    },
-                  ),
-                  new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Image(
-                        image: AssetImage('assets/images/stone.png'),
-                        width: MediaQuery.of(context).size.width*.1,
-                      ),
-                      new Text(
-                        currentEntry.getStones().toString(),
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.height*.03
-                        ),
-                      )
-                    ],
-                  ),
-                  new IconButton(
-                    icon: new Icon(
-                      Icons.arrow_upward,
-                      color: Color.fromRGBO(255,69,0,1), //reddit joke
-                    ),
-                    highlightColor: Color.fromRGBO(250, 119, 70, 0),
-                    iconSize: (MediaQuery.of(context).size.width*.10),
-                    onPressed: () {
-                      if(currentEntry.getStones() < 60) {
-                        setState(() {
-                          currentEntry.setStones(currentEntry.getStones()+1);
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            new Card(
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget> [
-                  new Text(
-                    "SkyStones",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.height*.025,
-                    ),
-                  ),
-                  new FlatButton(
-                    child: new Image(
-                      image: currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : currentEntry.getSkyStones() == 1 ?
-                      AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
-                      height: MediaQuery.of(context).size.height*.10,
-                      width: MediaQuery.of(context).size.width*.25,
-                    ),
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      setState(() {
-                        if(currentEntry.getSkyStones() == 1) {
-                          currentEntry.setSkyStones(2);
-                        } else if(currentEntry.getSkyStones() == 2) {
-                          currentEntry.setSkyStones(0);
-                        } else {
-                          currentEntry.setSkyStones(1);
-                        }
-                      });
-                    },
-                  )
-                ]
-              ),
-            ), 
-            new Card(
-              child: new Padding(
-                padding: EdgeInsets.all(5),
+      body: new Container(
+        color: Colors.white,
+        child: new SingleChildScrollView(
+          padding: EdgeInsets.all(5),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Card(
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new ChoiceChip(
-                      elevation: currentEntry.hasPlatformIn() ? 5 : 2,
-                      label: new Text(
-                        "Foundation In",
-                        style: currentEntry.hasPlatformIn() ? new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.height*.015,
-                        ) : new TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.height*.015,
-                        )
+                    new IconButton(
+                      icon: new Icon(
+                        Icons.arrow_downward, 
+                        color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
                       ),
-                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
-                      onSelected: (bool value) { 
-                        setState(() {
-                          currentEntry.setPlatformIn(value);
-                        }); 
+                      highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
+                      iconSize: (MediaQuery.of(context).size.width*.10),
+                      onPressed: () {
+                        if(currentEntry.getStones() != 0) {
+                          setState(() {
+                            currentEntry.setStones(currentEntry.getStones()-1);
+                          });
+                        }
                       },
-                      selected: currentEntry.hasPlatformIn(),
-                      backgroundColor: Colors.white,
                     ),
-                    new ChoiceChip(
-                      label: new Text(
-                        "Foundation Out",
-                        style: currentEntry.hasPlatformOut() ? new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.height*.015
-                        ) : new TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.height*.015,
+                    new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Image(
+                          image: AssetImage('assets/images/stone.png'),
+                          width: MediaQuery.of(context).size.width*.1,
+                        ),
+                        new Text(
+                          currentEntry.getStones().toString(),
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height*.03
+                          ),
                         )
-                      ),
-                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
-                      onSelected: (bool value) { 
-                        setState(() {
-                          currentEntry.setPlatformOut(value);
-                        }); 
-                      },
-                      elevation: currentEntry.hasPlatformOut() ? 5 : 2,
-                      selected: currentEntry.hasPlatformOut(),
-                      backgroundColor: Colors.white,
+                      ],
                     ),
-                    new ChoiceChip(
-                      elevation: currentEntry.hasParked() ? 5 : 2,
-                      label: new Text(
-                        "Parked",
-                        style: currentEntry.hasParked() ? new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.height*.015,
-                        ) : new TextStyle(
-                          color: Colors.black,
-                          fontSize: MediaQuery.of(context).size.height*.015,
-                        )
+                    new IconButton(
+                      icon: new Icon(
+                        Icons.arrow_upward,
+                        color: Color.fromRGBO(255,69,0,1), //reddit joke
                       ),
-                      selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
-                      onSelected: (bool value) { 
-                        setState(() {
-                          currentEntry.setParking(value);
-                        }); 
+                      highlightColor: Color.fromRGBO(250, 119, 70, 0),
+                      iconSize: (MediaQuery.of(context).size.width*.10),
+                      onPressed: () {
+                        if(currentEntry.getStones() < 60) {
+                          setState(() {
+                            currentEntry.setStones(currentEntry.getStones()+1);
+                          });
+                        }
                       },
-                      selected: currentEntry.hasParked(),
-                      backgroundColor: Colors.white,
-                    )
+                    ),
                   ],
                 ),
               ),
-            ),
-            new SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: _towerScroller,
-              child: currentEntry.getFoundation().towers.length != 0 ? new Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: currentEntry.getFoundation().towers.map((t) => towerToWidget(t)).toList() + [
-                  new Padding(
-                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.1, 5, MediaQuery.of(context).size.height*.1),
-                    child: new IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        setState(() {
-                          currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
-                        });
-                      _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
-                      },
-                    ),
-                  ),
-                ],
-              ) : new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: new Text(
-                      "Add A Tower",
+              new Card(
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget> [
+                    new Text(
+                      "SkyStones",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.height*.03
+                        fontSize: MediaQuery.of(context).size.height*.025,
                       ),
                     ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
-                    child: new RaisedButton(
-                      child: new Icon(
-                        Icons.add
-                      ), 
+                    new FlatButton(
+                      child: new Image(
+                        image: currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : currentEntry.getSkyStones() == 1 ?
+                        AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
+                        height: MediaQuery.of(context).size.height*.10,
+                        width: MediaQuery.of(context).size.width*.25,
+                      ),
+                      padding: EdgeInsets.all(0),
                       onPressed: () {
                         setState(() {
-                          currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
+                          if(currentEntry.getSkyStones() == 1) {
+                            currentEntry.setSkyStones(2);
+                          } else if(currentEntry.getSkyStones() == 2) {
+                            currentEntry.setSkyStones(0);
+                          } else {
+                            currentEntry.setSkyStones(1);
+                          }
                         });
-                        _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
                       },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(200),
-                        side: new BorderSide(color: Colors.black)
-                      )       
-                    ),
-                  ),
-                ],
-              )
-            ),
-            new Container(
-              padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width*.65,
-              child: new RaisedButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                color: Colors.orange[500],
-                child: new Text(
-                  "Penalties",
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: MediaQuery.of(context).size.height*.02
-                  ),
-                  textAlign: TextAlign.center,
+                    )
+                  ]
                 ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) {
-                      return PenaltyDialog();
-                    }
-                  );    
-                },
+              ), 
+              new Card(
+                child: new Padding(
+                  padding: EdgeInsets.all(5),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new ChoiceChip(
+                        elevation: currentEntry.hasPlatformIn() ? 5 : 2,
+                        label: new Text(
+                          "Foundation In",
+                          style: currentEntry.hasPlatformIn() ? new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.height*.015,
+                          ) : new TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.height*.015,
+                          )
+                        ),
+                        selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                        onSelected: (bool value) { 
+                          setState(() {
+                            currentEntry.setPlatformIn(value);
+                          }); 
+                        },
+                        selected: currentEntry.hasPlatformIn(),
+                        backgroundColor: Colors.white,
+                      ),
+                      new ChoiceChip(
+                        label: new Text(
+                          "Foundation Out",
+                          style: currentEntry.hasPlatformOut() ? new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.height*.015
+                          ) : new TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.height*.015,
+                          )
+                        ),
+                        selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                        onSelected: (bool value) { 
+                          setState(() {
+                            currentEntry.setPlatformOut(value);
+                          }); 
+                        },
+                        elevation: currentEntry.hasPlatformOut() ? 5 : 2,
+                        selected: currentEntry.hasPlatformOut(),
+                        backgroundColor: Colors.white,
+                      ),
+                      new ChoiceChip(
+                        elevation: currentEntry.hasParked() ? 5 : 2,
+                        label: new Text(
+                          "Parked",
+                          style: currentEntry.hasParked() ? new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.height*.015,
+                          ) : new TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.height*.015,
+                          )
+                        ),
+                        selectedColor: currentEntry.getColor() ? Colors.blueAccent : Colors.redAccent,
+                        onSelected: (bool value) { 
+                          setState(() {
+                            currentEntry.setParking(value);
+                          }); 
+                        },
+                        selected: currentEntry.hasParked(),
+                        backgroundColor: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-            new Container(
-              width: MediaQuery.of(context).size.width*.90,
-              child: new TextFormField(
-                onChanged: (String value)=> currentEntry.setDescription(value),
-                textAlign: TextAlign.left,
-                decoration: new InputDecoration(
-                  labelText: "Description", 
+              new SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                controller: _towerScroller,
+                child: currentEntry.getFoundation().towers.length != 0 ? new Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: currentEntry.getFoundation().towers.map((t) => towerToWidget(t)).toList() + [
+                    new Padding(
+                      padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.1, 5, MediaQuery.of(context).size.height*.1),
+                      child: new IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          setState(() {
+                            currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
+                          });
+                        _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                        },
+                      ),
+                    ),
+                  ],
+                ) : new Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: new Text(
+                        "Add A Tower",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height*.03
+                        ),
+                      ),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.fromLTRB(5, MediaQuery.of(context).size.height*.10, 5, MediaQuery.of(context).size.height*.10),
+                      child: new RaisedButton(
+                        child: new Icon(
+                          Icons.add
+                        ), 
+                        onPressed: () {
+                          setState(() {
+                            currentEntry.getFoundation().towers.add(new Tower(context, currentEntry.getColor())); 
+                          });
+                          _towerScroller.animateTo((MediaQuery.of(context).size.width*MyApp.towerWidth)*(currentEntry.getFoundation().towers.length-1), curve: Curves.easeIn, duration: new Duration(seconds: 2));
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(200),
+                          side: new BorderSide(color: Colors.black)
+                        )       
+                      ),
+                    ),
+                  ],
+                )
+              ),
+              new Container(
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width*.65,
+                child: new RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  color: Colors.orange[500],
+                  child: new Text(
+                    "Penalties",
+                    style: new TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: MediaQuery.of(context).size.height*.02
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return PenaltyDialog();
+                      }
+                    );    
+                  },
                 ),
-                initialValue: currentEntry.getDescription() == null ? "" : currentEntry.getDescription(),
-              )
-            ),  
-          ],    
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width*.90,
+                child: new TextFormField(
+                  onChanged: (String value)=> currentEntry.setDescription(value),
+                  textAlign: TextAlign.left,
+                  decoration: new InputDecoration(
+                    labelText: "Description", 
+                  ),
+                  initialValue: currentEntry.getDescription() == null ? "" : currentEntry.getDescription(),
+                )
+              ),  
+            ],    
+          ),
         ),
-      ),
+      )
     );
   }
 
