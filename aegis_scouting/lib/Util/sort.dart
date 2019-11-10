@@ -12,7 +12,7 @@ class Sort{
   }
 
   List<TeamEntry> sortEntryListByRound(List<TeamEntry> entries, int len) {
-    if(len == 1) {
+    if(len <= 1) {
       return entries;
     }
     
@@ -77,7 +77,7 @@ class Sort{
   }
 
   List<TeamEntry> sortEntryListByTeam(List<TeamEntry> entries, int len) {
-    if(len == 1) {
+    if(len <= 1) {
       return entries;
     }
     
@@ -142,7 +142,7 @@ class Sort{
   }
 
   List<TeamEntry> sortEntryListByTime(List<TeamEntry> entries, int len) {
-    if(len == 1) {
+    if(len <= 1) {
       return entries;
     }
     

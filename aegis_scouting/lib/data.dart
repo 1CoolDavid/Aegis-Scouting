@@ -83,7 +83,10 @@ class MyDataPage extends State<MyData> {
   }
   
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {  
+    if(display == Display.Form) {
+      currentEntry = null;
+    }  
     if(entryMap.isEmpty || entryMap == null) {
       loadAllData();
       return new Scaffold(
@@ -101,6 +104,7 @@ class MyDataPage extends State<MyData> {
             ),
             new Container(
               alignment: Alignment.centerRight,
+              color: Colors.white,
               child: new IconButton(
                 color: Colors.white,
                 icon: new Icon(Icons.more_horiz),
@@ -179,52 +183,55 @@ class MyDataPage extends State<MyData> {
             )
           ],
         ),
-        body: new ListView(
-          children: !_inverted ? entryMap.values.toList().map((t) => 
-          new GestureDetector(
-            child: t.toWidget(context), 
-            onDoubleTap: () {
-              Future<void> showSheet = showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                useRootNavigator: true,
-                builder: (context) => EntryPanel(t)
-              );
-              showSheet.whenComplete(() async {
-                if(t.getStones() == -1) {
-                  t.delete().whenComplete( () {
-                    loadAllData();
-                  });
-                } else {
-                  t.submit().whenComplete( () {
-                    loadAllData();
-                  });
-                }
-              });
-            },
-          )).toList() : entryMap.values.toList().map((t) => 
-          new GestureDetector(
-            child: t.toWidget(context),
-            onDoubleTap: () {
-              Future<void> showSheet = showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                useRootNavigator: true,
-                builder: (context) => EntryPanel(t)
-              );
-              showSheet.whenComplete(() async {
-                if(t.getStones() == -1) {
-                  t.delete().whenComplete( () {
-                    loadAllData();
-                  });
-                } else {
-                  t.submit().whenComplete( () {
-                    loadAllData();
-                  });
-                }
-              });
-            },
-          )).toList().reversed.toList()
+        body: new Container(
+          color: Colors.white,
+          child: new ListView(
+            children: !_inverted ? entryMap.values.toList().map((t) => 
+            new GestureDetector(
+              child: t.toWidget(context), 
+              onDoubleTap: () {
+                Future<void> showSheet = showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useRootNavigator: true,
+                  builder: (context) => EntryPanel(t)
+                );
+                showSheet.whenComplete(() async {
+                  if(t.getStones() == -1) {
+                    t.delete().whenComplete( () {
+                      loadAllData();
+                    });
+                  } else {
+                    t.submit().whenComplete( () {
+                      loadAllData();
+                    });
+                  }
+                });
+              },
+            )).toList() : entryMap.values.toList().map((t) => 
+            new GestureDetector(
+              child: t.toWidget(context),
+              onDoubleTap: () {
+                Future<void> showSheet = showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useRootNavigator: true,
+                  builder: (context) => EntryPanel(t)
+                );
+                showSheet.whenComplete(() async {
+                  if(t.getStones() == -1) {
+                    t.delete().whenComplete( () {
+                      loadAllData();
+                    });
+                  } else {
+                    t.submit().whenComplete( () {
+                      loadAllData();
+                    });
+                  }
+                });
+              },
+            )).toList().reversed.toList()
+          ),
         ),
       );
     }

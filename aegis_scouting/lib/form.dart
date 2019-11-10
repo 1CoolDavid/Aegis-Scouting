@@ -366,60 +366,73 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               new Card(
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new IconButton(
-                      icon: new Icon(
-                        Icons.arrow_downward, 
-                        color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
+                    new Text(
+                      "Total Stones",
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height*.02
                       ),
-                      highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
-                      iconSize: (MediaQuery.of(context).size.width*.10),
-                      onPressed: () {
-                        if(currentEntry.getStones() != 0) {
-                          setState(() {
-                            currentEntry.setStones(currentEntry.getStones()-1);
-                          });
-                        }
-                      },
                     ),
-                    new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        new Image(
-                          image: AssetImage('assets/images/stone.png'),
-                          width: MediaQuery.of(context).size.width*.1,
-                        ),
-                        new Text(
-                          currentEntry.getStones().toString(),
-                          textAlign: TextAlign.center,
-                          style: new TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height*.03
+                        new IconButton(
+                          icon: new Icon(
+                            Icons.arrow_downward, 
+                            color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
                           ),
-                        )
+                          highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
+                          iconSize: (MediaQuery.of(context).size.width*.10),
+                          onPressed: () {
+                            if(currentEntry.getStones() != 0) {
+                              setState(() {
+                                currentEntry.setStones(currentEntry.getStones()-1);
+                              });
+                            }
+                          },
+                        ),
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            new Image(
+                              image: AssetImage('assets/images/stone.png'),
+                              width: MediaQuery.of(context).size.width*.1,
+                            ),
+                            new Text(
+                              currentEntry.getStones().toString(),
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.height*.03
+                              ),
+                            )
+                          ],
+                        ),
+                        new IconButton(
+                          icon: new Icon(
+                            Icons.arrow_upward,
+                            color: Color.fromRGBO(255,69,0,1), //reddit joke
+                          ),
+                          highlightColor: Color.fromRGBO(250, 119, 70, 0),
+                          iconSize: (MediaQuery.of(context).size.width*.10),
+                          onPressed: () {
+                            if(currentEntry.getStones() < 60) {
+                              setState(() {
+                                currentEntry.setStones(currentEntry.getStones()+1);
+                              });
+                            }
+                          },
+                        ),
                       ],
                     ),
-                    new IconButton(
-                      icon: new Icon(
-                        Icons.arrow_upward,
-                        color: Color.fromRGBO(255,69,0,1), //reddit joke
-                      ),
-                      highlightColor: Color.fromRGBO(250, 119, 70, 0),
-                      iconSize: (MediaQuery.of(context).size.width*.10),
-                      onPressed: () {
-                        if(currentEntry.getStones() < 60) {
-                          setState(() {
-                            currentEntry.setStones(currentEntry.getStones()+1);
-                          });
-                        }
-                      },
-                    ),
                   ],
-                ),
+                )
+                
               ),
               new Card(
                 child: new Column(
@@ -432,14 +445,14 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: MediaQuery.of(context).size.height*.025,
+                        fontSize: MediaQuery.of(context).size.height*.02,
                       ),
                     ),
                     new FlatButton(
                       child: new Image(
                         image: currentEntry.getSkyStones() == 0 ? AssetImage('assets/images/noskystone.png') : currentEntry.getSkyStones() == 1 ?
                         AssetImage('assets/images/skystone.png') : AssetImage('assets/images/skystones.png'),
-                        height: MediaQuery.of(context).size.height*.10,
+                        height: MediaQuery.of(context).size.height*.08,
                         width: MediaQuery.of(context).size.width*.25,
                       ),
                       padding: EdgeInsets.all(0),

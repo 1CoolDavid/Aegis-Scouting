@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     ]);
     SystemChrome.setEnabledSystemUIOverlays([]);
     if(MyApp.towerWidth == 0.0) {
-      MyApp.towerWidth = MediaQuery.of(context).size.width <= 500 ? 0.35 : 0.25;
+      MyApp.towerWidth = MediaQuery.of(context).size.width <= 600 ? 0.35 : 0.25;
     }
     if(MyApp.towerHeight == 0) {
       MyApp.towerHeight = MediaQuery.of(context).size.height > 900 ? 0.27 : 0.3; 
