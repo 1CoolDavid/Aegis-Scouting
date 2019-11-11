@@ -189,6 +189,47 @@ class Sort{
 
     return combo;
   }
+
+  int getMax(List<int> l, int n) { 
+    int max = l[0]; 
+    for (int i = 1; i < n; i++) 
+      if (l[i] > max) 
+          max = l[i]; 
+    return max; 
+  } 
+
+  void countSort(List<int> nums, int len, int place) {
+    List<int> out = new List.filled(len, 0);
+    List<int> cnt = new List.filled(10, 0);
+    int i;
+
+    for(i = 0; i<len; i++) {
+      cnt[(nums[i]~/place)%10]++;
+    }
+
+    for(i = 1; i<10; i++) {
+      cnt[i] += cnt[i-1];
+    }
+
+    for(i= len-1; i>= 0; i--){
+      out[cnt[(nums[i]~/place)%10]-1] = nums[i];
+      cnt[(nums[i]~/place)%10]--;
+    }
+
+    for(i = 0; i<len; i++) {
+      nums[i] = out[i];
+    }
+  }
+
+  List<int> sortTeamList(List<int> nums, int length) {
+    int max = getMax(nums, length);
+
+    for(int place = 1; max~/place > 0; place *= 10) {
+      countSort(nums, length, place);
+    }
+    print(nums);
+    return nums;
+  }
 }
 
 

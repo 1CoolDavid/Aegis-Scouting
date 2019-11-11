@@ -1,7 +1,10 @@
+import 'dart:collection';
 import 'dart:convert';
+import 'dart:core';
 
 
 import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
+import 'package:aegis_scouting/Util/sort.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Team{
@@ -10,59 +13,70 @@ class Team{
   List<int> _stones = new List();
   List<int> _skyStones = new List();
   List<int> _numberOfTowers = new List();
-  List<int> _scores = new List();
+  List<int> _markerHeight = new List();
 
   //Stats
-  double _avgStones, _avgSkyStones, _avgHeight, _avgNumberOfTowers;
-  int _maxStoneHeight, _reds, _yellows, _bridges, _autons, _possessions, _len;
+  double _avgStones = 0, _avgSkyStones = 0, _avgHeight = 0, _avgNumberOfTowers = 0;
+  int _maxStoneHeight = 0, _reds = 0, _yellows = 0, _bridges = 0, _autons = 0, _possessions = 0, _len = 0, _parking = 0, _foundationIn = 0, _foundationOut = 0, _marker = 0;
+  
+  Sort _sorter = new Sort();
   
   Team(int number) {
     _number = number;
-    loadData().whenComplete(() {
+    loadTeamData(_number).whenComplete(() {
       _len = _entries.length;
       fillData();
     });
   }
 
-  Future loadData() async {
+  Future<void> loadTeamData(int team) async {
+    LinkedHashMap<String, TeamEntry> map = new LinkedHashMap();
     SharedPreferences sp = await SharedPreferences.getInstance();
-    json.decode(sp.getString(_number.toString())).forEach(
-      (map) => _entries.add(TeamEntry.fromJson(map))
-    );
+    List<String> jsonList = sp.getStringList(team.toString());
+    for(String jsonEntry in jsonList) {
+      Map<String, dynamic> jsonObject = jsonDecode(jsonEntry);
+      TeamEntry entry = TeamEntry.fromJson(jsonObject);
+      map.putIfAbsent(entry.getNumber().toString()+"-"+entry.getRound().toString(), () => entry);
+    }
+
+    map = _sorter.sortEntryMapByRound(map);
+
+    _entries = map.values.toList();
   }
   
   void fillData() {
-    double stone, sky, height, hcount, towers;
-    int maxHeight, red, yellow, bridge, auton, possession;
+    double height = 0, hcount = 0;
     for(TeamEntry t in _entries) {
-      stone += t.getStones();
+      _avgStones += t.getStones();
       _stones.add(t.getStones());
-      sky += t.getSkyStones();
+      _avgSkyStones += t.getSkyStones();
       _skyStones.add(t.getSkyStones());
+      _markerHeight.add(t.getMarkerHeight());
       t.getFoundation().towers.forEach(
         (tower) { 
           height+=tower.getHeight(); 
           hcount++;
         }
       );
-      maxHeight = t.getMaxHeight() > maxHeight ? t.getMaxHeight() : maxHeight;
-      towers += t.getNumberOfTowers();
+      _maxStoneHeight = t.getMaxHeight() > _maxStoneHeight ? t.getMaxHeight() : _maxStoneHeight;
+      _avgNumberOfTowers += t.getNumberOfTowers();
       _numberOfTowers.add(t.getNumberOfTowers());
-      red = t.hasRedCard() ? red++ : red;
-      yellow = t.hasYellowCard() ? yellow++ : yellow;
-      bridge = t.hasBridgePenalty() ? bridge++ : bridge;
-      auton = t.hasAutonPenalty() ? auton++ : auton;
-      possession = t.hasPossessionPenalty() ? possession++ : possession;
+
+      _parking = t.hasParked() ? _parking++ : _parking;
+      _foundationIn = t.hasPlatformIn() ? _foundationIn++ : _foundationIn;
+      _foundationOut = t.hasPlatformOut() ? _foundationOut++ : _foundationOut;
+      _marker = t.hasMarker() ? _marker++ : _marker;
+
+      _reds = t.hasRedCard() ? _reds++ : _reds;
+      _yellows = t.hasYellowCard() ? _yellows++ : _yellows;
+      _bridges = t.hasBridgePenalty() ? _bridges++ : _bridges;
+      _autons = t.hasAutonPenalty() ? _autons++ : _autons;
+      _possessions = t.hasPossessionPenalty() ? _possessions++ : _possessions;
     }
-    _avgStones = stone/_len;
-    _avgSkyStones = sky/_len;
-    _avgHeight = height/hcount;
-    _avgNumberOfTowers = towers/_len;
-    _reds = red;
-    _yellows = yellow;
-    _bridges = bridge;
-    _autons = auton;
-    _possessions = possession;
+    _avgStones/=_len;
+    _avgSkyStones/=_len;
+    _avgHeight=height/hcount;
+    _avgNumberOfTowers/=_len;
   }
 
   void add(TeamEntry t) {
@@ -79,6 +93,14 @@ class Team{
   }
 
   List<TeamEntry> getData() => _entries;
+
+  List<int> getStoneData() => _stones;
+
+  List<int> getSkyStoneData() => _skyStones;
+
+  List<int> getTowerData() => _numberOfTowers;
+
+  List<int> getMarkerData() => _markerHeight;
 
   double getAvgStones() => _avgStones;
 
@@ -107,7 +129,6 @@ class Team{
     'stones':_stones,
     'skyStones':_skyStones,
     'towers':_numberOfTowers,
-    'scores':_scores,
     'avgStones':_avgStones,
     'avgSkyStones':_avgSkyStones,
     'avgHeight' : _avgHeight,
@@ -126,7 +147,6 @@ class Team{
     _stones=json['stones'];
     _skyStones=json['skyStones'];
     _numberOfTowers=json['towers'];
-    _scores=json['scores'];
     _avgStones=json['avgStones'];
     _avgSkyStones=json['avgSkyStones'];
     _avgHeight=json['avgHeight'];

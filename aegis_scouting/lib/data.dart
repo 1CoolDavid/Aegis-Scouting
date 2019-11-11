@@ -70,17 +70,6 @@ class MyDataPage extends State<MyData> {
       entryMap = map;
     });
   }
-
-  Future<void> loadTeamData(int team) async {
-    LinkedHashMap<String, TeamEntry> map = new LinkedHashMap();
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> jsonList = sp.getStringList(team.toString());
-    for(String jsonEntry in jsonList) {
-      Map<String, dynamic> jsonObject = jsonDecode(jsonEntry);
-      TeamEntry entry = TeamEntry.fromJson(jsonObject);
-      map.putIfAbsent(entry.getNumber().toString()+"-"+entry.getRound().toString(), () => entry);
-    }
-  }
   
   @override
   Widget build(BuildContext context) {  
