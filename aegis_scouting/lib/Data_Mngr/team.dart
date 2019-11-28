@@ -14,9 +14,10 @@ class Team{
   List<int> _skyStones = new List();
   List<int> _numberOfTowers = new List();
   List<int> _markerHeight = new List();
+  List<String> _descriptions = new List();
 
   //Stats
-  double _avgStones = 0, _avgSkyStones = 0, _avgHeight = 0, _avgNumberOfTowers = 0;
+  double _avgStones = 0, _avgSkyStones = 0, _avgHeight = 0, _avgNumberOfTowers = 0, _avgMarkerHeight = 0;
   int _maxStoneHeight = 0, _reds = 0, _yellows = 0, _bridges = 0, _autons = 0, _possessions = 0, _len = 0, _parking = 0, _foundationIn = 0, _foundationOut = 0, _marker = 0;
   
   Sort _sorter = new Sort();
@@ -47,11 +48,15 @@ class Team{
   void fillData() {
     double height = 0, hcount = 0;
     for(TeamEntry t in _entries) {
+      if(t.getDescription()!="") {
+        _descriptions.add("Round "+t.getRound().toString()+": "+t.getDescription());
+      }
       _avgStones += t.getStones();
       _stones.add(t.getStones());
       _avgSkyStones += t.getSkyStones();
       _skyStones.add(t.getSkyStones());
       _markerHeight.add(t.getMarkerHeight());
+      _avgMarkerHeight+=t.getMarkerHeight();
       t.getFoundation().towers.forEach(
         (tower) { 
           height+=tower.getHeight(); 
@@ -66,7 +71,6 @@ class Team{
       _foundationIn = t.hasPlatformIn() ? _foundationIn++ : _foundationIn;
       _foundationOut = t.hasPlatformOut() ? _foundationOut++ : _foundationOut;
       _marker = t.hasMarker() ? _marker++ : _marker;
-
       _reds = t.hasRedCard() ? _reds++ : _reds;
       _yellows = t.hasYellowCard() ? _yellows++ : _yellows;
       _bridges = t.hasBridgePenalty() ? _bridges++ : _bridges;
@@ -77,9 +81,13 @@ class Team{
     _avgSkyStones/=_len;
     _avgHeight=height/hcount;
     _avgNumberOfTowers/=_len;
+    _avgMarkerHeight/=_len;
   }
 
   void add(TeamEntry t) {
+    if(t.getDescription() != "") {
+      _descriptions.add("Round "+t.getRound().toString()+": "+t.getDescription());
+    }
     _reds += t.hasRedCard() ? 1 : 0;
     _yellows += t.hasYellowCard() ? 1 : 0;
     _bridges += t.hasBridgePenalty() ? 1 : 0;
@@ -102,6 +110,8 @@ class Team{
 
   List<int> getMarkerData() => _markerHeight;
 
+  List<String> getDescriptions() => _descriptions;
+
   double getAvgStones() => _avgStones;
 
   double getAvgSkyStones() => _avgSkyStones;
@@ -109,6 +119,8 @@ class Team{
   double getAvgHeight() => _avgHeight;
 
   double getAvgNumberOfTowers() => _avgNumberOfTowers;
+
+  double getAvgMarkerHeight() => _avgMarkerHeight;
 
   int getMaxStoneHeight() => _maxStoneHeight;
 

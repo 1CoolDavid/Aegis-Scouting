@@ -238,6 +238,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       onPressed: () {
                         setState(() {
                           t.setHeight(t.getHeight()+1);
+                          if(t.getMarker()) {
+                            currentEntry.setMarkerHeight(t.getHeight());
+                          }
                         });
                       },
                     ),
@@ -249,6 +252,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       color: Colors.red,
                       onPressed: () {
                         setState(() {
+                          if(t.getMarker()) {
+                            currentEntry.setMarkerHeight(0);
+                          }
                           currentEntry.getFoundation().towers.remove(t);
                         });
                       },
@@ -261,6 +267,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                       onPressed: () {
                         setState(() {
                           t.setHeight(t.getHeight()-1);
+                          if(t.getMarker()) {
+                            currentEntry.setMarkerHeight(t.getHeight());
+                          }
                           if(t.getHeight() == 0) {
                             currentEntry.getFoundation().towers.remove(t);
                           }
@@ -277,10 +286,12 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           if(currentEntry.hasMarker() && !t.getMarker()) {
                             for(Tower t in currentEntry.getFoundation().towers) {
                               t.setMarker(false);
+                              currentEntry.setMarkerHeight(0);
                             }
                           }
                           t.setMarker(!t.getMarker());
                           currentEntry.setMarker(true);
+                          currentEntry.setMarkerHeight(t.getHeight());
                         });
                       },
                     )
@@ -306,6 +317,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
 
   Widget recordBuilder(context) {
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       bottomNavigationBar:new Container(
         alignment: Alignment.bottomCenter,

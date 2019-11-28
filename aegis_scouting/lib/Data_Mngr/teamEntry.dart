@@ -157,6 +157,7 @@ class TeamEntry{
     _stones = json['stones'];
     _maxHeight = json['maxHeight'];
     _numberOfTowers = json['numberOfTowers'];
+    _markerHeight = json['markerHeight'];
     _autonInterfere = json['auton'];
     _invalidPossession = json['possession'];
     _skybridge = json['bridge'];
@@ -170,6 +171,57 @@ class TeamEntry{
     _date = DateTime.parse(json['date']);
     _foundation = new Foundation();
     _foundation.towers = json['foundation'] != null ? Foundation.fromJson(List.from(json['foundation'])).towers : new List();
+  }
+
+  String toCompressed() {
+    String compressed = "n"+_number.toString()+"r"+_round.toString()+"ss"+_skyStones.toString()+"s"+_stones.toString()+
+    "mh"+_maxHeight.toString()+"mk"+_markerHeight.toString()+"nT"+_numberOfTowers.toString()+"c";
+    compressed+=_color ? "1":"0";
+    compressed+=_autonInterfere ? "a1":"a0";
+    compressed+=_invalidPossession ? "p1":"p0";
+    compressed+=_skybridge ? "b1":"b2";
+    compressed+=_red ? "r1":"r0";
+    compressed+=_yellow ? "y1":"y0";
+    compressed+=_platformIn ? "pI1":"pI0";
+    compressed+=_platformOut ? "pO1":"pO0";
+    compressed+=_parking ? "p1":"p0";
+    compressed+=_marker ? "m1f":"m0f";
+    for(Tower t in _foundation.towers) {
+      compressed+="h"+t.getHeight().toString();
+      compressed+=t.getMarker() ? "m1":"m0";
+    }
+    return compressed+"|";
+  }
+
+  TeamEntry.fromCompressed(String compressed, BuildContext context) {
+    _number = int.parse(compressed.substring(1, compressed.indexOf('r')));
+    _round = int.parse(compressed.substring(compressed.indexOf('r')+1, compressed.indexOf('ss')));
+    _skyStones = int.parse(compressed.substring(compressed.indexOf('ss')+2, compressed.lastIndexOf('s')));
+    _stones = int.parse(compressed.substring(compressed.lastIndexOf('s')+1, compressed.indexOf('mh')));
+    _maxHeight = int.parse(compressed.substring(compressed.indexOf('mh')+2, compressed.indexOf('mk')));
+    _markerHeight = int.parse(compressed.substring(compressed.indexOf('mk')+2, compressed.indexOf('nT')));
+    _numberOfTowers = int.parse(compressed.substring(compressed.indexOf('nT')+2, compressed.indexOf('c')));
+    _color = compressed.substring(compressed.indexOf('c')+1, compressed.indexOf('a')) == "1";
+    _autonInterfere = compressed.substring(compressed.indexOf('a')+1, compressed.indexOf('p')) == "1";
+    _invalidPossession = compressed.substring(compressed.indexOf('p')+1, compressed.indexOf('b')) == "1";
+    _skybridge = compressed.substring(compressed.indexOf('b')+1, compressed.lastIndexOf('r')) == "1";
+    _red = compressed.substring(compressed.lastIndexOf('r')+1, compressed.indexOf('y')) == "1";
+    _yellow = compressed.substring(compressed.indexOf('y')+1, compressed.indexOf('pI')) == "1";
+    _platformIn = compressed.substring(compressed.indexOf('pI')+2, compressed.indexOf('pO')) == "1";
+    _platformOut = compressed.substring(compressed.indexOf('pO')+2, compressed.lastIndexOf('p')) == "1";
+    _parking = compressed.substring(compressed.lastIndexOf('p')+1, compressed.lastIndexOf('m')) == "1";
+    _marker = compressed.indexOf('m1f') != -1;
+    compressed = compressed.substring(compressed.indexOf('f')+1);
+    _foundation = new Foundation();
+    
+    while(compressed[0] != "|" || compressed.length > 1) {
+      Tower tower = new Tower(context, _color);
+      tower.setHeight(int.parse(compressed.substring(compressed.indexOf('h')+1, compressed.indexOf('m'))));
+      int mark = compressed.indexOf('m1');
+      tower.setMarker(mark != -1 && mark < 3); //If present mark should be 2 -> hxmx
+      _foundation.add(tower);
+      compressed = compressed.substring(4);
+    }
   }
 
   Widget toWidget(BuildContext context) {
@@ -198,6 +250,7 @@ class TeamEntry{
           new Text("Stones: "+_stones.toString()),
           new Text("SkyStones: "+_skyStones.toString()),
           new Text("Towers: " +_numberOfTowers.toString()),
+          new Divider()
         ],
       ),
     );
@@ -206,6 +259,7 @@ class TeamEntry{
   Future<void> submit() async {
     setDate(DateTime.now());
     setNumberOfTowers(_foundation.towers.length);
+    print(_markerHeight);
     SharedPreferences sp = await SharedPreferences.getInstance();
     List<String> entries = new List();
     if(sp.get(_number.toString()) == null) {
