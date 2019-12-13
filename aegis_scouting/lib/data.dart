@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
 import 'package:aegis_scouting/Util/sort.dart';
 import 'package:aegis_scouting/main.dart';
-import 'package:archive/archive.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -353,6 +353,21 @@ class MyDataPage extends State<MyData> {
                     });
                   }
                 ),
+              ),
+            ),
+            new Container(
+              alignment: Alignment.centerRight,
+              child: new IconButton(
+                color: Colors.white,
+                icon: new Icon(Icons.folder_special),
+                onPressed: () async {   
+                  File storage = await MyApp.localFile();    
+                  if(await storage.exists())
+                    storage.delete();           
+                  for(TeamEntry t in entryMap.values) {
+                    t.saveInternally();
+                  }
+                },
               ),
             ),
             new Container(

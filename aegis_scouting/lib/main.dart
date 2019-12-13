@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:aegis_scouting/Data_Mngr/teamEntry.dart';
 import 'package:aegis_scouting/manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +15,20 @@ class MyApp extends StatelessWidget {
   static double towerWidth = 0;
   static double towerHeight = 0;
   // This widget is the root of your application.
+
+  static Future<String> localPath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  static Future<File> localFile() async {
+    final path = localPath();
+    return File('$path/Entries.txt');
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

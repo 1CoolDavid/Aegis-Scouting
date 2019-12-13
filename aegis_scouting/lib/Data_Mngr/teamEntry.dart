@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aegis_scouting/Data_Mngr/tower.dart';
+import 'package:aegis_scouting/main.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
@@ -275,6 +279,17 @@ class TeamEntry{
       entries.add(json.encode(this));
       sp.setStringList(_number.toString(), entries);
     } 
+  }
+
+  Future<void> saveInternally() async {
+    File file = await MyApp.localFile();
+    if(!await file.exists()) {
+      file.createSync();
+      file.writeAsString(this.toJson().keys.toString()+"\n");
+      file.writeAsString(this.toJson().values.toString()+"\n");
+    } else {
+      file.writeAsString(this.toJson().values.toString()+"\n", mode: FileMode.append);
+    }
   }
 
   Future<void> delete() async {

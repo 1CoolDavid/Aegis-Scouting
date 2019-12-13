@@ -28,7 +28,7 @@ class Sort{
     for(int j = middle; j<len; j++) {
       right.add(entries[j]);
     }
-
+    
     left = sortEntryListByRound(left, middle);
     right = sortEntryListByRound(right, len-middle); 
 
