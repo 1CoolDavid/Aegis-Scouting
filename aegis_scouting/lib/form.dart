@@ -372,7 +372,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
         color: Colors.white,
         child: new SingleChildScrollView(
           padding: EdgeInsets.all(5),
-          child: new Column(
+          child: new Column( // Power Cells
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -382,7 +382,7 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new Text(
-                      "Total Stones",
+                      "Teleop Lower Cells",
                       style: new TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: MediaQuery.of(context).size.height*.02
@@ -400,9 +400,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
                           iconSize: (MediaQuery.of(context).size.width*.10),
                           onPressed: () {
-                            if(currentEntry.getStones() != 0) {
+                            if(currentEntry.getTLowerCells() != 0) {
                               setState(() {
-                                currentEntry.setStones(currentEntry.getStones()-1);
+                                currentEntry.setTLowerCells(currentEntry.getTLowerCells()-1);
                               });
                             }
                           },
@@ -412,11 +412,11 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             new Image(
-                              image: AssetImage('assets/images/stone.png'),
+                              image: AssetImage('assets/images/pc.png'),
                               width: MediaQuery.of(context).size.width*.1,
                             ),
                             new Text(
-                              currentEntry.getStones().toString(),
+                              currentEntry.getTLowerCells().toString(),
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -433,9 +433,9 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                           highlightColor: Color.fromRGBO(250, 119, 70, 0),
                           iconSize: (MediaQuery.of(context).size.width*.10),
                           onPressed: () {
-                            if(currentEntry.getStones() < 60) {
+                            if(currentEntry.getTLowerCells() < 60) {
                               setState(() {
-                                currentEntry.setStones(currentEntry.getStones()+1);
+                                currentEntry.setTLowerCells(currentEntry.getTLowerCells()+1);
                               });
                             }
                           },
@@ -445,6 +445,76 @@ class MyFormPage extends State<MyForm> with SingleTickerProviderStateMixin{
                   ],
                 )
                 
+              ),
+
+              new Card(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text(
+                        "Teleop Upper/Inner Cells",
+                        style: new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height*.02
+                        ),
+                      ),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(
+                              Icons.arrow_downward,
+                              color: Color.fromRGBO(111, 165, 217, 1), //reddit joke
+                            ),
+                            highlightColor: Color.fromRGBO(149, 186, 245, 1.0),
+                            iconSize: (MediaQuery.of(context).size.width*.10),
+                            onPressed: () {
+                              if(currentEntry.getTUpperCells() != 0) {
+                                setState(() {
+                                  currentEntry.setTUpperCells(currentEntry.getTUpperCells()-1);
+                                });
+                              }
+                            },
+                          ),
+                          new Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              new Image(
+                                image: AssetImage('assets/images/pc.png'),
+                                width: MediaQuery.of(context).size.width*.1,
+                              ),
+                              new Text(
+                                currentEntry.getTUpperCells().toString(),
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: MediaQuery.of(context).size.height*.03
+                                ),
+                              )
+                            ],
+                          ),
+                          new IconButton(
+                            icon: new Icon(
+                              Icons.arrow_upward,
+                              color: Color.fromRGBO(255,69,0,1), //reddit joke
+                            ),
+                            highlightColor: Color.fromRGBO(250, 119, 70, 0),
+                            iconSize: (MediaQuery.of(context).size.width*.10),
+                            onPressed: () {
+                              if(currentEntry.getTUpperCells() < 60) {
+                                setState(() {
+                                  currentEntry.setTUpperCells(currentEntry.getTUpperCells()+1);
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+
               ),
               new Card(
                 child: new Column(

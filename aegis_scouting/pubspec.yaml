@@ -61,6 +61,7 @@ flutter:
     - assets/images/BlueGearCat.png
     - assets/images/blue_marked_stone_icon.png
     - assets/images/red_marked_stone_icon.png
+    - assets/images/pc.png
     
 
   # The following line ensures that the Material Icons font is

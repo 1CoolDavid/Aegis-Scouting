@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeamEntry{
-  int _number, _round, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0;
+  int _number, _round, _skyStones=0, _stones=0, _maxHeight=0, _markerHeight=0, _numberOfTowers=0, _teleopLowerCells=0, _teleopUpperCells=0;
   bool _color=false, _autonInterfere=false, _invalidPossession=false, _skybridge=false, _red=false, _yellow=false, _platformIn=false, _platformOut=false, _parking=false, _marker=false;
   String _author="", _description="";
   DateTime _date;
@@ -30,6 +30,11 @@ class TeamEntry{
   void setSkyStones(int s) => _skyStones = s;
 
   void setStones(int s) => _stones = s;
+  //cells
+  void setTLowerCells(int z) => _teleopLowerCells = z;
+
+  //cells
+  void setTUpperCells(int z) => _teleopUpperCells = z;
 
   void setMaxHeight(int h) => _maxHeight = h;
 
@@ -70,6 +75,10 @@ class TeamEntry{
   int getSkyStones() => _skyStones;
 
   int getStones() => _stones;
+
+  int getTLowerCells() => _teleopLowerCells;
+
+  int getTUpperCells() => _teleopUpperCells;
 
   int getMaxHeight() => _maxHeight;
 
@@ -131,8 +140,9 @@ class TeamEntry{
   Map<String, dynamic> toJson() => {
     'number' : _number,
     'round' : _round,
-    'skyStones' : _skyStones,
-    'stones' : _stones,
+    //'skyStones' : _skyStones,
+    'Lower Cells' : _teleopLowerCells,
+    'Upper Cells' : _teleopUpperCells,
     'maxHeight' : _maxHeight,
     'markerHeight' : _markerHeight,
     'numberOfTowers' : _numberOfTowers,
@@ -157,8 +167,9 @@ class TeamEntry{
     _round = json['round'];
     _color = json['color'];
     _author = json['author'];
-    _skyStones = json['skyStones'];
-    _stones = json['stones'];
+    //_skyStones = json['skyStones'];
+    _teleopLowerCells = json['Lower Cells'];
+    _teleopUpperCells = json['Upper Cells'];
     _maxHeight = json['maxHeight'];
     _numberOfTowers = json['numberOfTowers'];
     _markerHeight = json['markerHeight'];
@@ -178,7 +189,7 @@ class TeamEntry{
   }
 
   String toCompressed() {
-    String compressed = "n"+_number.toString()+"r"+_round.toString()+"ss"+_skyStones.toString()+"s"+_stones.toString()+
+    String compressed = "n"+_number.toString()+"r"+_round.toString()+"lc"+_teleopLowerCells.toString()+"uc"+_teleopUpperCells.toString()+
     "mh"+_maxHeight.toString()+"mk"+_markerHeight.toString()+"nT"+_numberOfTowers.toString()+"c";
     compressed+=_color ? "1":"0";
     compressed+=_autonInterfere ? "a1":"a0";
@@ -199,9 +210,9 @@ class TeamEntry{
 
   TeamEntry.fromCompressed(String compressed, BuildContext context) {
     _number = int.parse(compressed.substring(1, compressed.indexOf('r')));
-    _round = int.parse(compressed.substring(compressed.indexOf('r')+1, compressed.indexOf('ss')));
-    _skyStones = int.parse(compressed.substring(compressed.indexOf('ss')+2, compressed.lastIndexOf('s')));
-    _stones = int.parse(compressed.substring(compressed.lastIndexOf('s')+1, compressed.indexOf('mh')));
+    _round = int.parse(compressed.substring(compressed.indexOf('r')+1, compressed.indexOf('lc')));
+    _teleopLowerCells = int.parse(compressed.substring(compressed.indexOf('lc')+2, compressed.lastIndexOf('uc')));
+    _teleopUpperCells = int.parse(compressed.substring(compressed.lastIndexOf('uc')+1, compressed.indexOf('mh')));
     _maxHeight = int.parse(compressed.substring(compressed.indexOf('mh')+2, compressed.indexOf('mk')));
     _markerHeight = int.parse(compressed.substring(compressed.indexOf('mk')+2, compressed.indexOf('nT')));
     _numberOfTowers = int.parse(compressed.substring(compressed.indexOf('nT')+2, compressed.indexOf('c')));
@@ -251,8 +262,8 @@ class TeamEntry{
               ),
             ],
           ),
-          new Text("Stones: "+_stones.toString()),
-          new Text("SkyStones: "+_skyStones.toString()),
+          new Text("Lower Cells: "+_teleopLowerCells.toString()),
+          new Text("Upper Cells: "+_teleopUpperCells.toString()),
           new Text("Towers: " +_numberOfTowers.toString()),
           new Divider()
         ],
